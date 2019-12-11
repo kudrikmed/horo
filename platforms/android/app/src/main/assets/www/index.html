@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Framework7</title>
+  <link rel="stylesheet" href="css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="apple-touch-icon" href="img/f7-icon-square.png">
+  <link rel="icon" href="img/f7-icon.png">
+</head>
+<body>
+  <div id="app">
+    <div class="statusbar"></div>
+    <div class="panel panel-left panel-cover">
+      <div class="page">
+        <div class="page-content">
+          <div class="block-title" id="menuLabelZodiacSign">Zodiac sign</div>
+          <div class="list">
+            <ul>
+              <li>
+                <a href="#" class="panel-close item-link item-content" id="aquariusMenuButton"><div class="item-media"><div class="zodiac-font center">k</div></div><div class="item-inner"><div class="item-title">Aquarius</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="piscesMenuButton"><div class="item-media"><div class="zodiac-font center">l</div></div><div class="item-inner"><div class="item-title">Pisces</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="ariesMenuButton"><div class="item-media"><div class="zodiac-font center">a</div></div><div class="item-inner"><div class="item-title">Aries</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="taurusMenuButton"><div class="item-media"><div class="zodiac-font center">b</div></div><div class="item-inner"><div class="item-title">Taurus</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="geminiMenuButton"><div class="item-media"><div class="zodiac-font center">c</div></div><div class="item-inner"><div class="item-title">Gemini</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="cancerMenuButton"><div class="item-media"><div class="zodiac-font center">d</div></div><div class="item-inner"><div class="item-title">Cancer</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="leoMenuButton"><div class="item-media"><div class="zodiac-font center">e</div></div><div class="item-inner"><div class="item-title">Leo</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="virgoMenuButton"><div class="item-media"><div class="zodiac-font center">f</div></div><div class="item-inner"><div class="item-title">Virgo</div></div></a>
+              </li>
+              <li>
+			    <a href="#" class="panel-close item-link item-content" id="libraMenuButton"><div class="item-media"><div class="zodiac-font center">g</div></div><div class="item-inner"><div class="item-title">Libra</div></div></a>
+              </li>
+			  <li>
+			    <a href="#" class="panel-close item-link item-content" id="scorpioMenuButton"><div class="item-media"><div class="zodiac-font center">h</div></div><div class="item-inner"><div class="item-title">Scorpio</div></div></a>
+              </li>
+			  <li>
+			    <a href="#" class="panel-close item-link item-content" id="saggitariusMenuButton"><div class="item-media"><div class="zodiac-font center">i</div></div><div class="item-inner"><div class="item-title">Saggitarius</div></div></a>
+              </li>
+			  <li>
+			    <a href="#" class="panel-close item-link item-content" id="capricornMenuButton"><div class="item-media"><div class="zodiac-font center">j</div></div><div class="item-inner"><div class="item-title">Capricorn</div></div></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+    <div class="panel panel-right panel-cover">
+      <div class="page">
+        <div class="page-content">
+          <div class="block-title" id="menuLabelSettings">Settings</div>
+          <div class="list simple-list">
+            <ul>
+              <li>
+                <a href="#" class="panel-close" id="notificationsMenuButton">Notifications</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="languageMenuButton">Language</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="ratingMenuButton">Rate app</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+    <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="800" data-url="/">
+	
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons if-not-md">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+              </a>
+            </div>
+			<div class="title text-align-center">
+              <div class="title-text text-align-center" id="navbarTitleText">AstroHoro</div>
+            </div> 
+            <div class="right">
+              <a class="link icon-only panel-open" data-panel="right">
+                <i class="icon f7-icons if-not-md">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+              </a>
+            </div>
+                
+          </div>
+        </div>
+        <div class="page-content">
+			<div class="card">
+				<div class="card-header deep-blue" id="cardHeaderSign"><span>Today</span><a href="#" class="link">Share</a></div>
+				<div class="card-content card-content-padding" id="horocontent">
+					What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
+				</div>
+				</div>
+				<div class="card">
+				<div class="card-header deep-blue" id="cardHeaderValues">Values</div>
+				<div class="card-content card-content-padding">
+				
+					<div class="row">
+					<div class="col text-align-center">
+					<div
+					class="gauge gauge-init"
+					data-type="circle"
+					data-value="0.44"
+					data-value-text="44"
+					data-value-text-color="#0f4c81"
+					data-border-color="#0f4c81"
+					data-label-text="Health"
+					></div>
+					</div>
+					<div class="col text-align-center">
+					<div
+					class="gauge gauge-init"
+					data-type="circle"
+					data-value="0.67"
+					data-value-text="67"
+					data-value-text-color="#0f4c81"
+					data-border-color="#0f4c81"
+					data-label-text="Love"
+					></div>
+					</div>
+					<div class="col text-align-center">
+					<div
+					class="gauge gauge-init"
+					data-type="circle"
+					data-value="0.72"
+					data-value-text="72"
+					data-value-text-color="#0f4c81"
+					data-border-color="#0f4c81"
+					data-label-text="Family"
+					></div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="fab fab-center-bottom" id="readMoreFABButton">
+			 <a href="#">
+			<div class="fab-text">More...</div>
+			</a>
+			</div>
+          </div>
+        </div>
+      </div>
+			
+		<div class="popup" id="settingsPopup">
+		<div class="view" id="settingsPopupView">
+				<div class="page">
+				<div class="page-content">
+		<div class="block-title" id="textSettings">Settings</div>
+			<div class="card">
+				<div class="card-header deep-blue" id="cardHeaderLanguage">Language</div>
+				<div class="card-content card-content-padding">
+					<div class="list">
+                        <ul>
+                            <li>
+                               <a class="item-link smart-select smart-select-init" data-open-in="sheet" id="languageSmartSelect">
+									<select name="languageSelector">
+										<option value="eng" selected>English</option>
+										<option value="rus">Русский</option>
+									</select>
+									<div class="item-content">
+										<div class="item-inner">
+											<div class="item-title">Language</div>
+										</div>
+									</div>
+								</a>
+                            </li>
+						</ul>
+					</div>
+				</div>
+					</div>
+				
+			<div class="card">
+				<div class="card-header">
+					<div class="deep-blue" id="cardHeaderNotifications">Notifications</div>
+					<label class="toggle toggle-init">
+					<input type="checkbox" checked>
+					<span class="toggle-icon"></span>
+					</label>
+				</div>
+				<div class="card-content card-content-padding">
+				Notifications setting
+				</div>
+			</div>
+			<div class="list">
+                <ul>
+                    <li>
+                        <a href="#" class="item-link list-button" id="textSaveAndExitButton">Save and exit</a>
+                    </li>
+                </ul>
+				</div>
+				</div>
+			</div>
+            </div>
+		</div>
+		
+		<div class="popup" id="readMorePopup">
+			<div class="view">
+				<div class="page">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="left"id="readMorePopupBackButton">
+								<i class="icon icon-back"></i>
+							</div>
+							<div class="title" id="readMorePopupTitle">Scorpio</div>
+						</div>
+					</div>
+					<div class="page-content">
+						<div id="historyTestDiv"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  <script src="cordova.js"></script>
+  <script src="js/framework7.bundle.min.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

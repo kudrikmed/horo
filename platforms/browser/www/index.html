@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Framework7</title>
+  <link rel="stylesheet" href="css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="apple-touch-icon" href="img/f7-icon-square.png">
+  <link rel="icon" href="img/f7-icon.png">
+</head>
+<body>
+  <div id="app">
+    <div class="statusbar"></div>
+    <div class="panel panel-left panel-cover">
+      <div class="page">
+        <div class="page-content">
+          <div class="block-title" id="menuLabelZodiacSign">Zodiac sign</div>
+          <div class="list links-list">
+            <ul>
+              <li>
+                <a href="#" class="panel-close" id="aquariusMenuButton">Aquarius</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="piscesMenuButton">Pisces</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="ariesMenuButton">Aries</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="taurusMenuButton">Taurus</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="geminiMenuButton">Gemini</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="cancerMenuButton">Cancer</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="leoMenuButton">Leo</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="virgoMenuButton">Virgo</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="libraMenuButton">Libra</a>
+              </li>
+			  <li>
+                <a href="#" class="panel-close" id="scorpioMenuButton">Scorpio</a>
+              </li>
+			  <li>
+                <a href="#" class="panel-close" id="saggitariusMenuButton">Saggitarius</a>
+              </li>
+			  <li>
+                <a href="#" class="panel-close" id="capricornMenuButton">Capricorn</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-right panel-cover">
+      <div class="page">
+        <div class="page-content">
+          <div class="block-title" id="menuLabelSettings">Settings</div>
+          <div class="list links-list">
+            <ul>
+              <li>
+                <a href="#" class="panel-close" id="notificationsMenuButton">Notifications</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="LanguageMenuButton">Language</a>
+              </li>
+              <li>
+                <a href="#" class="panel-close" id="ratingMenuButton">Rate app</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="800" data-url="/">
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons if-not-md">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+              </a>
+            </div>
+			<div class="title text-align-center">
+              <div class="title-text text-align-center" id="navbarTitleText">AstroHoro</div>
+            </div> 
+            <div class="right">
+              <a class="link icon-only panel-open" data-panel="right">
+                <i class="icon f7-icons if-not-md">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+              </a>
+            </div>
+                
+          </div>
+        </div>
+        <div class="page-content">
+			<div class="card">
+				<div class="card-header" id="cardHeaderSign">Scorpio</div>
+				<div class="card-content card-content-padding" id="horocontent">
+					What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
+				</div>
+				
+				<div class="card-footer">
+					<div class="row">
+					<div class="col text-align-center">
+					<div
+					class="gauge gauge-init"
+					data-type="circle"
+					data-value="0.44"
+					data-value-text="44"
+					data-value-text-color="#0f4c81"
+					data-border-color="#0f4c81"
+					data-label-text="Health"
+					></div>
+					</div>
+					<div class="col text-align-center">
+					<div
+					class="gauge gauge-init"
+					data-type="circle"
+					data-value="0.67"
+					data-value-text="67"
+					data-value-text-color="#0f4c81"
+					data-border-color="#0f4c81"
+					data-label-text="Love"
+					></div>
+					</div>
+					<div class="col text-align-center">
+					<div
+					class="gauge gauge-init"
+					data-type="circle"
+					data-value="0.72"
+					data-value-text="72"
+					data-value-text-color="#0f4c81"
+					data-border-color="#0f4c81"
+					data-label-text="Family"
+					></div>
+					</div>
+					</div>
+				</div>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/framework7.bundle.min.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
