@@ -88,7 +88,7 @@
 	
     <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="800" data-url="/">
 	
-      <div class="page">
+      <div class="page with-background">
         <div class="navbar">
           <div class="navbar-inner">
             <div class="left">
@@ -155,6 +155,7 @@
 					></div>
 					</div>
 					</div>
+					
 				</div>
 			</div>
 			<div class="fab fab-center-bottom" id="readMoreFABButton">
@@ -164,13 +165,20 @@
 			</div>
           </div>
         </div>
-      </div>
+     
 			
 		<div class="popup" id="settingsPopup">
 		<div class="view" id="settingsPopupView">
-				<div class="page">
+				<div class="page with-background">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="left"id="settingsPopupBackButton">
+								<i class="icon icon-back"></i>
+							</div>
+							<div class="title" id="settingsPopupTitle">Settings</div>
+						</div>
+					</div>
 				<div class="page-content">
-		<div class="block-title" id="textSettings">Settings</div>
 			<div class="card">
 				<div class="card-header deep-blue" id="cardHeaderLanguage">Language</div>
 				<div class="card-content card-content-padding">
@@ -184,7 +192,7 @@
 									</select>
 									<div class="item-content">
 										<div class="item-inner">
-											<div class="item-title">Language</div>
+											<div class="item-title">Select language</div>
 										</div>
 									</div>
 								</a>
@@ -197,19 +205,32 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="deep-blue" id="cardHeaderNotifications">Notifications</div>
-					<label class="toggle toggle-init">
-					<input type="checkbox" checked>
+					<label class="toggle toggle-init" id="notificationToggle">
+					<input type="checkbox" id="notificationToggleCheckbox" checked>
 					<span class="toggle-icon"></span>
 					</label>
 				</div>
 				<div class="card-content card-content-padding">
-				Notifications setting
+					<div class="list no-hairlines-md">
+						<ul>
+							<li id="notificationTimeElement">
+								<div class="item-content item-input">
+									<div class="item-inner">
+									<div class="item-title item-label">Time</div>
+										<div class="item-input-wrap">
+											<input type="time" value="09:00" id="timePicker"/>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>					
 				</div>
 			</div>
-			<div class="list">
+			<div class="list center">
                 <ul>
                     <li>
-                        <a href="#" class="item-link list-button" id="textSaveAndExitButton">Save and exit</a>
+                        <a href="#" class="item-link list-button center" id="textSaveAndExitButton">Save and exit</a>
                     </li>
                 </ul>
 				</div>
@@ -220,7 +241,7 @@
 		
 		<div class="popup" id="readMorePopup">
 			<div class="view">
-				<div class="page">
+				<div class="page with-background">
 					<div class="navbar">
 						<div class="navbar-inner">
 							<div class="left"id="readMorePopupBackButton">
@@ -231,11 +252,218 @@
 					</div>
 					<div class="page-content">
 						<div id="historyTestDiv"></div>
+							<div class="card">
+								<div class="card-header">
+									<div class="deep-blue" id="cardHeaderInfluence">Today's influences</div>					
+								</div>
+								<div class="card-content card-content-padding">
+											<div class="row">
+											<div class="col text-align-center">
+											<div id="popupGaugeRulership"
+												class="gauge gauge-init"
+												data-type="semicircle"
+												data-value="0.44"
+												data-value-text="44"
+												data-value-text-color="#0f4c81"
+												data-border-color="#0f4c81"
+												data-label-text="Rulership Mars"
+											></div>
+											</div>
+											
+											<div class="col text-align-center">
+											<div id="popupGaugeDispositor"
+												class="gauge gauge-init"
+												data-type="semicircle"
+												data-value="0.67"
+												data-value-text="67"
+												data-value-text-color="#0f4c81"
+												data-border-color="#0f4c81"
+												data-label-text="Dispositor Venus"
+											></div>
+											</div>											
+											<div class="col text-align-center">
+											<div id="popupGaugeHouse"
+												class="gauge gauge-init"
+												data-type="semicircle"
+												data-value="0.72"
+												data-value-text="72"
+												data-value-text-color="#0f4c81"
+												data-border-color="#0f4c81"
+												data-label-text="House 8th"
+											></div>
+											</div>
+											</div>
+												<br>
+											<div class="row">
+											<div class="col text-align-center">
+											<div id="popupGaugeElement"
+												class="gauge gauge-init"
+												data-type="semicircle"
+												data-value="0.32"
+												data-value-text="32"
+												data-value-text-color="#0f4c81"
+												data-border-color="#0f4c81"
+												data-label-text="Element Water"
+											></div>
+											</div>
+											<div class="col text-align-center">
+											<div id="popupGaugeDirection"
+												class="gauge gauge-init"
+												data-type="semicircle"
+												data-value="0.32"
+												data-value-text="West"
+												data-value-text-color="#0f4c81"
+												data-border-color="#0f4c81"
+												data-label-text="Direction"
+											></div>
+											</div>
+											<div class="col text-align-center">
+											<div id="popupGaugeSeason"
+												class="gauge gauge-init"
+												data-type="semicircle"
+												data-value="0.44"
+												data-value-text="Autumn"
+												data-value-text-color="#0f4c81"
+												data-border-color="#0f4c81"
+												data-label-text="Season"
+											></div>
+											</div>
+											</div>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-header deep-blue" id="cardHeaderSignMoreToday"><span>Today</span><a href="#" class="link">Share</a></div>
+								<div class="card-content card-content-padding" id="moreTodayHoroContent">
+									What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-header deep-blue" id="cardHeaderSignMoreTomorrow"><span>Tomorrow</span><a href="#" class="link">Share</a></div>
+								<div class="card-content card-content-padding" id="moreTomorrowHoroContent">
+									What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-header deep-blue" id="cardHeaderMoreInteraction"><span>Today's interactions</span></div>
+								<div class="card-content card-content-padding" id="moreTomorrowHoroContent">
+									<div class="list media-list">
+										<ul>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="loveIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">heart</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreLoveSigns">Leo, Leo</div>
+													</div>
+													<div class="item-text" id="moreLoveText">Love</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="friendshipIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">person_3</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreFriendshipSigns">Libra, Capricorn</div>
+													</div>
+													<div class="item-text" id="moreFriendshipText">Friendship</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="moneyIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">money_dollar</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreMoneySigns">Saggitarius, Pisces</div>
+													</div>
+													<div class="item-text" id="moreMoneyText">Money</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="dangerIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">fire</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreDangerSigns">Aries, Cancer</div>
+													</div>
+													<div class="item-text" id="moreDangerText">Danger</div>
+												</div>
+											</li>
+												<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="emotionsIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">thumbs_up</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreEmotionsSigns">Saggitarius, Pisces</div>
+													</div>
+													<div class="item-text" id="moreEmotionsText">Emotions</div>
+												</div>
+											</li>
+								
+										
+										</ul>
+										</div>
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		<div class="popover popover-about" id="popoverRuler">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textRuler">Ruler</p>
+					<p id="textRulerAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+				</div>
+			</div>
+		</div>
+		<div class="popover popover-about" id="popoverDispositor">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textDispositor" class="text-color-primary">Dispositor</p>
+					<p id="textDispositorAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+				</div>
+			</div>
+		</div>
+		<div class="popover popover-about" id="popoverHouse">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textHouse" class="text-color-primary">House</p>
+					<p id="textHouseAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+				</div>
+			</div>
+		</div>
+		<div class="popover popover-about" id="popoverElement">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textElement" class="text-color-primary">Element</p>
+					<p id="textElementAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+				</div>
+			</div>
+		</div>
+		<div class="popover popover-about" id="popoverDirection">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textDirection" class="text-color-primary">Direction</p>
+					<p id="textDirectionAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+				</div>
+			</div>
+		</div>
+		<div class="popover popover-about" id="popoverSeason">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textSeason" class="text-color-primary">Season</p>
+					<p id="textSeasonAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+				</div>
+			</div>
+		</div>
   </div>
+   </div>
   <script src="cordova.js"></script>
   <script src="js/framework7.bundle.min.js"></script>
   <script src="js/routes.js"></script>

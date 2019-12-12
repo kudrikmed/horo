@@ -11,6 +11,9 @@ if (document.location.search.indexOf('theme=') >= 0) {
 var app = new Framework7({
   id: 'io.framework7.testapp',
   root: '#app',
+  sheet: {
+    closeByBackdropClick: true,
+  },
   theme: theme,
   data: function () {
     return {
@@ -30,6 +33,9 @@ var app = new Framework7({
     placementId: 'pltd4o7ibb9rc653x14',
   },
 });
+
+// gauges
+var rulershipGauge, dispositorGauge, houseGauge, elementGauge;
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -62,6 +68,23 @@ document.addEventListener("backbutton", function (e) {
 	
 }, false);
 
+document.getElementById("notificationToggleCheckbox").addEventListener("click", function(){
+	console.log("Toggle pressed!")
+	if (this.checked){
+	document.getElementById("notificationTimeElement").classList.remove('disabled');	
+//	$$("notificationTimeElement").addClass('disabled');
+	$$("timePicker").prop({
+		disabled: true
+	});
+	console.log("Toggle checked!")
+}
+else{
+	document.getElementById("notificationTimeElement").classList.add('disabled');
+	$$("timePicker").prop({
+	disabled: false
+	});
+	console.log("Toggle unchecked!")
+}}, false);
 };
 
 $$('#notificationsMenuButton').on('click', function () {
@@ -77,11 +100,92 @@ $$('#textSaveAndExitButton').on('click', function () {
 });
 
 $$('#readMoreFABButton').on('click', function () {
+		rulershipGauge = app.gauge.create({
+		el: '#popupGaugeRulership',
+		type: 'semicircle',
+		value: 0.3,
+		borderColor: '#0f4c81',
+		valueText: 'Mars',
+		valueTextColor: '#0f4c81',
+		labelText: 'ruler'
+	});
+	
+		dispositorGauge = app.gauge.create({
+		el: '#popupGaugeDispositor',
+		type: 'semicircle',
+		value: 0.5,
+		borderColor: '#0f4c81',
+		valueText: 'Venus',
+		valueTextColor: '#0f4c81',
+		labelText: 'dispositor'
+	});
+		houseGauge = app.gauge.create({
+		el: '#popupGaugeHouse',
+		type: 'semicircle',
+		value: 0.2,
+		borderColor: '#0f4c81',
+		valueText: '8th',
+		valueTextColor: '#0f4c81',
+		labelText: 'house'
+	});
+	
+		elementGauge = app.gauge.create({
+		el: '#popupGaugeElement',
+		type: 'semicircle',
+		value: 0.9,
+		borderColor: '#0f4c81',
+		valueText: 'Water',
+		valueTextColor: '#0f4c81',
+		labelText: 'element'
+	});
+	
+		directionGauge = app.gauge.create({
+		el: '#popupGaugeDirection',
+		type: 'semicircle',
+		value: 0.6,
+		borderColor: '#0f4c81',
+		valueText: 'West',
+		valueTextColor: '#0f4c81',
+		labelText: 'direction'
+	});
+	
+		seasonGauge = app.gauge.create({
+		el: '#popupGaugeSeason',
+		type: 'semicircle',
+		value: 0.6,
+		borderColor: '#0f4c81',
+		valueText: 'Autumn',
+		valueTextColor: '#0f4c81',
+		labelText: 'season'
+	});
     app.popup.open('#readMorePopup', true);
+});
+// popovers
+$$('#popupGaugeRulership').on('click', function () {
+    app.popover.open('#popoverRuler', '#popupGaugeRulership', true);
+});
+$$('#popupGaugeDispositor').on('click', function () {
+    app.popover.open('#popoverDispositor', '#popupGaugeDispositor', true);
+});
+$$('#popupGaugeHouse').on('click', function () {
+    app.popover.open('#popoverHouse', '#popupGaugeHouse', true);
+});
+$$('#popupGaugeElement').on('click', function () {
+    app.popover.open('#popoverElement', '#popupGaugeElement', true);
+});
+$$('#popupGaugeDirection').on('click', function () {
+    app.popover.open('#popoverDirection', '#popupGaugeDirection', true);
+});
+$$('#popupGaugeSeason').on('click', function () {
+    app.popover.open('#popoverSeason', '#popupGaugeSeason', true);
 });
 
 $$('#readMorePopupBackButton').on('click', function () {
     app.popup.close('#readMorePopup', true);
+});
+
+$$('#settingsPopupBackButton').on('click', function () {
+    app.popup.close('#settingsPopup', true);
 });
 
 var settingsPopupView = app.views.create('#settingsPopupView', {url: '/'});
@@ -91,3 +195,5 @@ var smartSelect = app.smartSelect.create({
 	view: settingsPopupView,
 	openIn: sheet
 });
+
+
