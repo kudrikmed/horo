@@ -165,13 +165,20 @@
 			</div>
           </div>
         </div>
-      </div>
+     
 			
 		<div class="popup" id="settingsPopup">
 		<div class="view" id="settingsPopupView">
 				<div class="page with-background">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="left"id="settingsPopupBackButton">
+								<i class="icon icon-back"></i>
+							</div>
+							<div class="title" id="settingsPopupTitle">Settings</div>
+						</div>
+					</div>
 				<div class="page-content">
-		<div class="block-title" id="textSettings">Settings</div>
 			<div class="card">
 				<div class="card-header deep-blue" id="cardHeaderLanguage">Language</div>
 				<div class="card-content card-content-padding">
@@ -198,28 +205,26 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="deep-blue" id="cardHeaderNotifications">Notifications</div>
-					<label class="toggle toggle-init">
-					<input type="checkbox" checked>
+					<label class="toggle toggle-init" id="notificationToggle">
+					<input type="checkbox" id="notificationToggleCheckbox" checked>
 					<span class="toggle-icon"></span>
 					</label>
 				</div>
 				<div class="card-content card-content-padding">
-					<span>Select time: </span>
 					<div class="list no-hairlines-md">
-					<ul>
-					<li>
-					<div class="item-content item-input">
-						<div class="item-inner">
-							<div class="item-input-wrap">
-								<input type="text" placeholder="Select time" readonly="readonly" id="timePicker"/>
-							</div>
-						</div>
-					</div>
-					</li>
-					</ul>
+						<ul>
+							<li id="notificationTimeElement">
+								<div class="item-content item-input">
+									<div class="item-inner">
+									<div class="item-title item-label">Time</div>
+										<div class="item-input-wrap">
+											<input type="time" value="09:00" id="timePicker"/>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</div>					
-					
-					
 				</div>
 			</div>
 			<div class="list center">
@@ -458,6 +463,7 @@
 			</div>
 		</div>
   </div>
+   </div>
   <script src="cordova.js"></script>
   <script src="js/framework7.bundle.min.js"></script>
   <script src="js/routes.js"></script>

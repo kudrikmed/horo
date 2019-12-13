@@ -9,6 +9,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
   <title>Framework7</title>
   <link rel="stylesheet" href="css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/framework7-icons.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="apple-touch-icon" href="img/f7-icon-square.png">
   <link rel="icon" href="img/f7-icon.png">
@@ -16,47 +17,47 @@
 <body>
   <div id="app">
     <div class="statusbar"></div>
-    <div class="panel panel-left panel-cover">
+    <div class="panel panel-left panel-cover" id="horopanel">
       <div class="page">
         <div class="page-content">
           <div class="block-title" id="menuLabelZodiacSign">Zodiac sign</div>
           <div class="list">
             <ul>
               <li>
-                <a href="#" class="panel-close item-link item-content" id="aquariusMenuButton"><div class="item-media"><div class="zodiac-font center">k</div></div><div class="item-inner"><div class="item-title">Aquarius</div></div></a>
+                <a href="#" class="panel-close item-link item-content" id="aquariusMenuButton"><div class="item-media"><div class="zodiac-font center">k</div></div><div class="item-inner"><div class="item-title" id="textAquarius">Aquarius</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="piscesMenuButton"><div class="item-media"><div class="zodiac-font center">l</div></div><div class="item-inner"><div class="item-title">Pisces</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="piscesMenuButton"><div class="item-media"><div class="zodiac-font center">l</div></div><div class="item-inner"><div class="item-title" id="textPisces">Pisces</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="ariesMenuButton"><div class="item-media"><div class="zodiac-font center">a</div></div><div class="item-inner"><div class="item-title">Aries</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="ariesMenuButton"><div class="item-media"><div class="zodiac-font center">a</div></div><div class="item-inner"><div class="item-title" id="textAries">Aries</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="taurusMenuButton"><div class="item-media"><div class="zodiac-font center">b</div></div><div class="item-inner"><div class="item-title">Taurus</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="taurusMenuButton"><div class="item-media"><div class="zodiac-font center">b</div></div><div class="item-inner"><div class="item-title" id="textTaurus">Taurus</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="geminiMenuButton"><div class="item-media"><div class="zodiac-font center">c</div></div><div class="item-inner"><div class="item-title">Gemini</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="geminiMenuButton"><div class="item-media"><div class="zodiac-font center">c</div></div><div class="item-inner"><div class="item-title" id="textGemini">Gemini</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="cancerMenuButton"><div class="item-media"><div class="zodiac-font center">d</div></div><div class="item-inner"><div class="item-title">Cancer</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="cancerMenuButton"><div class="item-media"><div class="zodiac-font center">d</div></div><div class="item-inner"><div class="item-title" id="textCancer">Cancer</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="leoMenuButton"><div class="item-media"><div class="zodiac-font center">e</div></div><div class="item-inner"><div class="item-title">Leo</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="leoMenuButton"><div class="item-media"><div class="zodiac-font center">e</div></div><div class="item-inner"><div class="item-title" id="textLeo">Leo</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="virgoMenuButton"><div class="item-media"><div class="zodiac-font center">f</div></div><div class="item-inner"><div class="item-title">Virgo</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="virgoMenuButton"><div class="item-media"><div class="zodiac-font center">f</div></div><div class="item-inner"><div class="item-title" id="textVirgo">Virgo</div></div></a>
               </li>
               <li>
-			    <a href="#" class="panel-close item-link item-content" id="libraMenuButton"><div class="item-media"><div class="zodiac-font center">g</div></div><div class="item-inner"><div class="item-title">Libra</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="libraMenuButton"><div class="item-media"><div class="zodiac-font center">g</div></div><div class="item-inner"><div class="item-title" id="textLibra">Libra</div></div></a>
               </li>
 			  <li>
-			    <a href="#" class="panel-close item-link item-content" id="scorpioMenuButton"><div class="item-media"><div class="zodiac-font center">h</div></div><div class="item-inner"><div class="item-title">Scorpio</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="scorpioMenuButton"><div class="item-media"><div class="zodiac-font center">h</div></div><div class="item-inner"><div class="item-title" id="textScorpio">Scorpio</div></div></a>
               </li>
 			  <li>
-			    <a href="#" class="panel-close item-link item-content" id="saggitariusMenuButton"><div class="item-media"><div class="zodiac-font center">i</div></div><div class="item-inner"><div class="item-title">Saggitarius</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="saggitariusMenuButton"><div class="item-media"><div class="zodiac-font center">i</div></div><div class="item-inner"><div class="item-title" id="textSaggitarius">Saggitarius</div></div></a>
               </li>
 			  <li>
-			    <a href="#" class="panel-close item-link item-content" id="capricornMenuButton"><div class="item-media"><div class="zodiac-font center">j</div></div><div class="item-inner"><div class="item-title">Capricorn</div></div></a>
+			    <a href="#" class="panel-close item-link item-content" id="capricornMenuButton"><div class="item-media"><div class="zodiac-font center">j</div></div><div class="item-inner"><div class="item-title" id="textCapricorn">Capricorn</div></div></a>
               </li>
             </ul>
           </div>
@@ -111,7 +112,7 @@
         </div>
         <div class="page-content">
 			<div class="card">
-				<div class="card-header deep-blue" id="cardHeaderSign"><span>Today</span><a href="#" class="link">Share</a></div>
+				<div class="card-header deep-blue" id="cardHeaderSign"><span id="textTodayMainCardHeader">Today</span><a href="#" class="link" id="shareMainCardHeader">Share</a></div>
 				<div class="card-content card-content-padding" id="horocontent">
 					What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
 				</div>
@@ -160,7 +161,7 @@
 			</div>
 			<div class="fab fab-center-bottom" id="readMoreFABButton">
 			 <a href="#">
-			<div class="fab-text">More...</div>
+			<div class="fab-text" id="readMoreFABButtonText">More...</div>
 			</a>
 			</div>
           </div>
@@ -192,7 +193,7 @@
 									</select>
 									<div class="item-content">
 										<div class="item-inner">
-											<div class="item-title">Select language</div>
+											<div class="item-title" id="textSelectLanguage">Select language</div>
 										</div>
 									</div>
 								</a>
@@ -216,7 +217,7 @@
 							<li id="notificationTimeElement">
 								<div class="item-content item-input">
 									<div class="item-inner">
-									<div class="item-title item-label">Time</div>
+									<div class="item-title item-label" id="textTime">Time</div>
 										<div class="item-input-wrap">
 											<input type="time" value="09:00" id="timePicker"/>
 										</div>
@@ -230,7 +231,7 @@
 			<div class="list center">
                 <ul>
                     <li>
-                        <a href="#" class="item-link list-button center" id="textSaveAndExitButton">Save and exit</a>
+                        <a href="#" class="item-link list-button center text-color-primary" id="textSaveAndExitButton">Save and exit</a>
                     </li>
                 </ul>
 				</div>
@@ -330,21 +331,52 @@
 											</div>
 											</div>
 								</div>
+								</div>
+									<div class="card">
+								<div class="card-header deep-blue" id="cardHeaderMoon"><span id="textMoon">Moon</span></div>
+								<div class="card-content card-content-padding" id="moreMoonContent">
+									<div class="list media-list">
+										<ul>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="moonIcon">
+													<i class="icon material-icons text-size-44 text-color-primary" style="font-size: 44px;">brightness_3</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreCurrentMoonPhase"></div>
+													</div>
+													<div class="item-text" id="moreMoonPhaseText">Moon phase</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" style="font-size: 36px;" id="moonDay">
+													
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreCurrentMoonDay"></div>
+													</div>
+													<div class="item-text" id="moreMoonDayText">Moon day</div>
+												</div>
+											</li>
+										</ul>
+										</div>
+								</div>
 							</div>
 							<div class="card">
-								<div class="card-header deep-blue" id="cardHeaderSignMoreToday"><span>Today</span><a href="#" class="link">Share</a></div>
+								<div class="card-header deep-blue" id="cardHeaderSignMoreToday"><span id="textMoreToday">Today</span><a href="#" class="link" id="moreShareToday">Share</a></div>
 								<div class="card-content card-content-padding" id="moreTodayHoroContent">
 									What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
 								</div>
 							</div>
 							<div class="card">
-								<div class="card-header deep-blue" id="cardHeaderSignMoreTomorrow"><span>Tomorrow</span><a href="#" class="link">Share</a></div>
+								<div class="card-header deep-blue" id="cardHeaderSignMoreTomorrow"><span id="textMoreTomorrow">Tomorrow</span><a href="#" class="link" id="moreShareTomorrow">Share</a></div>
 								<div class="card-content card-content-padding" id="moreTomorrowHoroContent">
 									What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
 								</div>
 							</div>
 							<div class="card">
-								<div class="card-header deep-blue" id="cardHeaderMoreInteraction"><span>Today's interactions</span></div>
+								<div class="card-header deep-blue" id="cardHeaderMoreInteraction"><span id="moreTodayInteraction">Today's interactions</span></div>
 								<div class="card-content card-content-padding" id="moreTomorrowHoroContent">
 									<div class="list media-list">
 										<ul>
@@ -418,7 +450,7 @@
 			<div class="popover-inner">
 				<div class="block">
 					<p id="textRuler">Ruler</p>
-					<p id="textRulerAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+					<p id="textRulerAbout">The ruling planet of each zodiac sign is the archetype, or original pattern, for knowing its meaning. These are the players in the cosmic drama expressed through the zodiac signs. Planets are wanderers of the symbolic sky, with mythical stories or atmospheres of associations.</p>
 				</div>
 			</div>
 		</div>
@@ -426,7 +458,7 @@
 			<div class="popover-inner">
 				<div class="block">
 					<p id="textDispositor" class="text-color-primary">Dispositor</p>
-					<p id="textDispositorAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+					<p id="textDispositorAbout">A dispositor is a planet that rules the sign that another planet is located in. The term alludes to the conceptualization that the dispositor has some role in administering or controlling the planet that is placed in its domicile.  This is because the planet that is being disposited has to rely on the dispositor for support.</p>
 				</div>
 			</div>
 		</div>
@@ -434,7 +466,7 @@
 			<div class="popover-inner">
 				<div class="block">
 					<p id="textHouse" class="text-color-primary">House</p>
-					<p id="textHouseAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+					<p id="textHouseAbout">A house in astrology is coincidentally similar to a clock. The zodiac is divided into twelve individual segments, or houses, each one being ruled by a different sign. The zodiac begins with the first house, which is represented by the sign of Aries and goes counterclockwise around.</p>
 				</div>
 			</div>
 		</div>
@@ -442,7 +474,7 @@
 			<div class="popover-inner">
 				<div class="block">
 					<p id="textElement" class="text-color-primary">Element</p>
-					<p id="textElementAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+					<p id="textElementAbout">All four elements speak of certain tendencies each zodiac sign has simply because it belongs to one of them. They help us understand that there are other ways of looking at each individual, give us patience for those that are different from us, and make it clearer why some sings are more compatible than others.</p>
 				</div>
 			</div>
 		</div>
@@ -450,7 +482,7 @@
 			<div class="popover-inner">
 				<div class="block">
 					<p id="textDirection" class="text-color-primary">Direction</p>
-					<p id="textDirectionAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+					<p id="textDirectionAbout">The side of the world with its winds and celestial bodies has an integral impact on our future.</p>
 				</div>
 			</div>
 		</div>
@@ -458,7 +490,7 @@
 			<div class="popover-inner">
 				<div class="block">
 					<p id="textSeason" class="text-color-primary">Season</p>
-					<p id="textSeasonAbout">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ac diam ac quam euismod porta vel a nunc. Quisque sodales scelerisque est, at porta justo cursus ac.</p>
+					<p id="textSeasonAbout">Depending on your Zodiac sign, you can always look to astrology to know your moment in the sun. All zodiac signs have a month-long period wherein it is aligned with the sun, also known as a solar season (or the four seasons we have on earth). As the sun aligns with the sign, it also shines the light on the area of your life ruled by that sign, casting its influence and leads a role in your life.</p>
 				</div>
 			</div>
 		</div>
@@ -468,5 +500,6 @@
   <script src="js/framework7.bundle.min.js"></script>
   <script src="js/routes.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/language.js"></script>
 </body>
 </html>

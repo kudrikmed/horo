@@ -11,6 +11,9 @@ if (document.location.search.indexOf('theme=') >= 0) {
 var app = new Framework7({
   id: 'io.framework7.testapp',
   root: '#app',
+  sheet: {
+    closeByBackdropClick: true,
+  },
   theme: theme,
   data: function () {
     return {
@@ -65,20 +68,23 @@ document.addEventListener("backbutton", function (e) {
 	
 }, false);
 
-var timePicker = app.picker.create({
-  inputEl: find('#timePicker'),
-    rotateEffect: true,
-	openIn: popover,
-    cols: [
-      {
-        textAlign: 'left',
-        values: ('0 1 2 3 4 5 6 7 8 9 10 11 12').split(' ')
-      },
-      {
-        values: ('00 15 30 45').split(' ')
-      },
-    ]
-});
+document.getElementById("notificationToggleCheckbox").addEventListener("click", function(){
+	console.log("Toggle pressed!")
+	if (this.checked){
+	document.getElementById("notificationTimeElement").classList.remove('disabled');	
+//	$$("notificationTimeElement").addClass('disabled');
+	$$("timePicker").prop({
+		disabled: true
+	});
+	console.log("Toggle checked!")
+}
+else{
+	document.getElementById("notificationTimeElement").classList.add('disabled');
+	$$("timePicker").prop({
+	disabled: false
+	});
+	console.log("Toggle unchecked!")
+}}, false);
 };
 
 $$('#notificationsMenuButton').on('click', function () {
@@ -178,6 +184,10 @@ $$('#readMorePopupBackButton').on('click', function () {
     app.popup.close('#readMorePopup', true);
 });
 
+$$('#settingsPopupBackButton').on('click', function () {
+    app.popup.close('#settingsPopup', true);
+});
+
 var settingsPopupView = app.views.create('#settingsPopupView', {url: '/'});
 
 var smartSelect = app.smartSelect.create({ 
@@ -186,6 +196,4 @@ var smartSelect = app.smartSelect.create({
 	openIn: sheet
 });
 
-$$('#timePicker').on('click', function () {
-    // app.popup.close('#readMorePopup', true);
-});
+
