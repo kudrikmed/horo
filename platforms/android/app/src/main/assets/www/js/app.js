@@ -1,3 +1,26 @@
+/* distance to planets
+https://www.johndcook.com/blog/2015/10/24/distance-to-mars/
+https://keisan.casio.com/exec/system/1224746378
+https://codepen.io/lulunac27/pen/NRoyxE
+*/
+
+/* moon
+https://astroonlain.ru/lunnyi-kalendar-na-kazhdyi-den
+*/
+
+/* plugins
+ads https://github.com/floatinghotpot/cordova-admob-pro
+flurry https://github.com/blakgeek/cordova-plugin-flurryanalytics
+share https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
+rate https://github.com/pushandplay/cordova-plugin-apprate
+*/
+
+/*
+app id ca-app-pub-5186877757924020~1720905856
+block id ca-app-pub-5186877757924020/3867722898
+interstitial id ca-app-pub-5186877757924020/9190888687
+*/
+
 // Dom7
 var $$ = Dom7;
 
@@ -36,8 +59,11 @@ var app = new Framework7({
 
 // gauges
 var rulershipGauge, dispositorGauge, houseGauge, elementGauge;
+var gaugeHealth, gaugeLove, gaugeFamily;
 
 var smartSelect;
+
+var Horo, TomorrowHoro;
 
 var Moon = {
   phase: function (year, month, day) {
@@ -61,28 +87,36 @@ var Moon = {
 
     switch (b) {
       case 0:
-        return 'new-moon';
+	    $$('#textPopoverMoonPhaseAbout').text('0');
+        return textNewMoon;
         break;
       case 1:
-        return 'waxing-crescent-moon';
+	    $$('#textPopoverMoonPhaseAbout').text('1');
+        return textWaxingCrescentMoon;
         break;
       case 2:
-        return 'quarter-moon';
+        return textQuarterMoon;
+		$$('#textPopoverMoonPhaseAbout').text('1');
         break;
       case 3:
-        return 'waxing-gibbous-moon';
+        return textWaxingGibbousMoon;
+		$$('#textPopoverMoonPhaseAbout').text('2');
         break;
       case 4:
-        return 'full-moon';
+        return textFullMoon;
+		$$('#textPopoverMoonPhaseAbout').text('3');
         break;
       case 5:
-        return 'waning-gibbous-moon';
+		$$('#textPopoverMoonPhaseAbout').text('4');
+        return textWaningGibbousMoon;
         break;
       case 6:
-        return 'last-quarter-moon';
+        return textLastQuarterMoon;
+		$$('#textPopoverMoonPhaseAbout').text('4');
         break;
       case 7:
-        return 'waning-crescent-moon';
+        return textWaningCrescentMoon;
+		$$('#textPopoverMoonPhaseAbout').text('5');
         break;
     }
   }
@@ -97,9 +131,72 @@ if (localStorage.getItem('firstStart') != 'no') {
 	localStorage.setItem('language', navigator.language);
 	localStorage.setItem('sign', 'aries');
 	updateLanguage();
+	refreshZodiac();
+	refreshSign();
+	var userID = Math.random()*10000000000000000;
+	localStorage.setItem('userID', userID);
+	
+	mixpanel.identify(userID);
+	mixpanel.people.set({
+    "$created": new  Date()
+});
+
+	flurryAnalytics = new FlurryAnalytics({
+    // requried
+    appKey: 'JF2QQM7WYSD2SXSJFT6G',
+    // optional
+    continueSessionSeconds: 3,          // how long can the app be paused before a new session is created, must be less than or equal to five for Android devices
+    userId: userID,
+});
+	trackEvent("App first start");
 	
 	app.panel.open('left', true);
-//  localStorage.setItem('firstStart', 'no');
+    localStorage.setItem('firstStart', 'no');
+}
+else
+{		
+	updateLanguage();
+	refreshZodiac();
+	refreshSign();
+	flurryAnalytics = new FlurryAnalytics({
+    // requried
+    appKey: 'JF2QQM7WYSD2SXSJFT6G',
+    // optional
+    continueSessionSeconds: 3,          // how long can the app be paused before a new session is created, must be less than or equal to five for Android devices
+    userId: userID,
+});
+	mixpanel.people.set({
+    "$last_login": new Date()
+});
+	trackEvent('App started');
+}
+
+prepareAd();
+
+AppRate.preferences = {
+  displayAppName: textAppName,
+  usesUntilPrompt: 5,
+  promptAgainForEachNewVersion: false,
+  inAppReview: true,
+  storeAppURL: {
+    ios: '<my_app_id>',
+    android: 'https://play.google.com/store/apps/details?id=com.synfitness.synrun',
+    windows: 'ms-windows-store://pdp/?ProductId=<the apps Store ID>',
+    blackberry: 'appworld://content/[App Id]/',
+    windows8: 'ms-windows-store:Review?name=<the Package Family Name of the application>'
+  },
+  callbacks: {
+    handleNegativeFeedback: function(){
+      window.open('mailto:kudrikmed@gmail.com','_system');
+    },
+    onRateDialogShow: function(callback){
+      callback(1) // cause immediate click on 'Rate Now' button
+    },
+    onButtonClicked: function(buttonIndex){
+      console.log("onButtonClicked -> " + buttonIndex);
+    }
+  },
+  openUrl: AppRate.preferences.openUrl
 };
 
 document.addEventListener("backbutton", function (e) {
@@ -129,6 +226,26 @@ document.addEventListener("backbutton", function (e) {
 	
 }, false);
 
+gaugeHealth = app.gauge.create({
+        el: '#gaugeHealth',
+    });
+gaugeFamily = app.gauge.create({
+        el: '#gaugeFamily',
+    });
+gaugeLove = app.gauge.create({
+        el: '#gaugeLove',
+    });	
+	
+gaugeHealth.update({
+		labelText: textHealth
+	});
+gaugeFamily.update({
+		labelText: textFamily
+	});	
+gaugeLove.update({
+		labelText: textLove
+	});
+	
 document.getElementById("notificationToggleCheckbox").addEventListener("click", function(){
 	console.log("Toggle pressed!")
 	if (this.checked){
@@ -144,6 +261,10 @@ else{
 	});
 }
 }, false);
+
+// ajax
+
+refreshZodiac();
 };
 
 $$('#notificationsMenuButton').on('click', function () {
@@ -161,7 +282,149 @@ $$('#textSaveAndExitButton').on('click', function () {
     app.popup.close('#settingsPopup', true);
 });
 
+$$('#readMorePopup').on('popup:close', function () {
+	prepareAd();
+	trackEvent('More popup closed');
+});
+
+$$('#shareMainCardHeader').on('click', function () {
+	
+	trackEvent('Main screen share pressed');
+	
+	var textMessageShareResult = $$('#horocontent').text();
+	
+	var shareResult = {
+    message: textMessageShareResult, // not supported on some apps (Facebook, Instagram)
+    subject: textAppName, // fi. for email
+        // files: ['', ''], // an array of filenames either locally or remotely
+    url: 'https://www.synrunning.com'
+        // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
+        // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
+    };
+
+    var onSuccessShareResult = function (result) {
+
+    };
+
+    var onErrorShareResult = function (msg) {
+
+    };
+
+    window.plugins.socialsharing.shareWithOptions(shareResult, onSuccessShareResult, onErrorShareResult);
+	});
+	
+$$('#moreShareToday').on('click', function () {
+	
+	trackEvent('More share today pressed');
+	
+	var textMessageShareResult = $$('#moreTodayHoroContent').text();
+	
+	var shareResult = {
+    message: textMessageShareResult, // not supported on some apps (Facebook, Instagram)
+    subject: textAppName, // fi. for email
+        // files: ['', ''], // an array of filenames either locally or remotely
+    url: 'https://www.synrunning.com'
+        // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
+        // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
+    };
+
+    var onSuccessShareResult = function (result) {
+
+    };
+
+    var onErrorShareResult = function (msg) {
+
+    };
+
+    window.plugins.socialsharing.shareWithOptions(shareResult, onSuccessShareResult, onErrorShareResult);
+	});
+	
+$$('#moreShareTomorrow').on('click', function () {
+	
+	trackEvent('More tomorrow share pressed');
+	
+	var textMessageShareResult = $$('#moreTomorrowHoroContent').text();
+	
+	var shareResult = {
+    message: textMessageShareResult, // not supported on some apps (Facebook, Instagram)
+    subject: textAppName, // fi. for email
+        // files: ['', ''], // an array of filenames either locally or remotely
+    url: 'https://www.synrunning.com'
+        // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
+        // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
+    };
+
+    var onSuccessShareResult = function (result) {
+
+    };
+
+    var onErrorShareResult = function (msg) {
+
+    };
+
+    window.plugins.socialsharing.shareWithOptions(shareResult, onSuccessShareResult, onErrorShareResult);
+	});
+
+$$('#ratingMenuButton').on('click', function () {
+	AppRate.preferences.useLanguage = navigator.language;
+	trackEvent('Rate app buutin pressed');
+	AppRate.promptForRating();
+	});
+	
+$$('#moonPhaseMore').on('click', function () {
+	
+	trackEvent('Moon phase more');
+	var currentPhase = $$('#moreCurrentMoonPhase').text();
+		
+	switch (currentPhase) {
+      case textNewMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[0]);
+        break;
+      case textWaxingCrescentMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[1]);
+        break;
+      case textQuarterMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[1]);
+        break;	
+      case textWaxingGibbousMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[2]);
+        break;
+      case textFullMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[3]);
+        break;
+      case textWaningGibbousMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[4]);
+        break;
+      case textLastQuarterMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[4]);
+        break;
+      case textWaningCrescentMoon:
+	    $$('#textPopoverMoonPhaseAbout').text(MoonPhases[5]);
+        break;
+	}
+	
+	var currentMoonPhase = $$('#moreCurrentMoonPhase').text();
+	$$('#textPopoverMoonPhase').text(currentMoonPhase);
+	app.popover.open('#popoverMoonPhase', '#moreCurrentMoonDay', true);
+	
+	});
+	
+$$('#moonDayMore').on('click', function () {
+	trackEvent('Moon day more');
+	var currentMoonDay = $$('#moreCurrentMoonDay').text();
+	$$('#textPopoverMoonDay').text(currentMoonDay);
+	var moonDay = parseInt($$('#moonDay').text()) - 1;
+	console.log(moonDay);
+	console.log(MoonDays[moonDay]);
+	$$('#textPopoverMoonDayAbout').text(MoonDays[moonDay]);
+	app.popover.open('#popoverMoonDay', '#moreCurrentMoonDay', true);
+
+});
+
 $$('#readMoreFABButton').on('click', function () {
+	
+		AdMob.showInterstitial();
+		
 		rulershipGauge = app.gauge.create({
 		el: '#popupGaugeRulership',
 		type: 'semicircle',
@@ -220,7 +483,14 @@ $$('#readMoreFABButton').on('click', function () {
 		valueTextColor: '#0f4c81',
 		labelText: 'season'
 	});
-	
+
+document.getElementById('moreLoveStars').innerHTML = putStars(1);
+document.getElementById('moreFriendshipStars').innerHTML = putStars(2);
+document.getElementById('moreMoneyStars').innerHTML = putStars(3);
+document.getElementById('moreDangerStars').innerHTML = putStars(4);
+document.getElementById('moreEmotionsStars').innerHTML = putStars(5);
+
+trackEvent('FAB pressed');
 	// Return today's date and time
 var currentTime = new Date();
 
@@ -258,6 +528,84 @@ function moonDate (day, month, year){
 
 	return N;
 };
+
+// get horo date
+function getHoroDate (){
+// Return today's date and time
+var currentTime = new Date();
+
+// returns the month (from 0 to 11)
+var month = currentTime.getMonth() + 1;
+
+// returns the day of the month (from 1 to 31)
+var day = currentTime.getDate();
+
+// returns the year (four digits)
+var year = currentTime.getFullYear();
+while(year > 2017)
+{
+year = year - 2;
+}
+
+var output = year + "-" + month + "-" + day;
+
+if(output == "2017-02-29"){
+	output = "2016-02-29";
+}
+
+return output; 
+};
+
+// get horo tomorrow date
+function getHoroTomorrowDate (){
+
+var tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+// returns the month (from 0 to 11)
+var month = tomorrow.getMonth() + 1;
+
+// returns the day of the month (from 1 to 31)
+var day = tomorrow.getDate();
+
+// returns the year (four digits)
+var year = tomorrow.getFullYear();
+while(year > 2017)
+{
+year = year - 2;
+}
+var output = year + "-" + month + "-" + day;
+
+if(output == "2017-02-29"){
+	output = "2016-02-29";
+}
+
+return output; 
+};
+
+function putStars (number) {
+	var textStars = '';
+	var parsedNumber = parseInt(number);
+	switch (parsedNumber) {
+      case 1:
+	    textStars = '<i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star_border</i><i class="icon material-icons text-color-primary">star_border</i><i class="icon material-icons text-color-primary">star_border</i><i class="icon material-icons text-color-primary">star_border</i>'
+        break;	
+      case 2:
+	    textStars = '<i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star_border</i><i class="icon material-icons text-color-primary">star_border</i><i class="icon material-icons text-color-primary">star_border</i>'
+        break;
+      case 3:
+	    textStars = '<i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star_border</i><i class="icon material-icons text-color-primary">star_border</i>'
+        break;
+      case 4:
+	    textStars = '<i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star_border</i>'
+        break;
+      case 5:
+	    textStars = '<i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i><i class="icon material-icons text-color-primary">star</i>'
+        break;
+}
+return textStars;
+};
+
 // popovers
 $$('#popupGaugeRulership').on('click', function () {
     app.popover.open('#popoverRuler', '#popupGaugeRulership', true);
@@ -281,50 +629,62 @@ $$('#popupGaugeSeason').on('click', function () {
 // sign selection
 $$('#aquariusMenuButton').on('click', function () {
     localStorage.setItem('sign', 'aquarius');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#piscesMenuButton').on('click', function () {
     localStorage.setItem('sign', 'pisces');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#ariesMenuButton').on('click', function () {
     localStorage.setItem('sign', 'aries');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#taurusMenuButton').on('click', function () {
     localStorage.setItem('sign', 'taurus');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#geminiMenuButton').on('click', function () {
-    localStorage.setItem('sign', 'gemini');	
+    localStorage.setItem('sign', 'gemini');
+	refreshZodiac();	
 	refreshSign();
 });
 $$('#cancerMenuButton').on('click', function () {
     localStorage.setItem('sign', 'cancer');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#leoMenuButton').on('click', function () {
     localStorage.setItem('sign', 'leo');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#virgoMenuButton').on('click', function () {
     localStorage.setItem('sign', 'virgo');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#libraMenuButton').on('click', function () {
     localStorage.setItem('sign', 'libra');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#scorpioMenuButton').on('click', function () {
     localStorage.setItem('sign', 'scorpio');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#saggitariusMenuButton').on('click', function () {
     localStorage.setItem('sign', 'saggitarius');
+	refreshZodiac();
 	refreshSign();
 });
 $$('#capricornMenuButton').on('click', function () {
     localStorage.setItem('sign', 'capricorn');
+	refreshZodiac();
 	refreshSign();
 });
 
@@ -346,16 +706,36 @@ var settingsPopupView = app.views.create('#settingsPopupView', {url: '/'});
 	openIn: 'sheet'
 });
 
-function refreshSign () {
-	var sign = localStorage.getItem('sign');
-	switch(sign){
-		case 'aquarius':
-		$$('#navbarTitleText').text(textAquarius);
-		$$('#readMorePopupTitle').text(textAquarius);
-		break;
-		case 'pisces':
-		$$('#navbarTitleText').text(textPisces);
-		$$('#readMorePopupTitle').text(textPisces);
-		break;
-	}
+function refreshZodiac() {
+	  app.request.post(textServer, {
+        date: getHoroDate(),
+    }, function (data) {
+        if (data) {
+			Horo = JSON.parse(data);
+			refreshSign();
+        };
+    }, function () { console.log('Error during loading horoscope') });
+	
+  app.request.post(textServer, {
+        date: getHoroTomorrowDate(),
+    }, function (data) {
+        if (data) {
+			TomorrowHoro = JSON.parse(data);
+			refreshSign();
+        };
+    }, function () { console.log('Error during loading horoscope') });	
 };
+
+function trackEvent (someEvent) {
+	mixpanel.track(someEvent);
+	flurryAnalytics.logEvent(someEvent);
+}
+
+function prepareAd(){
+	AdMob.prepareInterstitial({
+	adId: 'ca-app-pub-5186877757924020/9190888687',
+	autoShow: false,
+	isTesting: true
+	});
+}
+

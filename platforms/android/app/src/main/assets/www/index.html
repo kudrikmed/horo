@@ -13,6 +13,11 @@
   <link rel="stylesheet" href="css/app.css">
   <link rel="apple-touch-icon" href="img/f7-icon-square.png">
   <link rel="icon" href="img/f7-icon.png">
+  <!-- start Mixpanel --><script type="text/javascript">(function(c,a){if(!a.__SV){var b=window;try{var d,m,j,k=b.location,f=k.hash;d=function(a,b){return(m=a.match(RegExp(b+"=([^&]*)")))?m[1]:null};f&&d(f,"state")&&(j=JSON.parse(decodeURIComponent(d(f,"state"))),"mpeditor"===j.action&&(b.sessionStorage.setItem("_mpcehash",f),history.replaceState(j.desiredHash||"",c.title,k.pathname+k.search)))}catch(n){}var l,h;window.mixpanel=a;a._i=[];a.init=function(b,d,g){function c(b,i){var a=i.split(".");2==a.length&&(b=b[a[0]],i=a[1]);b[i]=function(){b.push([i].concat(Array.prototype.slice.call(arguments,
+0)))}}var e=a;"undefined"!==typeof g?e=a[g]=[]:g="mixpanel";e.people=e.people||[];e.toString=function(b){var a="mixpanel";"mixpanel"!==g&&(a+="."+g);b||(a+=" (stub)");return a};e.people.toString=function(){return e.toString(1)+".people (stub)"};l="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+for(h=0;h<l.length;h++)c(e,l[h]);var f="set set_once union unset remove delete".split(" ");e.get_group=function(){function a(c){b[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));e.push([d,call2])}}for(var b={},d=["get_group"].concat(Array.prototype.slice.call(arguments,0)),c=0;c<f.length;c++)a(f[c]);return b};a._i.push([b,d,g])};a.__SV=1.2;b=c.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
+MIXPANEL_CUSTOM_LIB_URL:"file:"===c.location.protocol&&"//cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js";d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d)}})(document,window.mixpanel||[]);
+mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 </head>
 <body>
   <div id="app">
@@ -123,7 +128,7 @@
 				
 					<div class="row">
 					<div class="col text-align-center">
-					<div
+					<div id="gaugeHealth"
 					class="gauge gauge-init"
 					data-type="circle"
 					data-value="0.44"
@@ -134,7 +139,7 @@
 					></div>
 					</div>
 					<div class="col text-align-center">
-					<div
+					<div id="gaugeLove"
 					class="gauge gauge-init"
 					data-type="circle"
 					data-value="0.67"
@@ -145,7 +150,7 @@
 					></div>
 					</div>
 					<div class="col text-align-center">
-					<div
+					<div id="gaugeFamily"
 					class="gauge gauge-init"
 					data-type="circle"
 					data-value="0.72"
@@ -253,7 +258,7 @@
 					</div>
 					<div class="page-content">
 						<div id="historyTestDiv"></div>
-							<div class="card">
+							<div class="card" hidden="true">
 								<div class="card-header">
 									<div class="deep-blue" id="cardHeaderInfluence">Today's influences</div>					
 								</div>
@@ -332,6 +337,77 @@
 											</div>
 								</div>
 								</div>
+								<div class="card">
+								<div class="card-header deep-blue" id="cardHeaderMoreInteraction"><span id="moreTodayInteraction">Today's interactions</span></div>
+								<div class="card-content card-content-padding" id="moreInteractions">
+									<div class="list media-list">
+										<ul>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="loveIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">heart</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreLoveSigns">Leo, Leo</div>
+														<div class="item-after" id="moreLoveStars"></div>
+													</div>
+													<div class="item-text" id="moreLoveText">Love</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="friendshipIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">person_3</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreFriendshipSigns">Libra, Capricorn</div>
+														<div class="item-after" id="moreFriendshipStars"></div>
+													</div>
+													<div class="item-text" id="moreFriendshipText">Friendship</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="moneyIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">money_dollar</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreMoneySigns">Saggitarius, Pisces</div>
+														<div class="item-after" id="moreMoneyStars"></div>
+													</div>
+													<div class="item-text" id="moreMoneyText">Money</div>
+												</div>
+											</li>
+											<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="dangerIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">fire</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreDangerSigns">Aries, Cancer</div>
+														<div class="item-after" id="moreDangerStars"></div>
+													</div>
+													<div class="item-text" id="moreDangerText">Danger</div>
+												</div>
+											</li>
+												<li class="item-content">
+												<div class="item-media text-size-44 text-color-primary" id="emotionsIcon">
+													<i class="icon f7-icons text-size-44 text-color-primary">thumbs_up</i>
+												</div>                                      
+												<div class="item-inner">
+													<div class="item-title-row">
+														<div class="item-title" id="moreEmotionsSigns">Saggitarius, Pisces</div>
+														<div class="item-after" id="moreEmotionsStars"></div>
+													</div>
+													<div class="item-text" id="moreEmotionsText">Emotions</div>
+												</div>
+											</li>
+								
+										
+										</ul>
+										</div>
+								</div>
+							</div>
 									<div class="card">
 								<div class="card-header deep-blue" id="cardHeaderMoon"><span id="textMoon">Moon</span></div>
 								<div class="card-content card-content-padding" id="moreMoonContent">
@@ -341,7 +417,7 @@
 												<div class="item-media text-size-44 text-color-primary" id="moonIcon">
 													<i class="icon material-icons text-size-44 text-color-primary" style="font-size: 44px;">brightness_3</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="moonPhaseMore">
 													<div class="item-title-row">
 														<div class="item-title" id="moreCurrentMoonPhase"></div>
 													</div>
@@ -352,7 +428,7 @@
 												<div class="item-media text-size-44 text-color-primary" style="font-size: 36px;" id="moonDay">
 													
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="moonDayMore">
 													<div class="item-title-row">
 														<div class="item-title" id="moreCurrentMoonDay"></div>
 													</div>
@@ -375,74 +451,27 @@
 									What our minds conceive and believe, they achieve. We don't need evidence of this, we all apply such thinking and belief in many ways and on many levels. What you appear to want evidence of is how accurate and feasible a vision or aspiration you're nurturing is. You want to know if the vision or outcome to a scenario or plan close to your heart is the right one you should be focusing on and investing belief in. The sky insists your belief holds the answer to that question.				
 								</div>
 							</div>
-							<div class="card">
-								<div class="card-header deep-blue" id="cardHeaderMoreInteraction"><span id="moreTodayInteraction">Today's interactions</span></div>
-								<div class="card-content card-content-padding" id="moreTomorrowHoroContent">
-									<div class="list media-list">
-										<ul>
-											<li class="item-content">
-												<div class="item-media text-size-44 text-color-primary" id="loveIcon">
-													<i class="icon f7-icons text-size-44 text-color-primary">heart</i>
-												</div>                                      
-												<div class="item-inner">
-													<div class="item-title-row">
-														<div class="item-title" id="moreLoveSigns">Leo, Leo</div>
-													</div>
-													<div class="item-text" id="moreLoveText">Love</div>
-												</div>
-											</li>
-											<li class="item-content">
-												<div class="item-media text-size-44 text-color-primary" id="friendshipIcon">
-													<i class="icon f7-icons text-size-44 text-color-primary">person_3</i>
-												</div>                                      
-												<div class="item-inner">
-													<div class="item-title-row">
-														<div class="item-title" id="moreFriendshipSigns">Libra, Capricorn</div>
-													</div>
-													<div class="item-text" id="moreFriendshipText">Friendship</div>
-												</div>
-											</li>
-											<li class="item-content">
-												<div class="item-media text-size-44 text-color-primary" id="moneyIcon">
-													<i class="icon f7-icons text-size-44 text-color-primary">money_dollar</i>
-												</div>                                      
-												<div class="item-inner">
-													<div class="item-title-row">
-														<div class="item-title" id="moreMoneySigns">Saggitarius, Pisces</div>
-													</div>
-													<div class="item-text" id="moreMoneyText">Money</div>
-												</div>
-											</li>
-											<li class="item-content">
-												<div class="item-media text-size-44 text-color-primary" id="dangerIcon">
-													<i class="icon f7-icons text-size-44 text-color-primary">fire</i>
-												</div>                                      
-												<div class="item-inner">
-													<div class="item-title-row">
-														<div class="item-title" id="moreDangerSigns">Aries, Cancer</div>
-													</div>
-													<div class="item-text" id="moreDangerText">Danger</div>
-												</div>
-											</li>
-												<li class="item-content">
-												<div class="item-media text-size-44 text-color-primary" id="emotionsIcon">
-													<i class="icon f7-icons text-size-44 text-color-primary">thumbs_up</i>
-												</div>                                      
-												<div class="item-inner">
-													<div class="item-title-row">
-														<div class="item-title" id="moreEmotionsSigns">Saggitarius, Pisces</div>
-													</div>
-													<div class="item-text" id="moreEmotionsText">Emotions</div>
-												</div>
-											</li>
-								
-										
-										</ul>
-										</div>
-								</div>
-							</div>
+							
 					</div>
 				</div>
+			</div>
+		</div>
+		
+		<div class="popover popover-about" id="popoverMoonPhase">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverMoonPhase"></p>
+					<p id="textPopoverMoonPhaseAbout"></p>
+					</div>
+			</div>
+		</div>
+		
+		<div class="popover popover-about" id="popoverMoonDay">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverMoonDay"></p>
+					<p id="textPopoverMoonDayAbout"></p>
+					</div>
 			</div>
 		</div>
 		
@@ -499,6 +528,7 @@
   <script src="cordova.js"></script>
   <script src="js/framework7.bundle.min.js"></script>
   <script src="js/routes.js"></script>
+  <script src="js/refreshSign.js"></script>
   <script src="js/app.js"></script>
   <script src="js/language.js"></script>
 </body>

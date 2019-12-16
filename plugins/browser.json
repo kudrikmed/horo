@@ -9,7 +9,40 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-flurryanalytics": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-admobpro": {
+      "ADMOB_APP_ID": "ca-app-pub-5186877757924020~1720905856",
+      "PLAY_SERVICES_VERSION": "16.0.0",
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-apprate": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.astropro.horo"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-cocoapod-support": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-extension": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    }
+  }
 }
