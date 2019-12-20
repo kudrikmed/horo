@@ -26,6 +26,9 @@
     },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.astropro.horo"
     }
   },
   "dependent_plugins": {
@@ -42,6 +45,12 @@
       "PACKAGE_NAME": "com.astropro.horo"
     },
     "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-badge": {
       "PACKAGE_NAME": "com.astropro.horo"
     }
   }

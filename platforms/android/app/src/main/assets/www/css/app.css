@@ -113,6 +113,11 @@
 .text-size-44 {
     font-size: 44px;
 }
+
+.text-size-14 {
+    font-size: 14px;
+}
+
 .with-background {
 	/* background-color: #cfdaec; */
 	background-image: url(../images/skygiftransparent.gif);

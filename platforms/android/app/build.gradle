@@ -100,6 +100,8 @@ ext {
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "../cordova-plugin-flurryanalytics/horo-plugin.gradle"
 apply from: "../cordova-plugin-extension/horo-rjfun-libs.gradle"
+apply from: "../cordova-plugin-badge/horo-badge.gradle"
+apply from: "../cordova-plugin-local-notification/horo-localnotification.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -298,6 +300,7 @@ dependencies {
     implementation "com.flurry.android:analytics:6+"
     implementation "com.google.android.gms:play-services-ads:16.0.0"
     implementation "com.android.support:support-v4:24.1.1+"
+    implementation "com.android.support:support-v4:26.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 

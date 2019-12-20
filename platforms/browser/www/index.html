@@ -346,9 +346,10 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" id="loveIcon">
 													<i class="icon f7-icons text-size-44 text-color-primary">heart</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="getLoveInfo">
 													<div class="item-title-row">
 														<div class="item-title" id="moreLoveSigns">Leo, Leo</div>
+														<div class="item-after" id="moreLoveStars"></div>
 													</div>
 													<div class="item-text" id="moreLoveText">Love</div>
 												</div>
@@ -357,9 +358,10 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" id="friendshipIcon">
 													<i class="icon f7-icons text-size-44 text-color-primary">person_3</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="getFriendshipInfo">
 													<div class="item-title-row">
 														<div class="item-title" id="moreFriendshipSigns">Libra, Capricorn</div>
+														<div class="item-after" id="moreFriendshipStars"></div>
 													</div>
 													<div class="item-text" id="moreFriendshipText">Friendship</div>
 												</div>
@@ -368,9 +370,10 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" id="moneyIcon">
 													<i class="icon f7-icons text-size-44 text-color-primary">money_dollar</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="getMoneyInfo">
 													<div class="item-title-row">
 														<div class="item-title" id="moreMoneySigns">Saggitarius, Pisces</div>
+														<div class="item-after" id="moreMoneyStars"></div>
 													</div>
 													<div class="item-text" id="moreMoneyText">Money</div>
 												</div>
@@ -379,9 +382,10 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" id="dangerIcon">
 													<i class="icon f7-icons text-size-44 text-color-primary">fire</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="getDangerInfo">
 													<div class="item-title-row">
 														<div class="item-title" id="moreDangerSigns">Aries, Cancer</div>
+														<div class="item-after" id="moreDangerStars"></div>
 													</div>
 													<div class="item-text" id="moreDangerText">Danger</div>
 												</div>
@@ -390,9 +394,10 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" id="emotionsIcon">
 													<i class="icon f7-icons text-size-44 text-color-primary">thumbs_up</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="getEmotionsInfo">
 													<div class="item-title-row">
 														<div class="item-title" id="moreEmotionsSigns">Saggitarius, Pisces</div>
+														<div class="item-after" id="moreEmotionsStars"></div>
 													</div>
 													<div class="item-text" id="moreEmotionsText">Emotions</div>
 												</div>
@@ -412,7 +417,7 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" id="moonIcon">
 													<i class="icon material-icons text-size-44 text-color-primary" style="font-size: 44px;">brightness_3</i>
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="moonPhaseMore">
 													<div class="item-title-row">
 														<div class="item-title" id="moreCurrentMoonPhase"></div>
 													</div>
@@ -423,7 +428,7 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 												<div class="item-media text-size-44 text-color-primary" style="font-size: 36px;" id="moonDay">
 													
 												</div>                                      
-												<div class="item-inner">
+												<div class="item-inner item-link" id="moonDayMore">
 													<div class="item-title-row">
 														<div class="item-title" id="moreCurrentMoonDay"></div>
 													</div>
@@ -449,6 +454,69 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							
 					</div>
 				</div>
+			</div>
+		</div>
+		
+		<div class="popover popover-about" id="popoverMoonPhase">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverMoonPhase"></p>
+					<p id="textPopoverMoonPhaseAbout"></p>
+					</div>
+			</div>
+		</div>
+		
+		<div class="popover popover-about" id="popoverMoonDay">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverMoonDay"></p>
+					<p id="textPopoverMoonDayAbout"></p>
+					</div>
+			</div>
+		</div>
+
+		<div class="popover popover-about" id="popoverLoveInfo">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverLove"></p>
+					<p id="textPopoverLoveAbout"></p>
+					</div>
+			</div>
+		</div>
+
+		<div class="popover popover-about" id="popoverFriendshipInfo">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverFriendship"></p>
+					<p id="textPopoverFriendshipAbout"></p>
+					</div>
+			</div>
+		</div>
+
+		<div class="popover popover-about" id="popoverMoneyInfo">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverMoney"></p>
+					<p id="textPopoverMoneyAbout"></p>
+					</div>
+			</div>
+		</div>
+		
+		<div class="popover popover-about" id="popoverDangerInfo">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverDanger"></p>
+					<p id="textPopoverDangerAbout"></p>
+					</div>
+			</div>
+		</div>
+
+		<div class="popover popover-about" id="popoverEmotionsInfo">
+			<div class="popover-inner">
+				<div class="block">
+					<p id="textPopoverEmotions"></p>
+					<p id="textPopoverEmotionsAbout"></p>
+					</div>
 			</div>
 		</div>
 		
@@ -505,6 +573,7 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
   <script src="cordova.js"></script>
   <script src="js/framework7.bundle.min.js"></script>
   <script src="js/routes.js"></script>
+  <script src="js/refreshSign.js"></script>
   <script src="js/app.js"></script>
   <script src="js/language.js"></script>
 </body>

@@ -6,7 +6,9 @@ var textNewMoon, textWaxingCrescentMoon, textQuarterMoon, textWaxingGibbousMoon,
 var textFamily, textLove, textHealth;
 var Signs;
 var textAppName;
-var MoonPhases, MoonDays;
+var MoonPhases, MoonDays, MoonStars, MoonConflictsTexts, MoonLoveTexts, MoonFriendshipTexts, MoonMoneyTexts, MoonEmotionsTexts;
+var textHoroForToday, textHoroForTomorrow = '';
+var textNotificationTitle;
 
 function updateLanguage() {
 	
@@ -14,6 +16,8 @@ function updateLanguage() {
 	
 	    if (currentLanguage.indexOf("ru") > -1) {
 			console.log("russian");
+			// selector
+			smartSelect.setValue('rus');
 			// app name
 			textAppName = "Гороскоп";
 			// server
@@ -57,6 +61,340 @@ function updateLanguage() {
 			'Энергетика этого периода очень гармонична, это очень чистый и светлый день. Ни в коем случае нельзя нарушать эту гармонию своими грубыми действиями. Желательно быть в хорошем настроении, контролировать свои эмоции, иметь добрые мысли и намерения. Запрещается в двадцать восьмой лунный день рубить деревья, рвать цветы, копать землю, убивать насекомых.',
 			'Это самый опасный, плохой и страшный день лунного месяца. Это время, когда в сгустившемся астральном тумане вершат свои темные дела ведьмы и колдуны. Люди в этот период ослабевают, их энергия истощается. Необходимо позаботиться о надежной защите. Следует отказаться от фальшивых и ненужных связей, избегать назойливых и пустых людей, избавляться от мрачных мыслей и беспросветной тоски. В этот день даже мысленно лучше не строить никаких планов, не начинать новых дел.',
 			'Прекрасный, полный гармонии день, в главе которого любовь и покаяние. Нет лучше момента для завершения всех начатых в этом месяце дел, некоего подведения итогов, а все новое начнете и спланируете уже в первые лунные сутки. Чтобы без помех перейти на следующий этап, отбросьте лишнее и наносное, избавьтесь от бесполезной суеты, просто успокойтесь.'
+			]
+			MoonStars = [{
+				// 1
+				love: 3, // свадьба
+				social: 2, // социум
+				business: 3, // бизнес
+				conflict: 1, // выяснение отношений
+				recreation: 3, // отдых
+				hair: 1, // стрижка волос
+				conception: 4 // зачатие
+			},
+			{
+				// 2
+				love: 2,
+				social: 1,
+				business: 5,
+				conflict: 2,
+				recreation: 2,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 3
+				love: 2,
+				social: 3,
+				business: 1,
+				conflict: 1,
+				recreation: 1,
+				hair: 1,
+				conception: 2
+			},
+			{
+				// 4
+				love: 3,
+				social: 2,
+				business: 4,
+				conflict: 1,
+				recreation: 4,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 5
+				love: 1,
+				social: 3,
+				business: 2,
+				conflict: 3,
+				recreation: 1,
+				hair: 5,
+				conception: 2
+			},
+			{
+				// 6
+				love: 5,
+				social: 5,
+				business: 4,
+				conflict: 4,
+				recreation: 3,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 7
+				love: 4,
+				social: 5,
+				business: 3,
+				conflict: 3,
+				recreation: 4,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 8
+				love: 2,
+				social: 4,
+				business: 3,
+				conflict: 1,
+				recreation: 3,
+				hair: 4,
+				conception: 4
+			},
+			{
+				// 9
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 4,
+				hair: 2,
+				conception: 1
+			},
+			{
+				// 10
+				love: 4,
+				social: 4,
+				business: 5,
+				conflict: 2,
+				recreation: 5,
+				hair: 2,
+				conception: 4
+			},
+			{
+				// 11
+				love: 4,
+				social: 3,
+				business: 2,
+				conflict: 2,
+				recreation: 5,
+				hair: 4,
+				conception: 5
+			},
+			{
+				// 12
+				love: 5,
+				social: 2,
+				business: 1,
+				conflict: 1,
+				recreation: 4,
+				hair: 2,
+				conception: 1
+			},
+			{
+				// 13
+				love: 2,
+				social: 5,
+				business: 3,
+				conflict: 1,
+				recreation: 4,
+				hair: 4,
+				conception: 1
+			},
+			{
+				// 14
+				love: 2,
+				social: 5,
+				business: 5,
+				conflict: 1,
+				recreation: 1,
+				hair: 4,
+				conception: 4
+			},
+			{
+				// 15
+				love: 1,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 4,
+				hair: 1,
+				conception: 1
+			},
+			{
+				// 16
+				love: 5,
+				social: 5,
+				business: 3,
+				conflict: 1,
+				recreation: 5,
+				hair: 2,
+				conception: 3
+			},
+			{
+				// 17
+				love: 5,
+				social: 5,
+				business: 3,
+				conflict: 1,
+				recreation: 5,
+				hair: 1,
+				conception: 4
+			},
+			{
+				// 18
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 3,
+				hair: 2,
+				conception: 2
+			},
+			{
+				// 19
+				love: 1,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 3,
+				hair: 5,
+				conception: 2
+			},
+			{
+				// 20
+				love: 1,
+				social: 5,
+				business: 5,
+				conflict: 1,
+				recreation: 2,
+				hair: 2,
+				conception: 1
+			},
+			{
+				// 21
+				love: 4,
+				social: 5,
+				business: 5,
+				conflict: 1,
+				recreation: 5,
+				hair: 4,
+				conception: 5
+			},
+			{
+				// 22
+				love: 2,
+				social: 4,
+				business: 3,
+				conflict: 1,
+				recreation: 3,
+				hair: 5,
+				conception: 3
+			},
+			{
+				// 23
+				love: 1,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 1,
+				hair: 1,
+				conception: 1
+			},
+			{
+				// 24
+				love: 2,
+				social: 4,
+				business: 5,
+				conflict: 1,
+				recreation: 1,
+				hair: 1,
+				conception: 4
+			},
+			{
+				// 25
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 5,
+				hair: 2,
+				conception: 4
+			},
+			{
+				// 26
+				love: 2,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 2,
+				hair: 4,
+				conception: 4
+			},
+			{
+				// 27
+				love: 4,
+				social: 4,
+				business: 5,
+				conflict: 2,
+				recreation: 4,
+				hair: 4,
+				conception: 2
+			},
+			{
+				// 28
+				love: 2,
+				social: 4,
+				business: 5,
+				conflict: 2,
+				recreation: 4,
+				hair: 4,
+				conception: 5
+			},
+			{
+				// 29
+				love: 2,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 4,
+				hair: 1,
+				conception: 1
+			},
+			{
+				// 30
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 5,
+				hair: 1,
+				conception: 4
+			}]
+			MoonLoveTexts = [
+			'',
+			'',
+			'',
+			'',
+			''
+			]
+			MoonFriendshipTexts = [
+			'Этот лунный день плох для общения с друзьями, нельзя злиться, следует избегать конфликтов и вспышек эмоций.',
+			'Этот день лучше провести в уединении, работа в коллективе не рекомендуется.',
+			'Будьте внимательны к своим эмоциям при контактах с людьми, возможны мелкие ссоры с близкими.',
+			'Хороший день для общения и совместной работы. Однако, в беседе не следует давить на собеседника, недопустимы грубые шутки и цинизм.',
+			'Сегодня лучшее время, чтобы получить удовольствие от общения с друзьями.'
+			]
+			MoonMoneyTexts = [
+			'В этот день лучше не рисковать деньгами, поскольку возможны потери. И вообще, в этот день лучше не иметь никаких дел с финансами.',
+			'Сегодня возможны потери денег, поэтому важные дела лучше перенести на более благоприятный день',
+			'Делами заниматься можно, очень благоприятное время для проведения переговоров, собеседований, конференций. Также можно проводить не очень крупные финансовые операции.',
+			'Это хороший день для деловых контактов. Также это благоприятный день для финансовых операций.',
+			'Удачный день для работы и бизнеса. Можно проводить любые финансовые операции.'
+			]
+			MoonConflictsTexts = [
+			'Споры сегодня не приведут ни к чему хорошему, если в этот день дать выход негативным эмоциям, они могут надолго испортить настроение.',
+			'Постарайтесь перенести любые сложные разговоры на более подходящий день.',
+			'Можно подискутировать о жизненных принципах.',
+			'В этот день можно вступить в небольшую полемику.',
+			'']
+			MoonEmotionsTexts = [
+			'В этот день отдыхать не следует, необходима активность.',
+			'В этот день лучше проявить больше активности.',
+			'Сегодня нейтральный день для отдыха.',
+			'В этот день можно позволить себе отдохнуть.',
+			'Очень хороший день для отдыха, особенно отдыха активного.'
 			]
 			// vars
 			textAquarius = 'Водолей';
@@ -120,7 +458,7 @@ function updateLanguage() {
 			$$('#moreLoveText').text('Любовь');
 			$$('#moreFriendshipText').text('Дружба');
 			$$('#moreMoneyText').text('Деньги');
-			$$('#moreDangerText').text('Опасность');
+			$$('#moreDangerText').text('Конфликты');
 			$$('#moreEmotionsText').text('Радость');
 			textTodayIs = "Сегодня ";
 			textMoonDay = " лунные сутки";
@@ -138,13 +476,19 @@ function updateLanguage() {
 			textWaningGibbousMoon = 'Ранняя убывающая Луна';
 			textLastQuarterMoon = 'Убывющая Луна';
 			textWaningCrescentMoon = 'Зрелая убывающая Луна';
-			
+			// share
+			textHoroForToday = "Гороскоп на сегодня";
+			textHoroForTomorrow = "Гороскоп на завтра";
+			// notifications
+			textNotificationTitle = "Ваш гороскоп готов";
 			
 			
 			
 		};
 		if (currentLanguage.indexOf("en") > -1) {
 			console.log("english");
+			// selector
+			smartSelect.setValue('eng');
 			// app name
 			textAppName = "Horoscope";
 			// server
@@ -153,6 +497,306 @@ function updateLanguage() {
 			Signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Saggitarius', 'Capricorn'];
 			MoonPhases = ['', '', '', '', '', ''];
 			MoonDays = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+			MoonStars = [{
+				// 1
+				love: 3, // свадьба
+				social: 2, // социум
+				business: 3, // бизнес
+				conflict: 1, // выяснение отношений
+				recreation: 3, // отдых
+				hair: 1, // стрижка волос
+				conception: 4 // зачатие
+			},
+			{
+				// 2
+				love: 2,
+				social: 1,
+				business: 5,
+				conflict: 2,
+				recreation: 2,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 3
+				love: 2,
+				social: 3,
+				business: 1,
+				conflict: 1,
+				recreation: 1,
+				hair: 1,
+				conception: 2
+			},
+			{
+				// 4
+				love: 3,
+				social: 2,
+				business: 4,
+				conflict: 1,
+				recreation: 4,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 5
+				love: 1,
+				social: 3,
+				business: 2,
+				conflict: 3,
+				recreation: 1,
+				hair: 5,
+				conception: 2
+			},
+			{
+				// 6
+				love: 5,
+				social: 5,
+				business: 4,
+				conflict: 4,
+				recreation: 3,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 7
+				love: 4,
+				social: 5,
+				business: 3,
+				conflict: 3,
+				recreation: 4,
+				hair: 2,
+				conception: 5
+			},
+			{
+				// 8
+				love: 2,
+				social: 4,
+				business: 3,
+				conflict: 1,
+				recreation: 3,
+				hair: 4,
+				conception: 4
+			},
+			{
+				// 9
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 4,
+				hair: 2,
+				conception: 1
+			},
+			{
+				// 10
+				love: 4,
+				social: 4,
+				business: 5,
+				conflict: 2,
+				recreation: 5,
+				hair: 2,
+				conception: 4
+			},
+			{
+				// 11
+				love: 4,
+				social: 3,
+				business: 2,
+				conflict: 2,
+				recreation: 5,
+				hair: 4,
+				conception: 5
+			},
+			{
+				// 12
+				love: 5,
+				social: 2,
+				business: 1,
+				conflict: 1,
+				recreation: 4,
+				hair: 2,
+				conception: 1
+			},
+			{
+				// 13
+				love: 2,
+				social: 5,
+				business: 3,
+				conflict: 1,
+				recreation: 4,
+				hair: 4,
+				conception: 1
+			},
+			{
+				// 14
+				love: 2,
+				social: 5,
+				business: 5,
+				conflict: 1,
+				recreation: 1,
+				hair: 4,
+				conception: 4
+			},
+			{
+				// 15
+				love: 1,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 4,
+				hair: 1,
+				conception: 1
+			},
+			{
+				// 16
+				love: 5,
+				social: 5,
+				business: 3,
+				conflict: 1,
+				recreation: 5,
+				hair: 2,
+				conception: 3
+			},
+			{
+				// 17
+				love: 5,
+				social: 5,
+				business: 3,
+				conflict: 1,
+				recreation: 5,
+				hair: 1,
+				conception: 4
+			},
+			{
+				// 18
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 3,
+				hair: 2,
+				conception: 2
+			},
+			{
+				// 19
+				love: 1,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 3,
+				hair: 5,
+				conception: 2
+			},
+			{
+				// 20
+				love: 1,
+				social: 5,
+				business: 5,
+				conflict: 1,
+				recreation: 2,
+				hair: 2,
+				conception: 1
+			},
+			{
+				// 21
+				love: 4,
+				social: 5,
+				business: 5,
+				conflict: 1,
+				recreation: 5,
+				hair: 4,
+				conception: 5
+			},
+			{
+				// 22
+				love: 2,
+				social: 4,
+				business: 3,
+				conflict: 1,
+				recreation: 3,
+				hair: 5,
+				conception: 3
+			},
+			{
+				// 23
+				love: 1,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 1,
+				hair: 1,
+				conception: 1
+			},
+			{
+				// 24
+				love: 2,
+				social: 4,
+				business: 5,
+				conflict: 1,
+				recreation: 1,
+				hair: 1,
+				conception: 4
+			},
+			{
+				// 25
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 5,
+				hair: 2,
+				conception: 4
+			},
+			{
+				// 26
+				love: 2,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 2,
+				hair: 4,
+				conception: 4
+			},
+			{
+				// 27
+				love: 4,
+				social: 4,
+				business: 5,
+				conflict: 2,
+				recreation: 4,
+				hair: 4,
+				conception: 2
+			},
+			{
+				// 28
+				love: 2,
+				social: 4,
+				business: 5,
+				conflict: 2,
+				recreation: 4,
+				hair: 4,
+				conception: 5
+			},
+			{
+				// 29
+				love: 2,
+				social: 1,
+				business: 1,
+				conflict: 1,
+				recreation: 4,
+				hair: 1,
+				conception: 1
+			},
+			{
+				// 30
+				love: 2,
+				social: 2,
+				business: 2,
+				conflict: 1,
+				recreation: 5,
+				hair: 1,
+				conception: 4
+			}]
 			// vars
 			textAquarius = 'Aquarius';
 			textPisces = 'Pisces';
@@ -215,7 +859,7 @@ function updateLanguage() {
 			$$('#moreLoveText').text('Love');
 			$$('#moreFriendshipText').text('Friendship');
 			$$('#moreMoneyText').text('Money');
-			$$('#moreDangerText').text('Danger');
+			$$('#moreDangerText').text('Conflicts');
 			$$('#moreEmotionsText').text('Joy');
 			textTodayIs = "Today is ";
 			textMoonDay = " moon day";
@@ -233,6 +877,11 @@ function updateLanguage() {
 			textWaningGibbousMoon = 'Waning gibbous Moon';
 			textLastQuarterMoon = 'Last quarter Moon';
 			textWaningCrescentMoon = 'Waning crescent Moon';
+			// share
+			textHoroForToday = "Astrology forecast for today";
+			textHoroForTomorrow = "Astrology forecast for tomorrow";
+			// notifications
+			textNotificationTitle = "Astrology forecast is ready";
 		};
 		refreshZodiac();
 		refreshSign();

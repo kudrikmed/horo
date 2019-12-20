@@ -13,6 +13,7 @@ ads https://github.com/floatinghotpot/cordova-admob-pro
 flurry https://github.com/blakgeek/cordova-plugin-flurryanalytics
 share https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
 rate https://github.com/pushandplay/cordova-plugin-apprate
+notifications https://github.com/katzer/cordova-plugin-local-notifications
 */
 
 /*
@@ -150,6 +151,12 @@ if (localStorage.getItem('firstStart') != 'no') {
 });
 	trackEvent("App first start");
 	
+	cordova.plugins.notification.local.schedule({
+    title: textNotificationTitle,
+	foreground: true,
+    trigger: { every: { hour: 9, minute: 0 } }
+});
+	
 	app.panel.open('left', true);
     localStorage.setItem('firstStart', 'no');
 }
@@ -278,7 +285,17 @@ $$('#languageMenuButton').on('click', function () {
 $$('#textSaveAndExitButton').on('click', function () {
 	var language = smartSelect.getValue();
 	localStorage.setItem('language', language);
-	updateLanguage();	
+	updateLanguage();
+	
+	var time = document.getElementById("timePicker").value;
+	var hours = time.split(":")[0];
+    var minutes = time.split(":")[1];
+	
+	cordova.plugins.notification.local.schedule({
+    title: textNotificationTitle,
+	foreground: true,
+    trigger: { count: 1, every: { hour: parseInt(hours), minute: parseInt(minutes) } }
+});
     app.popup.close('#settingsPopup', true);
 });
 
@@ -292,9 +309,10 @@ $$('#shareMainCardHeader').on('click', function () {
 	trackEvent('Main screen share pressed');
 	
 	var textMessageShareResult = $$('#horocontent').text();
+	var fullShareMessage = textHoroForToday + ". " + $$('#navbarTitleText').text() + ". " + textMessageShareResult;
 	
 	var shareResult = {
-    message: textMessageShareResult, // not supported on some apps (Facebook, Instagram)
+    message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
     url: 'https://www.synrunning.com'
@@ -318,9 +336,10 @@ $$('#moreShareToday').on('click', function () {
 	trackEvent('More share today pressed');
 	
 	var textMessageShareResult = $$('#moreTodayHoroContent').text();
+	var fullShareMessage = textHoroForToday + ". " + $$('#readMorePopupTitle').text() + ". " + textMessageShareResult;
 	
 	var shareResult = {
-    message: textMessageShareResult, // not supported on some apps (Facebook, Instagram)
+    message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
     url: 'https://www.synrunning.com'
@@ -344,9 +363,10 @@ $$('#moreShareTomorrow').on('click', function () {
 	trackEvent('More tomorrow share pressed');
 	
 	var textMessageShareResult = $$('#moreTomorrowHoroContent').text();
+	var fullShareMessage = textHoroForTomorrow + ". " + $$('#readMorePopupTitle').text() + ". " + textMessageShareResult;
 	
 	var shareResult = {
-    message: textMessageShareResult, // not supported on some apps (Facebook, Instagram)
+    message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
     url: 'https://www.synrunning.com'
@@ -367,7 +387,7 @@ $$('#moreShareTomorrow').on('click', function () {
 
 $$('#ratingMenuButton').on('click', function () {
 	AppRate.preferences.useLanguage = navigator.language;
-	trackEvent('Rate app buutin pressed');
+	trackEvent('Rate app buttin pressed');
 	AppRate.promptForRating();
 	});
 	
@@ -414,12 +434,58 @@ $$('#moonDayMore').on('click', function () {
 	var currentMoonDay = $$('#moreCurrentMoonDay').text();
 	$$('#textPopoverMoonDay').text(currentMoonDay);
 	var moonDay = parseInt($$('#moonDay').text()) - 1;
-	console.log(moonDay);
-	console.log(MoonDays[moonDay]);
 	$$('#textPopoverMoonDayAbout').text(MoonDays[moonDay]);
-	app.popover.open('#popoverMoonDay', '#moreCurrentMoonDay', true);
-
+	app.popover.open('#popoverMoonDay', '#moonDayMore', true);
 });
+
+$$('#getLoveInfo').on('click', function () {
+	trackEvent('Love info');	
+	$$('#textPopoverLoveAbout').text(MoonConflictsTexts[MoonStars[getMoonDay() - 1].love - 1]);
+	$$('#textPopoverLove').text($$('#moreLoveText').text() + ": " + $$('#moreLoveSigns').text());
+	app.popover.open('#popoverLoveInfo', '#getLoveInfo', true);
+});
+
+$$('#getFriendshipInfo').on('click', function () {
+	trackEvent('Friendship info');	
+	$$('#textPopoverFriendshipAbout').text(MoonFriendshipTexts[MoonStars[getMoonDay() - 1].social - 1]);
+	$$('#textPopoverFriendship').text($$('#moreFriendshipText').text() + ": " + $$('#moreFriendshipSigns').text());
+	app.popover.open('#popoverFriendshipInfo', '#getFriendshipInfo', true);
+});
+
+$$('#getMoneyInfo').on('click', function () {
+	trackEvent('Money info');	
+	$$('#textPopoverMoneyAbout').text(MoonMoneyTexts[MoonStars[getMoonDay() - 1].business - 1]);
+	$$('#textPopoverMoney').text($$('#moreMoneyText').text() + ": " + $$('#moreMoneySigns').text());
+	app.popover.open('#popoverMoneyInfo', '#getMoneyInfo', true);
+});
+
+$$('#getDangerInfo').on('click', function () {
+	trackEvent('Danger info');	
+	$$('#textPopoverDangerAbout').text(MoonConflictsTexts[MoonStars[getMoonDay() - 1].conflict - 1]);
+	$$('#textPopoverDanger').text($$('#moreDangerText').text() + ": " + $$('#moreDangerSigns').text());
+	app.popover.open('#popoverDangerInfo', '#getDangerInfo', true);
+});
+
+$$('#getEmotionsInfo').on('click', function () {
+	trackEvent('Emotions info');	
+	$$('#textPopoverEmotionsAbout').text(MoonEmotionsTexts[MoonStars[getMoonDay() - 1].recreation - 1]);
+	$$('#textPopoverEmotions').text($$('#moreEmotionsText').text() + ": " + $$('#moreEmotionsSigns').text());
+	app.popover.open('#popoverEmotionsInfo', '#getEmotionsInfo', true);
+});
+
+function getMoonDay ()
+{
+	var currentTime = new Date();
+	// returns the month (from 0 to 11)
+	var month = currentTime.getMonth() + 1;
+	// returns the day of the month (from 1 to 31)
+	var day = currentTime.getDate();
+	// returns the year (four digits)
+	var year = currentTime.getFullYear();
+	var currentMoonDay = moonDate(day, month, year);
+	
+	return currentMoonDay;
+}
 
 $$('#readMoreFABButton').on('click', function () {
 	
@@ -484,11 +550,6 @@ $$('#readMoreFABButton').on('click', function () {
 		labelText: 'season'
 	});
 
-document.getElementById('moreLoveStars').innerHTML = putStars(1);
-document.getElementById('moreFriendshipStars').innerHTML = putStars(2);
-document.getElementById('moreMoneyStars').innerHTML = putStars(3);
-document.getElementById('moreDangerStars').innerHTML = putStars(4);
-document.getElementById('moreEmotionsStars').innerHTML = putStars(5);
 
 trackEvent('FAB pressed');
 	// Return today's date and time
@@ -503,9 +564,17 @@ var day = currentTime.getDate();
 // returns the year (four digits)
 var year = currentTime.getFullYear();
 
+var currentMoonDay = moonDate(day, month, year);
+
 $$('#moreCurrentMoonPhase').text(Moon.phase(year, month, day));
-$$('#moonDay').text(moonDate(day, month, year));
-$$('#moreCurrentMoonDay').text(textTodayIs + moonDate(day, month, year) + textMoonDay);
+$$('#moonDay').text(currentMoonDay);
+$$('#moreCurrentMoonDay').text(textTodayIs + currentMoonDay + textMoonDay);
+
+document.getElementById('moreLoveStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].love);
+document.getElementById('moreFriendshipStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].social);
+document.getElementById('moreMoneyStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].business);
+document.getElementById('moreDangerStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].conflict);
+document.getElementById('moreEmotionsStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].recreation);
 
     app.popup.open('#readMorePopup', true);
 });
