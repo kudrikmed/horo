@@ -131,6 +131,8 @@ if (localStorage.getItem('firstStart') != 'no') {
 	
 	localStorage.setItem('language', navigator.language);
 	localStorage.setItem('sign', 'aries');
+	localStorage.setItem('notifications', true);
+	localStorage.setItem('notificationTime', '9:00');
 	updateLanguage();
 	refreshZodiac();
 	refreshSign();
@@ -151,11 +153,7 @@ if (localStorage.getItem('firstStart') != 'no') {
 });
 	trackEvent("App first start");
 	
-	cordova.plugins.notification.local.schedule({
-    title: textNotificationTitle,
-	foreground: true,
-    trigger: { every: { hour: 9, minute: 0 } }
-});
+setNotifications();
 	
 	app.panel.open('left', true);
     localStorage.setItem('firstStart', 'no');
@@ -178,6 +176,16 @@ else
 	trackEvent('App started');
 }
 
+if (localStorage.getItem('notificationTime'))
+{
+	document.getElementById('timePicker').value = localStorage.getItem('notificationTime');
+}
+else
+{
+	document.getElementById('timePicker').value = "9:00";
+}
+
+setNotifications();
 prepareAd();
 
 AppRate.preferences = {
@@ -254,18 +262,27 @@ gaugeLove.update({
 	});
 	
 document.getElementById("notificationToggleCheckbox").addEventListener("click", function(){
-	console.log("Toggle pressed!")
 	if (this.checked){
 	document.getElementById("notificationTimeElement").classList.remove('disabled');	
 	$$("timePicker").prop({
 		disabled: true
 	});
+	setNotifications();
+	var notificationTime = document.getElementById("timePicker").value;
+	localStorage.setItem('notificationTime', notificationTime);
+	localStorage.setItem('notifications', true);
+	console.log("notifications accepted");
+
 }
 else{
 	document.getElementById("notificationTimeElement").classList.add('disabled');
 	$$("timePicker").prop({
 	disabled: false
 	});
+	localStorage.setItem('notifications', false);
+	cordova.plugins.notification.local.cancelAll(function() {
+    console.log("notifications blocked");
+	}, this);
 }
 }, false);
 
@@ -286,7 +303,13 @@ $$('#textSaveAndExitButton').on('click', function () {
 	var language = smartSelect.getValue();
 	localStorage.setItem('language', language);
 	updateLanguage();
+	setNotifications();
+    app.popup.close('#settingsPopup', true);
+});
+
+function setNotifications() {
 	
+	if (localStorage.getItem('notifications') == true){
 	var time = document.getElementById("timePicker").value;
 	var hours = time.split(":")[0];
     var minutes = time.split(":")[1];
@@ -296,8 +319,8 @@ $$('#textSaveAndExitButton').on('click', function () {
 	foreground: true,
     trigger: { count: 1, every: { hour: parseInt(hours), minute: parseInt(minutes) } }
 });
-    app.popup.close('#settingsPopup', true);
-});
+	}
+}
 
 $$('#readMorePopup').on('popup:close', function () {
 	prepareAd();
@@ -440,7 +463,7 @@ $$('#moonDayMore').on('click', function () {
 
 $$('#getLoveInfo').on('click', function () {
 	trackEvent('Love info');	
-	$$('#textPopoverLoveAbout').text(MoonConflictsTexts[MoonStars[getMoonDay() - 1].love - 1]);
+	$$('#textPopoverLoveAbout').text(MoonLoveTexts[MoonStars[getMoonDay() - 1].love - 1]);
 	$$('#textPopoverLove').text($$('#moreLoveText').text() + ": " + $$('#moreLoveSigns').text());
 	app.popover.open('#popoverLoveInfo', '#getLoveInfo', true);
 });
