@@ -1,6 +1,6 @@
 var currentLanguage = localStorage.getItem('language');
 var textServer = '';
-var textAquarius, textPisces, textAries, textTaurus, textGemini, textCancer, textLeo, textVirgo, textLibra, textScorpio, textSaggitarius, textCapricorn = '';
+var textAquarius, textPisces, textAries, textTaurus, textGemini, textCancer, textLeo, textVirgo, textLibra, textScorpio, textSagittarius, textCapricorn = '';
 var textTodayIs, textMoonDay = '';
 var textNewMoon, textWaxingCrescentMoon, textQuarterMoon, textWaxingGibbousMoon, textFullMoon, textWaningGibbousMoon, textLastQuarterMoon, textWaningCrescentMoon = '';
 var textFamily, textLove, textHealth;
@@ -408,7 +408,7 @@ function updateLanguage() {
 			textVirgo = 'Дева';
 			textLibra = 'Весы';
 			textScorpio = 'Скорпион';
-			textSaggitarius = 'Стрелец';
+			textSagittarius = 'Стрелец';
 			textCapricorn = 'Козерог';
 			textFamily = 'Семья';
 			textLove = 'Любовь';
@@ -427,7 +427,7 @@ function updateLanguage() {
 			$$('#textVirgo').text('Дева');
 			$$('#textLibra').text('Весы');
 			$$('#textScorpio').text('Скорпион');
-			$$('#textSaggitarius').text('Стрелец');
+			$$('#textSagittarius').text('Стрелец');
 			$$('#textCapricorn').text('Козерог');
 			// right panel
 			$$('#menuLabelSettings').text('Настройки');
@@ -495,7 +495,7 @@ function updateLanguage() {
 			// server
 			textServer = 'https://astrohoro.site/service/getEng.php';
 			// arrays
-			Signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Saggitarius', 'Capricorn'];
+			Signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 			MoonPhases = [
 			'A new moon affects a person for several days. During this period, people feel depressed, nervous exhaustion, which is often accompanied by headaches. During a new moon, fluid is more quickly eliminated from the body, metabolism is accelerated. During this period, mental disorders, manifestations of various phobias and mania are more often observed. It is not recommended to start something new, meetings with suspicious people are extremely undesirable.',
 			'The first quarter - phase - corresponds to the spring according to the solar calendar and marks the beginning of everything new. During this phase, the human brain becomes very active. All plans outlined during this period will be extremely clear, thought out and will certainly bring good luck. The general activity and desire to create is increasing, but you should not be in a hurry - it’s better to think it over, calculate it and, slowly, begin to implement the plan.',
@@ -879,7 +879,7 @@ function updateLanguage() {
 			textVirgo = 'Virgo';
 			textLibra = 'Libra';
 			textScorpio = 'Scorpio';
-			textSaggitarius = 'Saggitarius';
+			textSagittarius = 'Sagittarius';
 			textCapricorn = 'Capricorn';
 			textFamily = 'Family';
 			textLove = 'Love';
@@ -898,7 +898,7 @@ function updateLanguage() {
 			$$('#textVirgo').text('Virgo');
 			$$('#textLibra').text('Libra');
 			$$('#textScorpio').text('Scorpio');
-			$$('#textSaggitarius').text('Saggitarius');
+			$$('#textSagittarius').text('Sagittarius');
 			$$('#textCapricorn').text('Capricorn');
 			// right panel
 			$$('#menuLabelSettings').text('Settings');

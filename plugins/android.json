@@ -30,6 +30,9 @@
     },
     "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-appversion": {
+      "PACKAGE_NAME": "com.astropro.horo"
     }
   },
   "dependent_plugins": {

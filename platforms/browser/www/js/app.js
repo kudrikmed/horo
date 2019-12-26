@@ -4,6 +4,8 @@ https://keisan.casio.com/exec/system/1224746378
 https://codepen.io/lulunac27/pen/NRoyxE
 */
 
+// privacy policy, t&c  https://app-privacy-policy-generator.firebaseapp.com/
+
 /* moon
 https://astroonlain.ru/lunnyi-kalendar-na-kazhdyi-den
 */
@@ -13,6 +15,7 @@ ads https://github.com/floatinghotpot/cordova-admob-pro
 flurry https://github.com/blakgeek/cordova-plugin-flurryanalytics
 share https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
 rate https://github.com/pushandplay/cordova-plugin-apprate
+notifications https://github.com/katzer/cordova-plugin-local-notifications
 */
 
 /*
@@ -130,9 +133,11 @@ if (localStorage.getItem('firstStart') != 'no') {
 	
 	localStorage.setItem('language', navigator.language);
 	localStorage.setItem('sign', 'aries');
+	localStorage.setItem('notifications', 'true');
+	localStorage.setItem('notificationTime', '09:00');
+	document.getElementById('timePicker').value = "09:00";
 	updateLanguage();
 	refreshZodiac();
-	refreshSign();
 	var userID = Math.random()*10000000000000000;
 	localStorage.setItem('userID', userID);
 	
@@ -149,7 +154,6 @@ if (localStorage.getItem('firstStart') != 'no') {
     userId: userID,
 });
 	trackEvent("App first start");
-	
 	app.panel.open('left', true);
     localStorage.setItem('firstStart', 'no');
 }
@@ -169,8 +173,19 @@ else
     "$last_login": new Date()
 });
 	trackEvent('App started');
+	document.getElementById('timePicker').value = "09:00";
 }
 
+if (localStorage.getItem('notificationTime'))
+{
+	document.getElementById('timePicker').value = localStorage.getItem('notificationTime');
+}
+else
+{
+	document.getElementById('timePicker').value = "09:00";
+}
+
+//setNotifications();
 prepareAd();
 
 AppRate.preferences = {
@@ -180,7 +195,7 @@ AppRate.preferences = {
   inAppReview: true,
   storeAppURL: {
     ios: '<my_app_id>',
-    android: 'https://play.google.com/store/apps/details?id=com.synfitness.synrun',
+    android: 'https://play.google.com/store/apps/details?id=com.astropro.horo',
     windows: 'ms-windows-store://pdp/?ProductId=<the apps Store ID>',
     blackberry: 'appworld://content/[App Id]/',
     windows8: 'ms-windows-store:Review?name=<the Package Family Name of the application>'
@@ -247,18 +262,27 @@ gaugeLove.update({
 	});
 	
 document.getElementById("notificationToggleCheckbox").addEventListener("click", function(){
-	console.log("Toggle pressed!")
 	if (this.checked){
 	document.getElementById("notificationTimeElement").classList.remove('disabled');	
 	$$("timePicker").prop({
 		disabled: true
 	});
+	setNotifications();
+	var notificationTime = document.getElementById("timePicker").value;
+	localStorage.setItem('notificationTime', notificationTime);
+	localStorage.setItem('notifications', true);
+	console.log("notifications accepted");
+
 }
 else{
 	document.getElementById("notificationTimeElement").classList.add('disabled');
 	$$("timePicker").prop({
 	disabled: false
 	});
+	localStorage.setItem('notifications', false);
+	cordova.plugins.notification.local.cancelAll(function() {
+    console.log("notifications blocked");
+	}, this);
 }
 }, false);
 
@@ -278,9 +302,27 @@ $$('#languageMenuButton').on('click', function () {
 $$('#textSaveAndExitButton').on('click', function () {
 	var language = smartSelect.getValue();
 	localStorage.setItem('language', language);
-	updateLanguage();	
+	updateLanguage();
+	localStorage.setItem('notificationTime', document.getElementById('timePicker').value); 
+	setNotifications();
     app.popup.close('#settingsPopup', true);
 });
+
+function setNotifications() {
+	console.log("step 1");
+	console.log(localStorage.getItem('notifications'));
+	if (localStorage.getItem('notifications') == 'true'){
+	var time = document.getElementById("timePicker").value;
+	var hours = time.split(":")[0];
+    var minutes = time.split(":")[1];
+	console.log("Notification ok");
+	cordova.plugins.notification.local.schedule({
+    title: textNotificationTitle,
+	foreground: true,
+    trigger: { count: 1, every: { hour: parseInt(hours), minute: parseInt(minutes) } }
+});
+	}
+}
 
 $$('#readMorePopup').on('popup:close', function () {
 	prepareAd();
@@ -298,7 +340,7 @@ $$('#shareMainCardHeader').on('click', function () {
     message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
-    url: 'https://www.synrunning.com'
+    url: 'https://astrohoro.site'
         // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
         // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
     };
@@ -325,7 +367,7 @@ $$('#moreShareToday').on('click', function () {
     message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
-    url: 'https://www.synrunning.com'
+    url: 'https://astrohoro.site'
         // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
         // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
     };
@@ -352,7 +394,7 @@ $$('#moreShareTomorrow').on('click', function () {
     message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
-    url: 'https://www.synrunning.com'
+    url: 'https://astrohoro.site'
         // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
         // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
     };
@@ -423,7 +465,7 @@ $$('#moonDayMore').on('click', function () {
 
 $$('#getLoveInfo').on('click', function () {
 	trackEvent('Love info');	
-	$$('#textPopoverLoveAbout').text(MoonConflictsTexts[MoonStars[getMoonDay() - 1].love - 1]);
+	$$('#textPopoverLoveAbout').text(MoonLoveTexts[MoonStars[getMoonDay() - 1].love - 1]);
 	$$('#textPopoverLove').text($$('#moreLoveText').text() + ": " + $$('#moreLoveSigns').text());
 	app.popover.open('#popoverLoveInfo', '#getLoveInfo', true);
 });
@@ -472,7 +514,8 @@ function getMoonDay ()
 
 $$('#readMoreFABButton').on('click', function () {
 	
-		AdMob.showInterstitial();
+//		AdMob.showInterstitial();
+	    AdMob.showRewardVideoAd();
 		
 		rulershipGauge = app.gauge.create({
 		el: '#popupGaugeRulership',
@@ -682,62 +725,50 @@ $$('#popupGaugeSeason').on('click', function () {
 $$('#aquariusMenuButton').on('click', function () {
     localStorage.setItem('sign', 'aquarius');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#piscesMenuButton').on('click', function () {
     localStorage.setItem('sign', 'pisces');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#ariesMenuButton').on('click', function () {
     localStorage.setItem('sign', 'aries');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#taurusMenuButton').on('click', function () {
     localStorage.setItem('sign', 'taurus');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#geminiMenuButton').on('click', function () {
     localStorage.setItem('sign', 'gemini');
 	refreshZodiac();	
-	refreshSign();
 });
 $$('#cancerMenuButton').on('click', function () {
     localStorage.setItem('sign', 'cancer');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#leoMenuButton').on('click', function () {
     localStorage.setItem('sign', 'leo');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#virgoMenuButton').on('click', function () {
     localStorage.setItem('sign', 'virgo');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#libraMenuButton').on('click', function () {
     localStorage.setItem('sign', 'libra');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#scorpioMenuButton').on('click', function () {
     localStorage.setItem('sign', 'scorpio');
 	refreshZodiac();
-	refreshSign();
 });
-$$('#saggitariusMenuButton').on('click', function () {
-    localStorage.setItem('sign', 'saggitarius');
+$$('#sagittariusMenuButton').on('click', function () {
+    localStorage.setItem('sign', 'sagittarius');
 	refreshZodiac();
-	refreshSign();
 });
 $$('#capricornMenuButton').on('click', function () {
     localStorage.setItem('sign', 'capricorn');
 	refreshZodiac();
-	refreshSign();
 });
 
 
@@ -781,13 +812,41 @@ function refreshZodiac() {
 function trackEvent (someEvent) {
 	mixpanel.track(someEvent);
 	flurryAnalytics.logEvent(someEvent);
+	
+	if (localStorage.getItem('numberOfEvents'))
+	{
+		var eventsNumber = parseInt(localStorage.getItem('numberOfEvents'));
+		eventsNumber = eventsNumber + 1;
+		 localStorage.setItem('numberOfEvents', eventsNumber);
+	 switch (eventsNumber) {
+        case 100:
+	AppRate.promptForRating();
+        break;
+		case 200:
+	AppRate.promptForRating();
+        break;
+		case 300:
+	AppRate.promptForRating();
+        break;
+							}
+	}
+	 else 
+	 {
+		 localStorage.setItem('numberOfEvents', '1');
+	 }
 }
 
 function prepareAd(){
 	AdMob.prepareInterstitial({
 	adId: 'ca-app-pub-5186877757924020/9190888687',
 	autoShow: false,
-	isTesting: true
+//	isTesting: true
 	});
+
+	AdMob.prepareRewardVideoAd({
+	adId: 'ca-app-pub-5186877757924020/3867722898',
+	autoShow: false,
+	isTesting: false
+	}, function(){console.log("Video is ready")}, function(){console.log("Error during loading video")});
 }
 

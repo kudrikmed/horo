@@ -1153,12 +1153,12 @@ function refreshSign () {
 			valueText: valueLove
 							});
 		break;
-			case 'saggitarius':
-		$$('#navbarTitleText').text(textSaggitarius);
-		$$('#readMorePopupTitle').text(textSaggitarius);
-		$$('#horocontent').text(Horo['saggitarius']);
-		$$('#moreTodayHoroContent').text(Horo['saggitarius']);
-		$$('#moreTomorrowHoroContent').text(TomorrowHoro['saggitarius']);
+			case 'sagittarius':
+		$$('#navbarTitleText').text(textSagittarius);
+		$$('#readMorePopupTitle').text(textSagittarius);
+		$$('#horocontent').text(Horo['sagittarius']);
+		$$('#moreTodayHoroContent').text(Horo['sagittarius']);
+		$$('#moreTomorrowHoroContent').text(TomorrowHoro['sagittarius']);
 		var alpha = Math.floor(11 * (parseInt(Horo['random1']) / 100));
 		var beta = Math.floor(11 * (parseInt(Horo['random2']) / 100));		
 		alpha = alpha + 1;
