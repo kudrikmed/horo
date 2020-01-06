@@ -118,6 +118,9 @@
     font-size: 14px;
 }
 
+:root {
+  --f7-fab-size: 100px;
+}
 .with-background {
 	/* background-color: #cfdaec; */
 	background-image: url(../images/skygiftransparent.gif);

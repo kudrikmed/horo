@@ -6,7 +6,7 @@ var textNewMoon, textWaxingCrescentMoon, textQuarterMoon, textWaxingGibbousMoon,
 var textFamily, textLove, textHealth;
 var Signs;
 var textAppName;
-var MoonPhases, MoonDays, MoonStars, MoonConflictsTexts, MoonLoveTexts, MoonFriendshipTexts, MoonMoneyTexts, MoonEmotionsTexts;
+var MoonPhases, MoonDays, MoonStars, MoonConflictsTexts, MoonLoveTexts, MoonFriendshipTexts, MoonMoneyTexts, MoonEmotionsTexts, MoonHairTexts, MoonCoceptionTexts, textMoonInSign, MoonSignInfo;
 var textHoroForToday, textHoroForTomorrow = '';
 var textNotificationTitle;
 
@@ -63,6 +63,20 @@ function updateLanguage() {
 			'Это самый опасный, плохой и страшный день лунного месяца. Это время, когда в сгустившемся астральном тумане вершат свои темные дела ведьмы и колдуны. Люди в этот период ослабевают, их энергия истощается. Необходимо позаботиться о надежной защите. Следует отказаться от фальшивых и ненужных связей, избегать назойливых и пустых людей, избавляться от мрачных мыслей и беспросветной тоски. В этот день даже мысленно лучше не строить никаких планов, не начинать новых дел.',
 			'Прекрасный, полный гармонии день, в главе которого любовь и покаяние. Нет лучше момента для завершения всех начатых в этом месяце дел, некоего подведения итогов, а все новое начнете и спланируете уже в первые лунные сутки. Чтобы без помех перейти на следующий этап, отбросьте лишнее и наносное, избавьтесь от бесполезной суеты, просто успокойтесь.'
 			]
+			MoonSignInfo = {
+				'aquarius' : "Транзитная Луна, идущая по созвездию Водолея в царстве Урана – владыки неожиданных перемен и оригинального самовыражения, открывает шлюз свободы, от которой захватывает дух. Желание изменить надоевшие условия жизни, работы, попробовать нечто новое, включая личные отношения, будоражат кровь, усиливая нервозность и эмоциональный накал. Повседневные дела раздражают, мечты о грандиозных событиях будущего отвлекают внимание от делового процесса: возможны ошибки и просчеты.",
+				'pisces' : "Попадая в царство Нептуна – повелителя созвездия Рыб, покровителя мистики и искусства, транзитная Луна, в сочетании с дополнительными вибрациями Венеры, раскрывает доступ к тонким планам души в сознании. Неслучайно ранимые и чувствительные люди испытывают потребность убежать от реальности: уединиться на лоне природы или напиться до беспамятства, в зависимости от уровня развития психики.",
+				'aries' : "Транзитная Луна в Овне попадает в стихию Огня под покровительство Марса – бога войны, и включает в подсознании желание действовать, блистать талантами, сопротивляться вражеским козням, сражаясь за свое счастье, однако, существует опасность столкнуться с преступниками, попасть в драку, пожар и аварию. Проблемы сейчас решаются волевыми действиями, с разбега, без лишней рефлексии.",
+				'taurus' : "Луна, проходящая транзитом по знаку Тельца, попадает в царство богини любви, красоты и финансового достатка – Венеры, образуя гармоничный союз. Обостряется эстетическое восприятие мира, хочется сходить в театр, посетить художественную выставку, обновить гардероб и сходить к косметологу.",
+				'gemini' : "Транзитная Луна шествуя по созвездию Близнецов, попадает в пенаты Меркурия, покровителя торговли, гибкого мышления, красноречия, но, увы, одновременно помогающего ворам и мошенникам. Возрастает желание общаться, бывать на светских раутах, знакомиться и развиваться. Благоприятно – повышать уровень квалификации на образовательных курсах, сдавать экзамены, выступать на публике.",
+				'cancer' : "Луна, проходящая транзитом созвездие Рак, высвечивает эмоциональное начало подсознания, наполняя его иньскими энергиями. Обостряется интуиция, желание опекать, заботиться, любить и помогать, проводить время в семейном кругу, позвонить родителям и пересмотреть детские фотографии.",
+				'leo' : "Луна, проходящая транзитом созвездие Льва, оказывается во власти блеска главного светила – Солнца, в стихии огня и энергии Янь. Люди начинают стремиться к вершинам, активно действовать для достижения заветных желаний, верят, что невозможное возможно и успешно доказывают это.",
+				'virgo' : "После яркого, насыщенного событиями Львиного влияния на ночное светило, транзитная Луна в Деве возвращает человека с небес на землю. Потратившие много сил на укрепление престижа личности и бизнеса почувствуют опустошение и депрессию. На первый план выходит рутинная работа, возникают бытовые проблемы, решение которых постепенно затягивает, вынуждая критично относится к себе.",
+				'libra' : "Луна, проходящая транзитом знак Весы, снова попадает под влияние символа любви и красоты Венеры и жизнерадостной воздушной стихии, способствующих улучшению общения между противоположным полом, новым знакомствам, возобновлению дружеских отношений. Процесс лучше перенести в изящную обстановку театра, художественной галереи и светских раутов, где сейчас легко завязать полезные связи с влиятельными покровителями.",
+				'scorpio' : "Транзитная Луна в Скорпионе попадает под влияние воинственного Марса, Плутона, трансформирующего судьбу через кризисы и потрясения, и Урана – устроителя перемен. Накопленные переживания: тайные страсти, мечты, обиды готовы выплеснуться из подсознания, невзирая на последствия. Стремление к власти, мести, немотивированная ревность часто перекрывают возможности духовного роста и преображения, даруемые Луной и потенциалом Скорпиона.",
+				'sagittarius' : "Луна, идущая транзитом по созвездию Стрельца, гостит в стихии огня у Юпитера, символизирующего верховную власть и торжество справедливости. Их союз рождает веру в лучшее. Избавившись от тревог и метаний Скорпиона, человек просыпается с лучезарной уверенностью: дела идут на лад, все получится! Однако, излишний энтузиазм и отважная попытка одним махом достичь желанных высот, ведут к рискованным необдуманным поступкам.",
+				'capricorn' : "Луна, идущая транзитом по Козерогу, оказывается во власти Сатурна, управляющего временем и испытывающего человека ограничениями в значимых сферах жизни. Пришел час твердо стоять на земле, спокойно и обстоятельно мыслить, решать практические вопросы, заняться рабочей рутиной. Романтика и тяга к приключениям отходят на второй план."
+			};
 			MoonStars = [{
 				// 1
 				love: 3, // свадьба
@@ -397,6 +411,20 @@ function updateLanguage() {
 			'В этот день можно позволить себе отдохнуть.',
 			'Очень хороший день для отдыха, особенно отдыха активного.'
 			]
+			MoonHairTexts = [
+			'В этот день лунного календаря стрижка волос нанесет вред организму и может привлечь ненужные расходы и растраты.',
+			'Плохой день для стрижки волос, - может привести к ухудшению здоровья.',
+			'Нейтральный день для стрижки волос.',
+			'Стрижка сегодня принесет долголетие и отличное здоровье.',
+			'Стрижка волос сегодня привлечет к вам внимание, усилится ваше обаяние и привлекательность.'
+			]
+			MoonConceptionTexts = [
+			'Один из самых неблагоприятных дней для зачатия.',
+			'День не подходит для зачатия.',
+			'Вполне подходящий для зачатия день.',
+			'Хороший день для зачатия.',
+			'Один из самых лучших дней для зачатия и продолжения рода.'
+			]
 			// vars
 			textAquarius = 'Водолей';
 			textPisces = 'Рыбы';
@@ -438,7 +466,14 @@ function updateLanguage() {
 			$$('#textTodayMainCardHeader').text('Сегодня');
 			$$('#shareMainCardHeader').text('Рассказать');
 			$$('#cardHeaderValues').text('Числа');
-			$$('#readMoreFABButtonText').text('Больше...');
+			if(localStorage.getItem('fabbuttonpressed') == 'pressed'){
+			document.getElementById('readMoreFABButtonText').innerHTML != '<div class="material-icons text-size-44">keyboard_arrow_down</div>';	
+			}
+			if(localStorage.getItem('fabbuttonpressed') == 'not pressed'){
+			$$('#readMoreFABButtonText').text('Больше...');			
+			}
+			$$('#fabmoon').text('Луна');
+			$$('#fabzodiac').text('Зодиак');
 			// setting
 			$$('#settingsPopupTitle').text('Настройки');
 			$$('#cardHeaderLanguage').text('Язык');
@@ -461,8 +496,14 @@ function updateLanguage() {
 			$$('#moreMoneyText').text('Деньги');
 			$$('#moreDangerText').text('Конфликты');
 			$$('#moreEmotionsText').text('Отдых');
+			$$('#moreMoonSignText').text('Луна в знаке Зодиака');
+			$$('#moreMoonHairText').text('Стрижка волос');
+			$$('#moreMoonConceptionText').text('Зачатие');
+			$$('#textMoonInfluence').text('Влияние Луны');
+			$$('#readMoreMoonPopupTitle').text('Луна');
 			textTodayIs = "Сегодня ";
 			textMoonDay = " лунные сутки";
+			textMoonInSign = "Луна в знаке ";
 			// popovers
 			$$('#textRuler').text('Властитель');
 			$$('#textRulerAbout').text('В астрологии знаки зодиака - это определенные участки эклиптики. Символически они определяют некоторую территорию. То есть, знаки без планет - это пустая территория. Так как именно планеты в астрологии являются главными действующими лицами, то именно они и управляют этими участками - знаками зодиака. Для каждого знака есть своя главная планета-управитель. И чем сильнее в данный момент управитель, тем сильнее проявляет свое влияние знак. На бытовом уровне это проявляется уверенностью в себе, крепким здоровьем и высокой стрессоустойчивостью.');
@@ -534,6 +575,21 @@ function updateLanguage() {
 			'A very beneficial day in the lunar month, it is bright and clean, with a balanced energy. You can’t act rudely and dishonorably, so as not to damage it even by a random word spoken in haste. On the twenty-eighth day of the Lunar calendar, you need to try to be in good spirits, have control over emotions, keep only good in thoughts and intentions. Avoid conflict situations as soon as possible.',
 			'In the lunar month there is no worse and more dangerous twenty-ninth lunar day. It is believed that this period is under the auspices of Hekate, and therefore is ideal for sorcerers and witches, the accomplishment of their dark deeds. An ordinary person is weak and exhausted, almost devoid of strength. The energies of the day are too complex and put pressure on the psyche, but to protect yourself, it will be enough to just turn on the bright light in the house. Candles can be the best choice, can be ecclesiastical and in large quantities - they have a special clean energy.',
 			'A wonderful day full of harmony, at the head of which is love and repentance. There is no better moment for the completion of all the work begun this month, for some summing up, and you will begin and plan everything new already on the first lunar day. To proceed to the next stage without interference, discard the superfluous and the superficial, get rid of the useless fuss, just calm down.'];
+			
+			MoonSignInfo = {
+				'aquarius' : "The transit moon, moving along the constellation Aquarius, is in the kingdom of Uranus - the lord of unexpected changes and original expression, opens the gateway of breathtaking freedom. The desire to change the annoying living conditions, work, to try something new, including personal relationships, excite the blood, increasing nervousness and emotional tension. Everyday affairs annoy, dreams of grandiose events of the future distract attention from the business process: errors and miscalculations are possible.",
+				'pisces' : "Entering the kingdom of Neptune - the lord of the constellation Pisces, the patron of mysticism and art, the transit Moon, combined with additional vibrations of Venus, opens up access to the subtle planes of the soul in consciousness. It is no coincidence that vulnerable and sensitive people feel the need to escape from reality: to retire in the lap of nature or get drunk to unconsciousness, depending on the level of psychic development.",
+				'aries' : "The transit Moon in Aries falls into the element of Fire under the auspices of Mars - the god of war, and includes in the subconscious mind the desire to act, shine with talents, resist enemy intrigues, fighting for his happiness, however, there is a danger of colliding with criminals, getting into a fight, fire and accident. Problems are now solved by volitional actions, with a run, without unnecessary reflection.",
+				'taurus' : "The moon, transiting in the sign of Taurus, falls into the kingdom of the goddess of love, beauty and financial prosperity - Venus, forming a harmonious union. The aesthetic perception of the world is escalating. It's good idea to go to the theater, visit an art exhibition, update the wardrobe and go to the cosmetologist.",
+				'gemini' : "The transit moon, walking through the constellation of Gemini, falls into the peninsula of Mercury, the patron of commerce, flexible thinking, eloquence, but, alas, at the same time helping thieves and scammers. The desire to communicate, to be at social events, to get acquainted and develop is growing. Favorable - to increase the level of qualification in educational courses, take exams, speak in public.",
+				'cancer' : "The moon, passing through the constellation Cancer, highlights the emotional beginning of the subconscious, filling it with Yin energies. Intuition is escalating, the desire to patronize, care, love and help, spend time in the family circle, call parents and review children's photos.",
+				'leo' : "The moon, the transit constellation of Leo, is in the grip of the splendor of the main body - the Sun, in the elements of fire and Yang energy. People begin to strive for the heights, actively act to achieve cherished desires, believe that the impossible is possible and successfully prove it.",
+				'virgo' : "After a bright, eventful Leo influence on the night luminary, the transit Moon in Virgo returns a person from heaven to earth. Those who spent a lot of effort on strengthening the prestige of the individual and business will feel devastation and depression. Routine work comes to the forefront, everyday problems arise, the solution of which is gradually delaying, forcing a critical attitude towards oneself.",
+				'libra' : "The moon, passing in transit the sign of Libra, again falls under the influence of the symbol of love and beauty of Venus and the cheerful air element, contributing to the improvement of communication between the opposite sex, new acquaintances, the renewal of friendly relations. The process is better to transfer to the elegant surroundings of the theater, art gallery and social events, where it is now easy to establish useful contacts with influential patrons.",
+				'scorpio' : "The transit moon in Scorpio falls under the influence of warlike Mars, Pluto, transforming fate through crises and shocks, and Uranus - the organizer of change. Accumulated experiences: secret passions, dreams, grievances are ready to splash out of the subconscious mind, regardless of the consequences. The desire for power, revenge, unmotivated jealousy often overlap the possibilities of spiritual growth and transformation, granted by the Moon and the potential of Scorpio.",
+				'sagittarius' : "The moon, in transit through the constellation Sagittarius, dwells in the element of fire at Jupiter, symbolizing supreme power and the triumph of justice. Their union gives rise to faith in the best. Having got rid of Scorpio’s anxieties and throwings, a person wakes up with radiant confidence: things are going well, everything will work out! However, excessive enthusiasm and a courageous attempt to reach the desired heights in one fell swoop lead to risky rash acts.",
+				'capricorn' : "The moon, in transit through Capricorn, is in the grip of Saturn, who controls time and tests a person with limitations in significant areas of life. The time has come to stand firmly on the earth, calmly and thoroughly think, solve practical issues, and take up the working routine. Romance and craving for adventure fade into the background."
+			};
 			MoonStars = [{
 				// 1
 				love: 3, // свадьба
@@ -868,6 +924,20 @@ function updateLanguage() {
 			'On this day you can afford to relax.',
 			'A very good day to relax, especially active relaxation.'
 			]
+			MoonHairTexts = [
+			'On this day of the lunar calendar, cutting hair will harm the body and may attract unnecessary expenses and waste.',
+			'A bad day for cutting hair - can lead to poor health.',
+			'Neutral day for cutting hair.',
+			'A haircut today will bring longevity and excellent health.',
+			'Hair cutting will attract attention today, your charm and attractiveness will increase.'
+			]
+			MoonConceptionTexts = [
+			'One of the worst days to conceive.',
+			'The day is not suitable for conception.',
+			'A very suitable day for conception.',
+			'Good day to conceive.',
+			'One of the best days for conception and procreation.'
+			]
 			// vars
 			textAquarius = 'Aquarius';
 			textPisces = 'Pisces';
@@ -910,6 +980,8 @@ function updateLanguage() {
 			$$('#shareMainCardHeader').text('Share');
 			$$('#cardHeaderValues').text('Values');
 			$$('#readMoreFABButtonText').text('More...');
+			$$('#fabmoon').text('Moon');
+			$$('#fabzodiac').text('Zodiac');
 			// setting
 			$$('#settingsPopupTitle').text('Settings');
 			$$('#cardHeaderLanguage').text('Language');
@@ -932,8 +1004,14 @@ function updateLanguage() {
 			$$('#moreMoneyText').text('Money');
 			$$('#moreDangerText').text('Conflicts');
 			$$('#moreEmotionsText').text('Relaxation');
+			$$('#moreMoonSignText').text('Moon in zodiac sign');
+			$$('#moreMoonHairText').text('Haircut');
+			$$('#moreMoonConceptionText').text('Conception');
+			$$('#textMoonInfluence').text('Moon influence');
+			$$('#readMoreMoonPopupTitle').text('Moon');
 			textTodayIs = "Today is ";
 			textMoonDay = " moon day";
+			textMoonInSign = "Moon is in ";
 			// popovers
 			$$('#textRuler').text('Ruler');
 			$$('#textRulerAbout').text('The ruling planet of each zodiac sign is the archetype, or original pattern, for knowing its meaning. These are the players in the cosmic drama expressed through the zodiac signs. Planets are wanderers of the symbolic sky, with mythical stories or atmospheres of associations.');

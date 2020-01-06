@@ -8,6 +8,7 @@ https://codepen.io/lulunac27/pen/NRoyxE
 
 /* moon
 https://astroonlain.ru/lunnyi-kalendar-na-kazhdyi-den
+http://geocult.ru/lunnaya-astrologiya
 */
 
 /* plugins
@@ -130,6 +131,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
 
+localStorage.setItem('fabbuttonpressed', 'not pressed');
+
 if (localStorage.getItem('firstStart') != 'no') {
 	
 	localStorage.setItem('language', navigator.language);
@@ -139,7 +142,7 @@ if (localStorage.getItem('firstStart') != 'no') {
 	document.getElementById('timePicker').value = "09:00";
 	updateLanguage();
 	refreshZodiac();
-	var userID = Math.random()*10000000000000000;
+	var userID = Math.random()*100000000000000000;
 	localStorage.setItem('userID', userID);
 	
 	mixpanel.identify(userID);
@@ -191,7 +194,7 @@ else
 }
 
 //setNotifications();
-prepareAd();
+
 
 AppRate.preferences = {
   displayAppName: textAppName,
@@ -229,7 +232,13 @@ document.addEventListener("backbutton", function (e) {
 }
 	else if ($$('#readMorePopup').hasClass('modal-in'))
 {
+	deleteBanner();
 	app.popup.close('#readMorePopup', true);
+}
+	else if ($$('#readMoreMoonPopup').hasClass('modal-in'))
+{
+	deleteBanner();
+	app.popup.close('#readMoreMoonPopup', true);
 }
 	else if ($$('.panel-right').hasClass('panel-active'))
 {
@@ -503,6 +512,26 @@ $$('#getEmotionsInfo').on('click', function () {
 	app.popover.open('#popoverEmotionsInfo', '#getEmotionsInfo', true);
 });
 
+$$('#moonSignMore').on('click', function () {
+	trackEvent('Moon sign info');	
+	$$('#textPopoverMoonSign').text($$('#moreMoonSign').text());
+	app.popover.open('#popoverMoonSignInfo', '#moonSignMore', true);
+});
+
+$$('#moonHairMore').on('click', function () {
+	trackEvent('Moon hair info');	
+	$$('#textPopoverMoonHairAbout').text(MoonHairTexts[MoonStars[getMoonDay() - 1].hair - 1]);
+	$$('#textPopoverMoonHair').text($$('#moreMoonHairText').text());
+	app.popover.open('#popoverMoonHairInfo', '#moonHairMore', true);
+});
+
+$$('#moonConceptionMore').on('click', function () {
+	trackEvent('Moon conception info');	
+	$$('#textPopoverMoonConceptionAbout').text(MoonConceptionTexts[MoonStars[getMoonDay() - 1].conception - 1]);
+	$$('#textPopoverMoonConception').text($$('#moreMoonConceptionText').text());
+	app.popover.open('#popoverMoonConceptionInfo', '#moonConceptionMore', true);
+});
+
 function getMoonDay ()
 {
 	var currentTime = new Date();
@@ -517,11 +546,11 @@ function getMoonDay ()
 	return currentMoonDay;
 }
 
-$$('#readMoreFABButton').on('click', function () {
-	
-		AdMob.showRewardVideoAd();
-		AdMob.showInterstitial();
-	   
+$$('#fabmoon').on('click', function () {
+
+
+		makeInterstitial();	
+		makeBanner();
 		
 		rulershipGauge = app.gauge.create({
 		el: '#popupGaugeRulership',
@@ -582,8 +611,8 @@ $$('#readMoreFABButton').on('click', function () {
 		labelText: 'season'
 	});
 
-
-trackEvent('FAB pressed');
+switchFABbutton();
+trackEvent('FAB moon pressed');
 	// Return today's date and time
 var currentTime = new Date();
 
@@ -608,8 +637,113 @@ document.getElementById('moreMoneyStars').innerHTML = putStars(MoonStars[current
 document.getElementById('moreDangerStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].conflict);
 document.getElementById('moreEmotionsStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].recreation);
 
+document.getElementById('moreMoonHair').innerHTML = putStars(MoonStars[currentMoonDay - 1].hair);
+document.getElementById('moreMoonConception').innerHTML = putStars(MoonStars[currentMoonDay - 1].conception);
+
+$$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).constellation);
+
+    app.popup.open('#readMoreMoonPopup', true);
+});
+
+$$('#fabzodiac').on('click', function () {
+
+
+		makeInterstitial();	
+		makeBanner();
+		
+		rulershipGauge = app.gauge.create({
+		el: '#popupGaugeRulership',
+		type: 'semicircle',
+		value: 0.3,
+		borderColor: '#0f4c81',
+		valueText: 'Mars',
+		valueTextColor: '#0f4c81',
+		labelText: 'ruler'
+	});
+	
+		dispositorGauge = app.gauge.create({
+		el: '#popupGaugeDispositor',
+		type: 'semicircle',
+		value: 0.5,
+		borderColor: '#0f4c81',
+		valueText: 'Venus',
+		valueTextColor: '#0f4c81',
+		labelText: 'dispositor'
+	});
+		houseGauge = app.gauge.create({
+		el: '#popupGaugeHouse',
+		type: 'semicircle',
+		value: 0.2,
+		borderColor: '#0f4c81',
+		valueText: '8th',
+		valueTextColor: '#0f4c81',
+		labelText: 'house'
+	});
+	
+		elementGauge = app.gauge.create({
+		el: '#popupGaugeElement',
+		type: 'semicircle',
+		value: 0.9,
+		borderColor: '#0f4c81',
+		valueText: 'Water',
+		valueTextColor: '#0f4c81',
+		labelText: 'element'
+	});
+	
+		directionGauge = app.gauge.create({
+		el: '#popupGaugeDirection',
+		type: 'semicircle',
+		value: 0.6,
+		borderColor: '#0f4c81',
+		valueText: 'West',
+		valueTextColor: '#0f4c81',
+		labelText: 'direction'
+	});
+	
+		seasonGauge = app.gauge.create({
+		el: '#popupGaugeSeason',
+		type: 'semicircle',
+		value: 0.6,
+		borderColor: '#0f4c81',
+		valueText: 'Autumn',
+		valueTextColor: '#0f4c81',
+		labelText: 'season'
+	});
+
+switchFABbutton();
+trackEvent('FAB zodiac pressed');
+	// Return today's date and time
+var currentTime = new Date();
+
+// returns the month (from 0 to 11)
+var month = currentTime.getMonth() + 1;
+
+// returns the day of the month (from 1 to 31)
+var day = currentTime.getDate();
+
+// returns the year (four digits)
+var year = currentTime.getFullYear();
+
+var currentMoonDay = moonDate(day, month, year);
+
+$$('#moreCurrentMoonPhase').text(Moon.phase(year, month, day));
+$$('#moonDay').text(currentMoonDay);
+$$('#moreCurrentMoonDay').text(textTodayIs + currentMoonDay + textMoonDay);
+
+document.getElementById('moreLoveStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].love);
+document.getElementById('moreFriendshipStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].social);
+document.getElementById('moreMoneyStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].business);
+document.getElementById('moreDangerStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].conflict);
+document.getElementById('moreEmotionsStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].recreation);
+
+document.getElementById('moreMoonHair').innerHTML = putStars(MoonStars[currentMoonDay - 1].hair);
+document.getElementById('moreMoonConception').innerHTML = putStars(MoonStars[currentMoonDay - 1].conception);
+
+$$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).constellation);
+
     app.popup.open('#readMorePopup', true);
 });
+
 // get moon date
 function moonDate (day, month, year){
 	var N, D, M, Y, L = 0;
@@ -629,6 +763,9 @@ function moonDate (day, month, year){
 
 	return N;
 };
+
+var thisTime = new Date();
+
 
 // get horo date
 function getHoroDate (){
@@ -729,58 +866,105 @@ $$('#popupGaugeSeason').on('click', function () {
 
 // sign selection
 $$('#aquariusMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('auqarius');
     localStorage.setItem('sign', 'aquarius');
 	refreshZodiac();
 });
 $$('#piscesMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('pisces');
     localStorage.setItem('sign', 'pisces');
 	refreshZodiac();
 });
 $$('#ariesMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('aries');
     localStorage.setItem('sign', 'aries');
 	refreshZodiac();
 });
 $$('#taurusMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('taurus');
     localStorage.setItem('sign', 'taurus');
 	refreshZodiac();
 });
 $$('#geminiMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('gemini');
     localStorage.setItem('sign', 'gemini');
 	refreshZodiac();	
 });
 $$('#cancerMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('cancer');
     localStorage.setItem('sign', 'cancer');
 	refreshZodiac();
 });
 $$('#leoMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('leo');
     localStorage.setItem('sign', 'leo');
 	refreshZodiac();
 });
 $$('#virgoMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('virgo');
     localStorage.setItem('sign', 'virgo');
 	refreshZodiac();
 });
 $$('#libraMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('libra');
     localStorage.setItem('sign', 'libra');
 	refreshZodiac();
 });
 $$('#scorpioMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('scorpio');
     localStorage.setItem('sign', 'scorpio');
 	refreshZodiac();
 });
 $$('#sagittariusMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('sagittarius');
     localStorage.setItem('sign', 'sagittarius');
 	refreshZodiac();
 });
 $$('#capricornMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('capricorn');
     localStorage.setItem('sign', 'capricorn');
 	refreshZodiac();
 });
 
+$$('#readMoreFABButton').on('click', function () {
+		
+	trackEvent('FAB pressed');
+	console.log(localStorage.getItem('fabbuttonpressed'));
+	switchFABbutton();
 
+});
+
+function switchFABbutton(){
+	if(localStorage.getItem('fabbuttonpressed') == 'not pressed'){
+		document.getElementById('readMoreFABButtonText').innerHTML = '<div class="material-icons text-size-44">keyboard_arrow_down</div>';
+		localStorage.setItem('fabbuttonpressed', 'pressed');
+	}
+	else {
+		localStorage.setItem('fabbuttonpressed', 'not pressed');
+		updateLanguage();
+	}
+}
 
 $$('#readMorePopupBackButton').on('click', function () {
-    app.popup.close('#readMorePopup', true);
+	deleteBanner();
+	app.popup.close('#readMorePopup', true);
+});
+
+$$('#readMoreMoonPopupBackButton').on('click', function () {
+	deleteBanner();
+	app.popup.close('#readMoreMoonPopup', true);
 });
 
 $$('#settingsPopupBackButton').on('click', function () {
@@ -843,10 +1027,11 @@ function trackEvent (someEvent) {
 }
 
 function prepareAd(){
+	/*
 	AdMob.prepareInterstitial({
 	adId: 'ca-app-pub-5186877757924020/9190888687',
 	autoShow: false,
-//	isTesting: true
+	isTesting: false
 	});
 
 	AdMob.prepareRewardVideoAd({
@@ -854,5 +1039,193 @@ function prepareAd(){
 	autoShow: false,
 	isTesting: false
 	}, function(){console.log("Video is ready")}, function(){console.log("Error during loading video")});
+	*/
 }
 
+function makeInterstitial() {
+		AdMob.prepareInterstitial({
+		adId: 'ca-app-pub-5186877757924020/9190888687',
+		autoShow: true,
+		isTesting: false 
+		});
+
+//	    AdMob.showInterstitial();	
+		
+}
+
+function makeBanner() {
+		AdMob.createBanner({
+		adId: 'ca-app-pub-5186877757924020/7732586337',
+		position: AdMob.AD_POSITION.BOTTOM_CENTER,
+		autoShow: true,
+		isTesting: false  
+		});
+
+	//	AdMob.showBanner();
+}
+
+function deleteBanner() {
+		AdMob.hideBanner();
+		AdMob.removeBanner();
+}
+
+//normalize values to range 0...1
+  function normalize(v) {
+    v = v - Math.floor(v);
+    if (v < 0) {
+      v = v + 1;
+    }
+    return v;
+  }
+
+
+
+
+// https://github.com/giboow/mooncalc/blob/master/mooncalc.js
+
+function getMoonInformations(date) {
+    var age, // Moon's age
+      distance, // Moon's distance in earth radii
+      latitude, // Moon's ecliptic latitude
+      longitude, // Moon's ecliptic longitude
+      phase, // Moon's phase
+      trajectory, // Moon's trajectory
+      zodiac; // Moon's zodiac sign 
+
+    var yy, mm, k1, k2, k3, jd;
+    var ip, dp, np, rp;
+
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+
+
+    yy = year - Math.floor((12 - month) / 10);
+    mm = month + 9;
+    if (mm >= 12) {
+      mm = mm - 12;
+    }
+
+    k1 = Math.floor(365.25 * (yy + 4712));
+    k2 = Math.floor(30.6 * mm + 0.5);
+    k3 = Math.floor(Math.floor((yy / 100) + 49) * 0.75) - 38;
+
+    jd = k1 + k2 + day + 59;  // for dates in Julian calendar
+    if (jd > 2299160) {
+      jd = jd - k3;      // for Gregorian calendar
+    }
+
+    //calculate moon's age in days
+    ip = normalize((jd - 2451550.1) / 29.530588853);
+    age = ip * 29.53;
+
+    if (age <  1.84566) {
+      phase = 'NEW';
+      trajectory = 'ascendent';
+    } else if (age <  5.53699) {
+      phase = 'Waxing crescent';
+      trajectory = 'ascendent';
+    } else if (age <  9.22831) {
+      phase = 'First quarter';
+      trajectory = 'ascendent';
+    } else if (age < 12.91963) {
+      phase = 'Waxing gibbous';
+      trajectory = 'ascendent';
+    } else if (age < 16.61096) {
+      phase = 'FULL';
+      trajectory = 'descendent';
+    } else if (age < 20.30228) {
+      phase = 'Waning gibbous';
+      trajectory = 'descendent';
+    } else if (age < 23.99361) {
+      phase = 'Last quarter';
+      trajectory = 'descendent';
+    } else if (age < 27.68493) {
+      phase = 'Waning crescent';
+      trajectory = 'descendent';
+    } else {
+      phase = 'NEW';
+      trajectory = 'ascendent';
+    }
+
+    ip = ip * 2 * Math.PI;  //Convert phase to radians
+
+    // Calculate moon's distance
+    dp = 2 * Math.PI * normalize((jd - 2451562.2) / 27.55454988);
+    distance = 60.4 - 3.3 * Math.cos(dp) - 0.6 * Math.cos(2 * ip - dp) - 0.5 * Math.cos(2 * ip);
+
+    // Calculate moon's ecliptic latitude
+    np = 2 * Math.PI * normalize((jd - 2451565.2) / 27.212220817);
+    latitude = 5.1 * Math.sin(np);
+
+    // Calculate moon's ecliptic longitude
+    rp = normalize((jd - 2451555.8) / 27.321582241);
+    longitude = 360 * rp + 6.3 * Math.sin(dp) + 1.3 * Math.sin(2 * ip - dp) + 0.7 * Math.sin(2 * ip);
+
+    if (longitude <  33.18) {
+      zodiac = textPisces;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">l</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.pisces);
+    } else if (longitude <  51.16) {
+      zodiac = textAries;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">a</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.aries);
+    } else if (longitude <  93.44) {
+      zodiac = textTaurus;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">b</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.taurus);
+    } else if (longitude < 119.48) {
+      zodiac = textGemini;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">c</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.gemini);
+    } else if (longitude < 135.30) {
+      zodiac = textCancer;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">d</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.cancer);
+    } else if (longitude < 173.34) {
+      zodiac = textLeo;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">e</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.leo);
+    } else if (longitude < 224.17) {
+      zodiac = textVirgo;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">f</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.virgo);
+    } else if (longitude < 242.57) {
+      zodiac = textLibra;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">g</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.libra);
+    } else if (longitude < 271.26) {
+      zodiac = textScorpio;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">h</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.scorpio);
+    } else if (longitude < 302.49) {
+      zodiac = textSagittarius;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">i</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.sagittarius);
+    } else if (longitude < 311.72) {
+      zodiac = textCapricorn;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">j</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.capricorn);
+    } else if (longitude < 348.58) {
+      zodiac = textAquarius;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">k</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.aquarius);
+    } else {
+      zodiac = textPisces;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">l</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.pisces);
+    }
+
+    return {
+      'date' : { 'year' : year, 'month' : month , 'day' : day},
+      'age' : age,
+      'distance' : distance * 6371,
+      'ecliptic' : {
+        'latitude' : latitude,
+        'longitude' : longitude
+      },
+      'phase' : phase,
+      'trajectory' : trajectory,
+      'constellation' : zodiac,
+    };
+  }
