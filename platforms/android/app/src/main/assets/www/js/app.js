@@ -2,6 +2,7 @@
 https://www.johndcook.com/blog/2015/10/24/distance-to-mars/
 https://keisan.casio.com/exec/system/1224746378
 https://codepen.io/lulunac27/pen/NRoyxE
+http://cosinekitty.com/solar_system.html
 */
 
 // privacy policy, t&c  https://app-privacy-policy-generator.firebaseapp.com/
@@ -11,6 +12,20 @@ https://astroonlain.ru/lunnyi-kalendar-na-kazhdyi-den
 http://geocult.ru/lunnaya-astrologiya
 */
 
+/*
+natal chart
+https://github.com/cyjoelchen/php-sweph
+https://astrowin.org/php_scripts/index.html
+
+https://github.com/Kibo/AstroChart
+*/
+
+/*
+city with lat long
+https://developers.teleport.org/api/getting_started/
+https://github.com/teleport/autocomplete/blob/master/examples/basic.html
+*/
+
 /* plugins
 ads https://github.com/floatinghotpot/cordova-admob-pro
 flurry https://github.com/blakgeek/cordova-plugin-flurryanalytics
@@ -18,6 +33,7 @@ share https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
 rate https://github.com/pushandplay/cordova-plugin-apprate
 notifications https://github.com/katzer/cordova-plugin-local-notifications
 version https://www.npmjs.com/package/cordova-plugin-appversion
+pdf https://www.npmjs.com/package/cordova-pdf-generator
 */
 
 /*
@@ -68,8 +84,15 @@ var gaugeHealth, gaugeLove, gaugeFamily;
 
 var smartSelect;
 
-var Horo, TomorrowHoro;
+var Horo, TomorrowHoro, planetArray;
 
+var	geoLocation = {
+	longitude: 45,
+	latitude: 45
+	};
+
+var ZodiacSigns = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+var HouseNames = ['l', 'll', 'lll', 'lV', 'V', 'Vl', 'Vll', 'Vlll', 'lX', 'X', 'Xl', 'Xll'];
 var Moon = {
   phase: function (year, month, day) {
     var c = e = jd = b = 0;
@@ -239,6 +262,14 @@ document.addEventListener("backbutton", function (e) {
 {
 	deleteBanner();
 	app.popup.close('#readMoreMoonPopup', true);
+}
+	else if ($$('#setupNatalPopup').hasClass('modal-in'))
+{
+	app.popup.close('#setupNatalPopup', true);
+}
+	else if ($$('#readMoreNatalPopup').hasClass('modal-in'))
+{
+	app.popup.close('#readMoreNatalPopup', true);
 }
 	else if ($$('.panel-right').hasClass('panel-active'))
 {
@@ -645,6 +676,291 @@ $$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).conste
     app.popup.open('#readMoreMoonPopup', true);
 });
 
+$$('#fabnatal').on('click', function () {
+	switchFABbutton();
+	trackEvent('FAB natal pressed');	
+	
+//	document.getElementById("natalDatePicker").valueAsDate = new Date();
+
+	app.popup.open('#setupNatalPopup', true);
+});
+
+    var placeAutocompleteResults = document.querySelector('.placeAutocompleteResult');
+    var appendToResult = placeAutocompleteResults.insertAdjacentHTML.bind(placeAutocompleteResults, 'afterend');
+    var myTeleportAutocomplete = new TeleportAutocomplete({ el: '.natalPlacePicker', maxItems: 5, geoLocate: false});
+	myTeleportAutocomplete.on('change', function(value) {	   
+		geoLocation = {
+		longitude: value.longitude,
+		latitude: value.latitude
+	   };
+	   console.log(geoLocation);
+      });
+	
+$$('#goToNatalChartFABButton').on('click', function () {
+	if (document.getElementById("natalDatePicker").value && document.getElementById("idOfNatalPlacePicker").value){
+	app.popup.close('#setupNatalPopup', true);
+	trackEvent('GOTO natal chart pressed');	
+	var myDate = new Date(document.getElementById("natalDatePicker").value);
+  
+	app.request.post(textServerNatal, {
+       // date: '16 November 1989 22:32:00',
+	      date: formatDateForNatalChart(myDate),
+		  longitude: geoLocation.longitude,
+		  latitude: geoLocation.latitude
+    }, function (data) {
+        if (data) {
+			// document.getElementById('rawDataNatalChart').innerHTML = data;
+			var parsedData = JSON.parse(data);
+			var degreeArray = [];
+			var speedArray = [];
+			for (var i = 0; i < 30; i++){
+				var degreeMassive = parsedData[i].split(", ");
+				var degree = degreeMassive[1];
+				degreeArray[i] = degree;
+		}
+			
+			for (var i = 0; i < 14; i++){
+				var speedMassive = parsedData[i].split(", ");
+				var speed = speedMassive[2];
+				speedArray[i] = speed;
+		}
+		
+		    planetsArray = {
+			Sun: {
+				degree: parseFloat(degreeArray[0]),
+				speed: parseFloat(speedArray[0]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[0])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[0]))
+			},
+			Moon: {
+				degree: parseFloat(degreeArray[1]),
+				speed: parseFloat(speedArray[1]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[1])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[1]))
+			},
+			Mercury: {
+				degree: parseFloat(degreeArray[2]),
+				speed: parseFloat(speedArray[2]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[2])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[2]))
+			},
+			Venus: {
+				degree: parseFloat(degreeArray[3]),
+				speed: parseFloat(speedArray[3]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[3])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[3]))
+			},
+			Mars: {
+				degree: parseFloat(degreeArray[4]),
+				speed: parseFloat(speedArray[4]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[4])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[4]))
+			},
+			Jupiter: {
+				degree: parseFloat(degreeArray[5]),
+				speed: parseFloat(speedArray[5]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[5])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[5]))
+			},
+			Saturn: {
+				degree: parseFloat(degreeArray[6]),
+				speed: parseFloat(speedArray[6]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[6])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[6]))
+			},
+			Uranus: {
+				degree: parseFloat(degreeArray[7]),
+				speed: parseFloat(speedArray[7]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[7])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[7]))
+			},
+			Neptune: {
+				degree: parseFloat(degreeArray[8]),
+				speed: parseFloat(speedArray[8]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[8])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[8]))
+			},
+			Pluto: {
+				degree: parseFloat(degreeArray[9]),
+				speed: parseFloat(speedArray[9]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[9])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[9]))
+			},
+			Chiron: {
+				degree: parseFloat(degreeArray[10]),
+				speed: parseFloat(speedArray[10]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[10])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[10]))
+			},
+			meanApogee: {
+				degree: parseFloat(degreeArray[11]),
+				speed: parseFloat(speedArray[11]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[11])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[11]))
+			},
+			meanNode: {
+				degree: parseFloat(degreeArray[12]),
+				speed: parseFloat(speedArray[12]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[12])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[12]))
+			},
+			trueNode: {
+				degree: parseFloat(degreeArray[13]),
+				speed: parseFloat(speedArray[13]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[13])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[13]))
+			},
+			house1: {
+				degree: parseFloat(degreeArray[14]),
+			},
+			house2: {
+				degree: parseFloat(degreeArray[15]),
+			},
+			house3: {
+				degree: parseFloat(degreeArray[16]),
+			},
+			house4: {
+				degree: parseFloat(degreeArray[17]),
+			},
+			house5: {
+				degree: parseFloat(degreeArray[18]),
+			},
+			house6: {
+				degree: parseFloat(degreeArray[19]),
+			},
+			house7: {
+				degree: parseFloat(degreeArray[20]),
+			},
+			house8: {
+				degree: parseFloat(degreeArray[21]),
+			},
+			house9: {
+				degree: parseFloat(degreeArray[22]),
+			},
+			house10: {
+				degree: parseFloat(degreeArray[23]),
+			},
+			house11: {
+				degree: parseFloat(degreeArray[24]),
+			},
+			house12: {
+				degree: parseFloat(degreeArray[25]),
+			},
+			Ascendant: {
+				degree: parseFloat(degreeArray[26]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[26])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[26]))
+			},
+			MC: {
+				degree: parseFloat(degreeArray[27]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[27])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[27]))
+			},
+			ARMC: {
+				degree: parseFloat(degreeArray[28]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[28])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[28]))
+			},
+			Vertex: {
+				degree: parseFloat(degreeArray[29]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[29])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[29]))
+			}
+		}		
+			console.log(planetsArray);
+			/*
+			var physicalScreenWidth = window.screen.width * window.devicePixelRatio;
+			console.log(physicalScreenWidth);
+			*/
+			document.getElementById('pictureNatalChart').innerHTML = '';
+			var chart = new astrology.Chart( 'pictureNatalChart', 300, 300);
+			
+			var radix = chart.radix(
+			{
+			"planets":{"Moon":[planetsArray.Moon.degree], "Sun":[planetsArray.Sun.degree], "Mercury":[planetsArray.Mercury.degree], "Lilith":[planetsArray.meanApogee.degree], "Chiron":[planetsArray.Chiron.degree], "Pluto":[planetsArray.Pluto.degree], "Neptune":[planetsArray.Neptune.degree], "Uranus":[planetsArray.Uranus.degree], "Saturn":[planetsArray.Saturn.degree], "Jupiter":[planetsArray.Jupiter.degree], "Mars":[planetsArray.Mars.degree], "Venus":[planetsArray.Venus.degree], "NNode":[planetsArray.meanNode.degree], "As":[planetsArray.Ascendant.degree]},
+			"cusps":[planetsArray.Ascendant.degree, planetsArray.Ascendant.degree + 30, planetsArray.Ascendant.degree + 60, planetsArray.Ascendant.degree + 90, planetsArray.Ascendant.degree + 120, planetsArray.Ascendant.degree + 150, planetsArray.Ascendant.degree + 180, planetsArray.Ascendant.degree + 210, planetsArray.Ascendant.degree + 240, planetsArray.Ascendant.degree + 270, planetsArray.Ascendant.degree + 300, planetsArray.Ascendant.degree + 330]	
+			});
+			
+			radix.addPointsOfInterest( {"As":[planetsArray.Ascendant.degree],"Ic":[360 - planetsArray.MC.degree],"Ds":[360 - planetsArray.Ascendant.degree],"Mc":[planetsArray.MC.degree]});
+			radix.aspects();
+			
+			console.log("Градус Асценданта " + planetsArray.Ascendant.degree);
+			console.log("Солнце в доме " + calculateHouseByDegree(planetsArray.Sun.degree, planetsArray.Ascendant.degree) + ", Градус Солнца " + planetsArray.Sun.degree);
+			console.log("Луна в доме " + calculateHouseByDegree(planetsArray.Moon.degree, planetsArray.Ascendant.degree) + ", Градус Луны " + planetsArray.Moon.degree);
+			console.log("Венера в доме " + calculateHouseByDegree(planetsArray.Venus.degree, planetsArray.Ascendant.degree) + ", Градус Венеры " + planetsArray.Venus.degree);
+			console.log("Марс в доме " + calculateHouseByDegree(planetsArray.Mars.degree, planetsArray.Ascendant.degree) + ", Градус Марса " + planetsArray.Mars.degree);
+			console.log("Узел Луны в доме " + calculateHouseByDegree(planetsArray.meanNode.degree, planetsArray.Ascendant.degree) + ", Градус Узла " + planetsArray.meanNode.degree);
+			console.log("Лилит в доме " + calculateHouseByDegree(planetsArray.meanApogee.degree, planetsArray.Ascendant.degree) + ", Градус Лилит " + planetsArray.meanApogee.degree);
+			
+			$$('#textSunNatalInSign').text(Planets[0] + createCardNameInNatalChart(planetsArray.Sun.sign));
+			$$('#sunNatalContent').text(SunInZodiacNatal[planetsArray.Sun.signNumber]);
+			
+			$$('#textAscendantNatalInSign').text(Planets[12] + createCardNameInNatalChart(planetsArray.Ascendant.sign));
+			$$('#ascendantNatalContent').text(AscendantInZodiacNatal[planetsArray.Ascendant.signNumber]);
+			
+			$$('#textMoonNatalInSign').text(Planets[1] + createCardNameInNatalChart(planetsArray.Moon.sign));
+			$$('#moonNatalContent').text(MoonInZodiacNatal[planetsArray.Moon.signNumber]);
+			
+			$$('#textMercuryNatalInSign').text(Planets[2] + createCardNameInNatalChart(planetsArray.Mercury.sign));
+			$$('#mercuryNatalContent').text(MercuryInZodiacNatal[planetsArray.Mercury.signNumber]);
+			
+			$$('#textVenusNatalInSign').text(Planets[3] + createCardNameInNatalChart(planetsArray.Venus.sign));
+			$$('#venusNatalContent').text(VenusInZodiacNatal[planetsArray.Venus.signNumber]);
+			
+			$$('#textMarsNatalInSign').text(Planets[4] + createCardNameInNatalChart(planetsArray.Mars.sign));
+			$$('#marsNatalContent').text(MarsInZodiacNatal[planetsArray.Mars.signNumber]);
+			
+			$$('#textJupiterNatalInSign').text(Planets[5] + createCardNameInNatalChart(planetsArray.Jupiter.sign));
+			$$('#jupiterNatalContent').text(JupiterInZodiacNatal[planetsArray.Jupiter.signNumber]);
+			
+			$$('#textSaturnNatalInSign').text(Planets[6] + createCardNameInNatalChart(planetsArray.Saturn.sign));
+			$$('#saturnNatalContent').text(SaturnInZodiacNatal[planetsArray.Saturn.signNumber]);
+			
+			$$('#textUranusNatalInSign').text(Planets[7] + createCardNameInNatalChart(planetsArray.Uranus.sign));
+			$$('#uranusNatalContent').text(UranusInZodiacNatal[planetsArray.Uranus.signNumber]);
+			
+			$$('#textNeptuneNatalInSign').text(Planets[8] + createCardNameInNatalChart(planetsArray.Neptune.sign));
+			$$('#neptuneNatalContent').text(NeptuneInZodiacNatal[planetsArray.Neptune.signNumber]);
+			
+			$$('#textPlutoNatalInSign').text(Planets[9] + createCardNameInNatalChart(planetsArray.Pluto.sign));
+			$$('#plutoNatalContent').text(PlutoInZodiacNatal[planetsArray.Pluto.signNumber]);
+			
+			$$('#textChironNatalInSign').text(Planets[10] + createCardNameInNatalChart(planetsArray.Chiron.sign));
+			$$('#chironNatalContent').text(ChironInZodiacNatal[planetsArray.Chiron.signNumber]);
+			
+			$$('#textLilithNatalInSign').text(Planets[11] + createCardNameInNatalChart(planetsArray.meanApogee.sign));
+			$$('#lilithNatalContent').text(LilithInZodiacNatal[planetsArray.meanApogee.signNumber]);
+			
+			$$('#textNodeNatalInSign').text(Planets[13] + createCardNameInNatalChart(planetsArray.trueNode.sign));
+			$$('#nodeNatalContent').text(NorthNodeInZodiacNatal[planetsArray.trueNode.signNumber]);			
+			
+			
+			};
+			
+    }, function () { console.log('Error during loading natal chart') });
+	
+
+		
+			
+	
+	app.popup.open('#readMoreNatalPopup', true);
+	}
+	else {
+		navigator.notification.alert(textPleaseFillData, function(){console.log('Fields format error')}, textAlert, textContinue);
+	}
+});
+
+$$('#saveNatalCardAsPDF').on('click', function () {
+		
+		pdf.fromData( document.getElementById('readMoreNatalPopup').innerHTML,       
+			// options
+			{
+                documentSize: 'A4',
+                type: 'share',
+                fileName: 'myFile.pdf'
+              })
+});
+
 $$('#fabzodiac').on('click', function () {
 
 
@@ -821,6 +1137,270 @@ if(output == "2017-02-29"){
 return output; 
 };
 
+function formatDateForNatalChart(date) {
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+  var second = date.getSeconds();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hour + ':' + minute + ':' + second;
+}
+
+function calculateSignByDegree (degree)
+{
+	var degree = degree;
+	if (degree <= 30)
+	{
+		return ZodiacSigns[2];
+	}
+	else if (degree >30 && degree <= 60)
+	{
+		return ZodiacSigns[3];
+	}
+	else if (degree >60 && degree <= 90)
+	{
+		return ZodiacSigns[4];
+	}
+	else if (degree >90 && degree <= 120)
+	{
+		return ZodiacSigns[5];
+	}
+	else if (degree >120 && degree <= 150)
+	{
+		return ZodiacSigns[6];
+	}
+	else if (degree >150 && degree <= 180)
+	{
+		return ZodiacSigns[7];
+	}
+	else if (degree >180 && degree <= 210)
+	{
+		return ZodiacSigns[8];
+	}
+	else if (degree >210 && degree <= 240)
+	{
+		return ZodiacSigns[9];
+	}
+	else if (degree >240 && degree <= 270)
+	{
+		return ZodiacSigns[10];
+	}
+	else if (degree >270 && degree <= 300)
+	{
+		return ZodiacSigns[11];
+	}
+	else if (degree >300 && degree <= 330)
+	{
+		return ZodiacSigns[0];
+	}
+	else if (degree >330)
+	{
+		return ZodiacSigns[1];
+	}
+};
+
+function calculateSignNumberByDegree (degree)
+{
+	var degree = degree;
+	if (degree <= 30)
+	{
+		return 2;
+	}
+	else if (degree >30 && degree <= 60)
+	{
+		return 3;
+	}
+	else if (degree >60 && degree <= 90)
+	{
+		return 4;
+	}
+	else if (degree >90 && degree <= 120)
+	{
+		return 5;
+	}
+	else if (degree >120 && degree <= 150)
+	{
+		return 6;
+	}
+	else if (degree >150 && degree <= 180)
+	{
+		return 7;
+	}
+	else if (degree >180 && degree <= 210)
+	{
+		return 8;
+	}
+	else if (degree >210 && degree <= 240)
+	{
+		return 9;
+	}
+	else if (degree >240 && degree <= 270)
+	{
+		return 10;
+	}
+	else if (degree >270 && degree <= 300)
+	{
+		return 11;
+	}
+	else if (degree >300 && degree <= 330)
+	{
+		return 0;
+	}
+	else if (degree >330)
+	{
+		return 1;
+	}
+};
+
+function calculateHouseByDegree (degree, ascendantDegree)
+{
+	var planetDegree = degree;
+	var ascendantDegree = ascendantDegree;
+	
+	var realPlanetDegree = planetDegree - ascendantDegree;
+	if (realPlanetDegree < 0){
+		realPlanetDegree = realPlanetDegree + 360;
+	}
+
+	if (realPlanetDegree > 0 && realPlanetDegree <= 30)
+	{
+		return HouseNames[0];
+	}
+	else if (realPlanetDegree > 30 && realPlanetDegree <= 60)
+	{
+		return HouseNames[1];
+	}
+	else if (realPlanetDegree > 60 && realPlanetDegree <= 90)
+	{
+		return HouseNames[2];
+	}
+	else if (realPlanetDegree > 90 && realPlanetDegree <= 120)
+	{
+		return HouseNames[3];
+	}
+	else if (realPlanetDegree > 120 && realPlanetDegree <= 150)
+	{
+		return HouseNames[4];
+	}
+	else if (realPlanetDegree > 150 && realPlanetDegree <= 180)
+	{
+		return HouseNames[5];
+	}
+	else if (realPlanetDegree > 180 && realPlanetDegree <= 210)
+	{
+		return HouseNames[6];
+	}
+	else if (realPlanetDegree > 210 && realPlanetDegree <= 240)
+	{
+		return HouseNames[7];
+	}
+	else if (realPlanetDegree > 240 && realPlanetDegree <= 270)
+	{
+		return HouseNames[8];
+	}
+	else if (realPlanetDegree > 270 && realPlanetDegree <= 300)
+	{
+		return HouseNames[9];
+	}
+	else if (realPlanetDegree > 300 && realPlanetDegree <= 330)
+	{
+		return HouseNames[10];
+	}
+	else if (realPlanetDegree > 330 && realPlanetDegree <= 360)
+	{
+		return HouseNames[11];
+	}
+	else 
+	{
+		return "House defining error";
+	}
+};
+
+function calculateHouseNumberByDegree (degree, ascendantDegree)
+{
+	var planetDegree = degree;
+	var ascendantDegree = ascendantDegree;
+	
+	var realPlanetDegree = planetDegree - ascendantDegree;
+	if (realPlanetDegree < 0){
+		realPlanetDegree = realPlanetDegree + 360;
+	}
+
+	if (realPlanetDegree > 0 && realPlanetDegree <= 30)
+	{
+		return 0;
+	}
+	else if (realPlanetDegree > 30 && realPlanetDegree <= 60)
+	{
+		return 1;
+	}
+	else if (realPlanetDegree > 60 && realPlanetDegree <= 90)
+	{
+		return 2;
+	}
+	else if (realPlanetDegree > 90 && realPlanetDegree <= 120)
+	{
+		return 3;
+	}
+	else if (realPlanetDegree > 120 && realPlanetDegree <= 150)
+	{
+		return 4;
+	}
+	else if (realPlanetDegree > 150 && realPlanetDegree <= 180)
+	{
+		return 5;
+	}
+	else if (realPlanetDegree > 180 && realPlanetDegree <= 210)
+	{
+		return 6;
+	}
+	else if (realPlanetDegree > 210 && realPlanetDegree <= 240)
+	{
+		return 7;
+	}
+	else if (realPlanetDegree > 240 && realPlanetDegree <= 270)
+	{
+		return 8;
+	}
+	else if (realPlanetDegree > 270 && realPlanetDegree <= 300)
+	{
+		return 9;
+	}
+	else if (realPlanetDegree > 300 && realPlanetDegree <= 330)
+	{
+		return 10;
+	}
+	else if (realPlanetDegree > 330 && realPlanetDegree <= 360)
+	{
+		return 11;
+	}
+	else 
+	{
+		return "House defining error";
+	}
+};
+
+function createCardNameInNatalChart (sign)
+{
+	var sign = sign;
+	for(var i = 0; i<SignsInEnglish.length; i++)
+	{
+		if (sign == SignsInEnglish[i])
+		{
+			return PlanetsInSigns[i];
+		}
+	}
+}
+
 function putStars (number) {
 	var textStars = '';
 	var parsedNumber = parseInt(number);
@@ -939,11 +1519,7 @@ $$('#capricornMenuButton').on('click', function () {
 });
 
 $$('#readMoreFABButton').on('click', function () {
-		
-	trackEvent('FAB pressed');
-	console.log(localStorage.getItem('fabbuttonpressed'));
 	switchFABbutton();
-
 });
 
 function switchFABbutton(){
@@ -962,9 +1538,18 @@ $$('#readMorePopupBackButton').on('click', function () {
 	app.popup.close('#readMorePopup', true);
 });
 
+$$('#setupNatalPopupBackButton').on('click', function () {
+	app.popup.close('#setupNatalPopup', true);
+});
+
 $$('#readMoreMoonPopupBackButton').on('click', function () {
 	deleteBanner();
 	app.popup.close('#readMoreMoonPopup', true);
+});
+
+$$('#readMoreNatalPopupBackButton').on('click', function () {
+	deleteBanner();
+	app.popup.close('#readMoreNatalPopup', true);
 });
 
 $$('#settingsPopupBackButton').on('click', function () {
@@ -1046,27 +1631,29 @@ function makeInterstitial() {
 		AdMob.prepareInterstitial({
 		adId: 'ca-app-pub-5186877757924020/9190888687',
 		autoShow: true,
-		isTesting: false 
+		isTesting: false
 		});
 
 //	    AdMob.showInterstitial();	
 		
 }
 
-function makeBanner() {
+function makeBanner() {	
+	/*
 		AdMob.createBanner({
 		adId: 'ca-app-pub-5186877757924020/7732586337',
 		position: AdMob.AD_POSITION.BOTTOM_CENTER,
 		autoShow: true,
 		isTesting: false  
 		});
-
-	//	AdMob.showBanner();
+	*/
 }
 
 function deleteBanner() {
+	/*
 		AdMob.hideBanner();
 		AdMob.removeBanner();
+	*/	
 }
 
 //normalize values to range 0...1

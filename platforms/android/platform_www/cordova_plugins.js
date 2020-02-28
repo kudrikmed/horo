@@ -143,6 +143,16 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "AppVersion"
       ]
+    },
+    {
+      "id": "cordova-pdf-generator.pdf",
+      "file": "plugins/cordova-pdf-generator/www/pdf.js",
+      "pluginId": "cordova-pdf-generator",
+      "clobbers": [
+        "cordova.plugins.pdf",
+        "pugin.pdf",
+        "pdf"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -160,6 +170,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
-    "cordova-plugin-appversion": "1.0.0"
+    "cordova-plugin-appversion": "1.0.0",
+    "cordova-pdf-generator": "2.0.8"
   };
 });

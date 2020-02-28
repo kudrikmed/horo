@@ -2,12 +2,28 @@
 https://www.johndcook.com/blog/2015/10/24/distance-to-mars/
 https://keisan.casio.com/exec/system/1224746378
 https://codepen.io/lulunac27/pen/NRoyxE
+http://cosinekitty.com/solar_system.html
 */
 
 // privacy policy, t&c  https://app-privacy-policy-generator.firebaseapp.com/
 
 /* moon
 https://astroonlain.ru/lunnyi-kalendar-na-kazhdyi-den
+http://geocult.ru/lunnaya-astrologiya
+*/
+
+/*
+natal chart
+https://github.com/cyjoelchen/php-sweph
+https://astrowin.org/php_scripts/index.html
+
+https://github.com/Kibo/AstroChart
+*/
+
+/*
+city with lat long
+https://developers.teleport.org/api/getting_started/
+https://github.com/teleport/autocomplete/blob/master/examples/basic.html
 */
 
 /* plugins
@@ -16,6 +32,7 @@ flurry https://github.com/blakgeek/cordova-plugin-flurryanalytics
 share https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
 rate https://github.com/pushandplay/cordova-plugin-apprate
 notifications https://github.com/katzer/cordova-plugin-local-notifications
+version https://www.npmjs.com/package/cordova-plugin-appversion
 */
 
 /*
@@ -66,7 +83,9 @@ var gaugeHealth, gaugeLove, gaugeFamily;
 
 var smartSelect;
 
-var Horo, TomorrowHoro;
+var Horo, TomorrowHoro, planetArray;
+
+var ZodiacSigns = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 
 var Moon = {
   phase: function (year, month, day) {
@@ -129,6 +148,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
 
+localStorage.setItem('fabbuttonpressed', 'not pressed');
+
 if (localStorage.getItem('firstStart') != 'no') {
 	
 	localStorage.setItem('language', navigator.language);
@@ -138,18 +159,20 @@ if (localStorage.getItem('firstStart') != 'no') {
 	document.getElementById('timePicker').value = "09:00";
 	updateLanguage();
 	refreshZodiac();
-	var userID = Math.random()*10000000000000000;
+	var userID = Math.random()*100000000000000000;
 	localStorage.setItem('userID', userID);
 	
 	mixpanel.identify(userID);
 	mixpanel.people.set({
-    "$created": new  Date()
+    "$created": new  Date(),
+	"version": AppVersion.version
 });
 
 	flurryAnalytics = new FlurryAnalytics({
     // requried
     appKey: 'JF2QQM7WYSD2SXSJFT6G',
     // optional
+	version: AppVersion.version,
     continueSessionSeconds: 3,          // how long can the app be paused before a new session is created, must be less than or equal to five for Android devices
     userId: userID,
 });
@@ -168,9 +191,11 @@ else
     // optional
     continueSessionSeconds: 3,          // how long can the app be paused before a new session is created, must be less than or equal to five for Android devices
     userId: userID,
+	version: AppVersion.version
 });
 	mixpanel.people.set({
-    "$last_login": new Date()
+    "$last_login": new Date(),
+	"version": AppVersion.version
 });
 	trackEvent('App started');
 	document.getElementById('timePicker').value = "09:00";
@@ -186,7 +211,7 @@ else
 }
 
 //setNotifications();
-prepareAd();
+
 
 AppRate.preferences = {
   displayAppName: textAppName,
@@ -224,7 +249,21 @@ document.addEventListener("backbutton", function (e) {
 }
 	else if ($$('#readMorePopup').hasClass('modal-in'))
 {
+	deleteBanner();
 	app.popup.close('#readMorePopup', true);
+}
+	else if ($$('#readMoreMoonPopup').hasClass('modal-in'))
+{
+	deleteBanner();
+	app.popup.close('#readMoreMoonPopup', true);
+}
+	else if ($$('#setupNatalPopup').hasClass('modal-in'))
+{
+	app.popup.close('#setupNatalPopup', true);
+}
+	else if ($$('#readMoreNatalPopup').hasClass('modal-in'))
+{
+	app.popup.close('#readMoreNatalPopup', true);
 }
 	else if ($$('.panel-right').hasClass('panel-active'))
 {
@@ -340,7 +379,7 @@ $$('#shareMainCardHeader').on('click', function () {
     message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
-    url: 'https://astrohoro.site'
+    url: 'https://play.google.com/store/apps/details?id=com.astropro.horo'
         // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
         // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
     };
@@ -367,7 +406,7 @@ $$('#moreShareToday').on('click', function () {
     message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
-    url: 'https://astrohoro.site'
+    url: 'https://play.google.com/store/apps/details?id=com.astropro.horo'
         // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
         // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
     };
@@ -394,7 +433,7 @@ $$('#moreShareTomorrow').on('click', function () {
     message: fullShareMessage, // not supported on some apps (Facebook, Instagram)
     subject: textAppName, // fi. for email
         // files: ['', ''], // an array of filenames either locally or remotely
-    url: 'https://astrohoro.site'
+    url: 'https://play.google.com/store/apps/details?id=com.astropro.horo'
         // chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title,
         // appPackageName: 'com.apple.social.facebook' // Android only, you can provide id of the App you want to share with
     };
@@ -498,6 +537,26 @@ $$('#getEmotionsInfo').on('click', function () {
 	app.popover.open('#popoverEmotionsInfo', '#getEmotionsInfo', true);
 });
 
+$$('#moonSignMore').on('click', function () {
+	trackEvent('Moon sign info');	
+	$$('#textPopoverMoonSign').text($$('#moreMoonSign').text());
+	app.popover.open('#popoverMoonSignInfo', '#moonSignMore', true);
+});
+
+$$('#moonHairMore').on('click', function () {
+	trackEvent('Moon hair info');	
+	$$('#textPopoverMoonHairAbout').text(MoonHairTexts[MoonStars[getMoonDay() - 1].hair - 1]);
+	$$('#textPopoverMoonHair').text($$('#moreMoonHairText').text());
+	app.popover.open('#popoverMoonHairInfo', '#moonHairMore', true);
+});
+
+$$('#moonConceptionMore').on('click', function () {
+	trackEvent('Moon conception info');	
+	$$('#textPopoverMoonConceptionAbout').text(MoonConceptionTexts[MoonStars[getMoonDay() - 1].conception - 1]);
+	$$('#textPopoverMoonConception').text($$('#moreMoonConceptionText').text());
+	app.popover.open('#popoverMoonConceptionInfo', '#moonConceptionMore', true);
+});
+
 function getMoonDay ()
 {
 	var currentTime = new Date();
@@ -512,10 +571,11 @@ function getMoonDay ()
 	return currentMoonDay;
 }
 
-$$('#readMoreFABButton').on('click', function () {
-	
-//		AdMob.showInterstitial();
-	    AdMob.showRewardVideoAd();
+$$('#fabmoon').on('click', function () {
+
+
+		makeInterstitial();	
+		makeBanner();
 		
 		rulershipGauge = app.gauge.create({
 		el: '#popupGaugeRulership',
@@ -576,8 +636,8 @@ $$('#readMoreFABButton').on('click', function () {
 		labelText: 'season'
 	});
 
-
-trackEvent('FAB pressed');
+switchFABbutton();
+trackEvent('FAB moon pressed');
 	// Return today's date and time
 var currentTime = new Date();
 
@@ -602,8 +662,363 @@ document.getElementById('moreMoneyStars').innerHTML = putStars(MoonStars[current
 document.getElementById('moreDangerStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].conflict);
 document.getElementById('moreEmotionsStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].recreation);
 
+document.getElementById('moreMoonHair').innerHTML = putStars(MoonStars[currentMoonDay - 1].hair);
+document.getElementById('moreMoonConception').innerHTML = putStars(MoonStars[currentMoonDay - 1].conception);
+
+$$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).constellation);
+
+    app.popup.open('#readMoreMoonPopup', true);
+});
+
+$$('#fabnatal').on('click', function () {
+	switchFABbutton();
+	trackEvent('FAB natal pressed');	
+	
+//	document.getElementById("natalDatePicker").valueAsDate = new Date();
+
+	app.popup.open('#setupNatalPopup', true);
+});
+
+$$('#goToNatalChartFABButton').on('click', function () {
+	
+	app.popup.close('#setupNatalPopup', true);
+	trackEvent('GOTO natal chart pressed');	
+  //var myDate = new Date();
+	var myDate = new Date(document.getElementById("natalDatePicker").value);
+    myDate.setDate(myDate.getDate()); //  myDate.setDate(myDate.getDate() + 24); 24 поправка на дни - пока не разобрался, почему
+  
+	app.request.post(textServerNatal, {
+       // date: '16 November 1989 22:32:00',
+	      date: formatDateForNatalChart(myDate)
+    }, function (data) {
+        if (data) {
+			// document.getElementById('rawDataNatalChart').innerHTML = data;
+			var parsedData = JSON.parse(data);
+			var degreeArray = [];
+			var speedArray = [];
+			for (var i = 0; i < 30; i++){
+				var degreeMassive = parsedData[i].split(", ");
+				var degree = degreeMassive[1];
+				degreeArray[i] = degree;
+		}
+			
+			for (var i = 0; i < 14; i++){
+				var speedMassive = parsedData[i].split(", ");
+				var speed = speedMassive[2];
+				speedArray[i] = speed;
+		}
+		
+		    planetsArray = {
+			Sun: {
+				degree: parseFloat(degreeArray[0]),
+				speed: parseFloat(speedArray[0]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[0])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[0]))
+			},
+			Moon: {
+				degree: parseFloat(degreeArray[1]),
+				speed: parseFloat(speedArray[1]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[1])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[1]))
+			},
+			Mercury: {
+				degree: parseFloat(degreeArray[2]),
+				speed: parseFloat(speedArray[2]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[2])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[2]))
+			},
+			Venus: {
+				degree: parseFloat(degreeArray[3]),
+				speed: parseFloat(speedArray[3]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[3])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[3]))
+			},
+			Mars: {
+				degree: parseFloat(degreeArray[4]),
+				speed: parseFloat(speedArray[4]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[4])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[4]))
+			},
+			Jupiter: {
+				degree: parseFloat(degreeArray[5]),
+				speed: parseFloat(speedArray[5]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[5])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[5]))
+			},
+			Saturn: {
+				degree: parseFloat(degreeArray[6]),
+				speed: parseFloat(speedArray[6]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[6])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[6]))
+			},
+			Uranus: {
+				degree: parseFloat(degreeArray[7]),
+				speed: parseFloat(speedArray[7]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[7])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[7]))
+			},
+			Neptune: {
+				degree: parseFloat(degreeArray[8]),
+				speed: parseFloat(speedArray[8]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[8])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[8]))
+			},
+			Pluto: {
+				degree: parseFloat(degreeArray[9]),
+				speed: parseFloat(speedArray[9]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[9])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[9]))
+			},
+			Chiron: {
+				degree: parseFloat(degreeArray[10]),
+				speed: parseFloat(speedArray[10]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[10])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[10]))
+			},
+			meanApogee: {
+				degree: parseFloat(degreeArray[11]),
+				speed: parseFloat(speedArray[11]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[11])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[11]))
+			},
+			meanNode: {
+				degree: parseFloat(degreeArray[12]),
+				speed: parseFloat(speedArray[12]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[12])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[12]))
+			},
+			trueNode: {
+				degree: parseFloat(degreeArray[13]),
+				speed: parseFloat(speedArray[13]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[13])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[13]))
+			},
+			house1: {
+				degree: parseFloat(degreeArray[14]),
+			},
+			house2: {
+				degree: parseFloat(degreeArray[15]),
+			},
+			house3: {
+				degree: parseFloat(degreeArray[16]),
+			},
+			house4: {
+				degree: parseFloat(degreeArray[17]),
+			},
+			house5: {
+				degree: parseFloat(degreeArray[18]),
+			},
+			house6: {
+				degree: parseFloat(degreeArray[19]),
+			},
+			house7: {
+				degree: parseFloat(degreeArray[20]),
+			},
+			house8: {
+				degree: parseFloat(degreeArray[21]),
+			},
+			house9: {
+				degree: parseFloat(degreeArray[22]),
+			},
+			house10: {
+				degree: parseFloat(degreeArray[23]),
+			},
+			house11: {
+				degree: parseFloat(degreeArray[24]),
+			},
+			house12: {
+				degree: parseFloat(degreeArray[25]),
+			},
+			Ascendant: {
+				degree: parseFloat(degreeArray[26]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[26])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[26]))
+			},
+			MC: {
+				degree: parseFloat(degreeArray[27]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[27])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[27]))
+			},
+			ARMC: {
+				degree: parseFloat(degreeArray[28]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[28])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[28]))
+			},
+			Vertex: {
+				degree: parseFloat(degreeArray[29]),
+				sign: calculateSignByDegree(parseFloat(degreeArray[29])),
+				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[29]))
+			}
+		}		
+			console.log(planetsArray);
+			/*
+			var physicalScreenWidth = window.screen.width * window.devicePixelRatio;
+			console.log(physicalScreenWidth);
+			*/
+			document.getElementById('pictureNatalChart').innerHTML = '';
+			var chart = new astrology.Chart( 'pictureNatalChart', 800, 800);
+			
+			var radix = chart.radix(
+			{
+			"planets":{"Moon":[planetsArray.Moon.degree], "Sun":[planetsArray.Sun.degree], "Mercury":[planetsArray.Mercury.degree], "Lilith":[planetsArray.meanApogee.degree], "Chiron":[planetsArray.Chiron.degree], "Pluto":[planetsArray.Pluto.degree], "Neptune":[planetsArray.Neptune.degree], "Uranus":[planetsArray.Uranus.degree], "Saturn":[planetsArray.Saturn.degree], "Jupiter":[planetsArray.Jupiter.degree], "Mars":[planetsArray.Mars.degree], "Venus":[planetsArray.Venus.degree], "NNode":[planetsArray.meanNode.degree], "As":[planetsArray.Ascendant.degree]},
+			"cusps":[planetsArray.Ascendant.degree, planetsArray.Ascendant.degree + 30, planetsArray.Ascendant.degree + 60, planetsArray.Ascendant.degree + 90, planetsArray.Ascendant.degree + 120, planetsArray.Ascendant.degree + 150, planetsArray.Ascendant.degree + 180, planetsArray.Ascendant.degree + 210, planetsArray.Ascendant.degree + 240, planetsArray.Ascendant.degree + 270, planetsArray.Ascendant.degree + 300, planetsArray.Ascendant.degree + 330]	
+			});
+			
+			radix.addPointsOfInterest( {"As":[planetsArray.Ascendant.degree],"Ic":[360 - planetsArray.MC.degree],"Ds":[360 - planetsArray.Ascendant.degree],"Mc":[planetsArray.MC.degree]});
+			radix.aspects();
+			
+			$$('#textSunNatalInSign').text(Planets[0] + createCardNameInNatalChart(planetsArray.Sun.sign));
+			$$('#sunNatalContent').text(SunInZodiacNatal[planetsArray.Sun.signNumber]);
+			
+			$$('#textAscendantNatalInSign').text(Planets[12] + createCardNameInNatalChart(planetsArray.Ascendant.sign));
+			$$('#ascendantNatalContent').text(AscendantInZodiacNatal[planetsArray.Ascendant.signNumber]);
+			
+			$$('#textMoonNatalInSign').text(Planets[1] + createCardNameInNatalChart(planetsArray.Moon.sign));
+			$$('#moonNatalContent').text(MoonInZodiacNatal[planetsArray.Moon.signNumber]);
+			
+			$$('#textMercuryNatalInSign').text(Planets[2] + createCardNameInNatalChart(planetsArray.Mercury.sign));
+			$$('#mercuryNatalContent').text(MercuryInZodiacNatal[planetsArray.Mercury.signNumber]);
+			
+			$$('#textVenusNatalInSign').text(Planets[3] + createCardNameInNatalChart(planetsArray.Venus.sign));
+			$$('#venusNatalContent').text(VenusInZodiacNatal[planetsArray.Venus.signNumber]);
+			
+			$$('#textMarsNatalInSign').text(Planets[4] + createCardNameInNatalChart(planetsArray.Mars.sign));
+			$$('#marsNatalContent').text(MarsInZodiacNatal[planetsArray.Mars.signNumber]);
+			
+			$$('#textJupiterNatalInSign').text(Planets[5] + createCardNameInNatalChart(planetsArray.Jupiter.sign));
+			$$('#jupiterNatalContent').text(JupiterInZodiacNatal[planetsArray.Jupiter.signNumber]);
+			
+			$$('#textSaturnNatalInSign').text(Planets[6] + createCardNameInNatalChart(planetsArray.Saturn.sign));
+			$$('#saturnNatalContent').text(SaturnInZodiacNatal[planetsArray.Saturn.signNumber]);
+			
+			$$('#textUranusNatalInSign').text(Planets[7] + createCardNameInNatalChart(planetsArray.Uranus.sign));
+			$$('#uranusNatalContent').text(UranusInZodiacNatal[planetsArray.Uranus.signNumber]);
+			
+			$$('#textNeptuneNatalInSign').text(Planets[8] + createCardNameInNatalChart(planetsArray.Neptune.sign));
+			$$('#neptuneNatalContent').text(NeptuneInZodiacNatal[planetsArray.Neptune.signNumber]);
+			
+			$$('#textPlutoNatalInSign').text(Planets[9] + createCardNameInNatalChart(planetsArray.Pluto.sign));
+			$$('#plutoNatalContent').text(PlutoInZodiacNatal[planetsArray.Pluto.signNumber]);
+			
+			$$('#textChironNatalInSign').text(Planets[10] + createCardNameInNatalChart(planetsArray.Chiron.sign));
+			$$('#chironNatalContent').text(ChironInZodiacNatal[planetsArray.Chiron.signNumber]);
+			
+			$$('#textLilithNatalInSign').text(Planets[11] + createCardNameInNatalChart(planetsArray.meanApogee.sign));
+			$$('#lilithNatalContent').text(LilithInZodiacNatal[planetsArray.meanApogee.signNumber]);
+			
+			$$('#textNodeNatalInSign').text(Planets[13] + createCardNameInNatalChart(planetsArray.trueNode.sign));
+			$$('#nodeNatalContent').text(NorthNodeInZodiacNatal[planetsArray.trueNode.signNumber]);			
+			
+			};
+			
+    }, function () { console.log('Error during loading natal chart') });
+	
+
+		
+			
+	
+	app.popup.open('#readMoreNatalPopup', true);
+});
+
+$$('#fabzodiac').on('click', function () {
+
+
+		makeInterstitial();	
+		makeBanner();
+		
+		rulershipGauge = app.gauge.create({
+		el: '#popupGaugeRulership',
+		type: 'semicircle',
+		value: 0.3,
+		borderColor: '#0f4c81',
+		valueText: 'Mars',
+		valueTextColor: '#0f4c81',
+		labelText: 'ruler'
+	});
+	
+		dispositorGauge = app.gauge.create({
+		el: '#popupGaugeDispositor',
+		type: 'semicircle',
+		value: 0.5,
+		borderColor: '#0f4c81',
+		valueText: 'Venus',
+		valueTextColor: '#0f4c81',
+		labelText: 'dispositor'
+	});
+		houseGauge = app.gauge.create({
+		el: '#popupGaugeHouse',
+		type: 'semicircle',
+		value: 0.2,
+		borderColor: '#0f4c81',
+		valueText: '8th',
+		valueTextColor: '#0f4c81',
+		labelText: 'house'
+	});
+	
+		elementGauge = app.gauge.create({
+		el: '#popupGaugeElement',
+		type: 'semicircle',
+		value: 0.9,
+		borderColor: '#0f4c81',
+		valueText: 'Water',
+		valueTextColor: '#0f4c81',
+		labelText: 'element'
+	});
+	
+		directionGauge = app.gauge.create({
+		el: '#popupGaugeDirection',
+		type: 'semicircle',
+		value: 0.6,
+		borderColor: '#0f4c81',
+		valueText: 'West',
+		valueTextColor: '#0f4c81',
+		labelText: 'direction'
+	});
+	
+		seasonGauge = app.gauge.create({
+		el: '#popupGaugeSeason',
+		type: 'semicircle',
+		value: 0.6,
+		borderColor: '#0f4c81',
+		valueText: 'Autumn',
+		valueTextColor: '#0f4c81',
+		labelText: 'season'
+	});
+
+switchFABbutton();
+trackEvent('FAB zodiac pressed');
+	// Return today's date and time
+var currentTime = new Date();
+
+// returns the month (from 0 to 11)
+var month = currentTime.getMonth() + 1;
+
+// returns the day of the month (from 1 to 31)
+var day = currentTime.getDate();
+
+// returns the year (four digits)
+var year = currentTime.getFullYear();
+
+var currentMoonDay = moonDate(day, month, year);
+
+$$('#moreCurrentMoonPhase').text(Moon.phase(year, month, day));
+$$('#moonDay').text(currentMoonDay);
+$$('#moreCurrentMoonDay').text(textTodayIs + currentMoonDay + textMoonDay);
+
+document.getElementById('moreLoveStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].love);
+document.getElementById('moreFriendshipStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].social);
+document.getElementById('moreMoneyStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].business);
+document.getElementById('moreDangerStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].conflict);
+document.getElementById('moreEmotionsStars').innerHTML = putStars(MoonStars[currentMoonDay - 1].recreation);
+
+document.getElementById('moreMoonHair').innerHTML = putStars(MoonStars[currentMoonDay - 1].hair);
+document.getElementById('moreMoonConception').innerHTML = putStars(MoonStars[currentMoonDay - 1].conception);
+
+$$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).constellation);
+
     app.popup.open('#readMorePopup', true);
 });
+
 // get moon date
 function moonDate (day, month, year){
 	var N, D, M, Y, L = 0;
@@ -623,6 +1038,9 @@ function moonDate (day, month, year){
 
 	return N;
 };
+
+var thisTime = new Date();
+
 
 // get horo date
 function getHoroDate (){
@@ -678,6 +1096,142 @@ if(output == "2017-02-29"){
 return output; 
 };
 
+function formatDateForNatalChart(date) {
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+  var second = date.getSeconds();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hour + ':' + minute + ':' + second;
+}
+
+function calculateSignByDegree (degree)
+{
+	var degree = degree;
+	if (degree <= 30)
+	{
+		return ZodiacSigns[2];
+	}
+	else if (degree >30 && degree <= 60)
+	{
+		return ZodiacSigns[3];
+	}
+	else if (degree >60 && degree <= 90)
+	{
+		return ZodiacSigns[4];
+	}
+	else if (degree >90 && degree <= 120)
+	{
+		return ZodiacSigns[5];
+	}
+	else if (degree >120 && degree <= 150)
+	{
+		return ZodiacSigns[6];
+	}
+	else if (degree >150 && degree <= 180)
+	{
+		return ZodiacSigns[7];
+	}
+	else if (degree >180 && degree <= 210)
+	{
+		return ZodiacSigns[8];
+	}
+	else if (degree >210 && degree <= 240)
+	{
+		return ZodiacSigns[9];
+	}
+	else if (degree >240 && degree <= 270)
+	{
+		return ZodiacSigns[10];
+	}
+	else if (degree >270 && degree <= 300)
+	{
+		return ZodiacSigns[11];
+	}
+	else if (degree >300 && degree <= 330)
+	{
+		return ZodiacSigns[0];
+	}
+	else if (degree >330)
+	{
+		return ZodiacSigns[1];
+	}
+};
+
+function calculateSignNumberByDegree (degree)
+{
+	var degree = degree;
+	if (degree <= 30)
+	{
+		return 2;
+	}
+	else if (degree >30 && degree <= 60)
+	{
+		return 3;
+	}
+	else if (degree >60 && degree <= 90)
+	{
+		return 4;
+	}
+	else if (degree >90 && degree <= 120)
+	{
+		return 5;
+	}
+	else if (degree >120 && degree <= 150)
+	{
+		return 6;
+	}
+	else if (degree >150 && degree <= 180)
+	{
+		return 7;
+	}
+	else if (degree >180 && degree <= 210)
+	{
+		return 8;
+	}
+	else if (degree >210 && degree <= 240)
+	{
+		return 9;
+	}
+	else if (degree >240 && degree <= 270)
+	{
+		return 10;
+	}
+	else if (degree >270 && degree <= 300)
+	{
+		return 11;
+	}
+	else if (degree >300 && degree <= 330)
+	{
+		return 0;
+	}
+	else if (degree >330)
+	{
+		return 1;
+	}
+};
+
+function createCardNameInNatalChart (sign)
+{
+	var sign = sign;
+	for(var i = 0; i<SignsInEnglish.length; i++)
+	{
+		if (sign == SignsInEnglish[i])
+		{
+			return PlanetsInSigns[i];
+		}
+	}
+}
+
 function putStars (number) {
 	var textStars = '';
 	var parsedNumber = parseInt(number);
@@ -723,58 +1277,110 @@ $$('#popupGaugeSeason').on('click', function () {
 
 // sign selection
 $$('#aquariusMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('auqarius');
     localStorage.setItem('sign', 'aquarius');
 	refreshZodiac();
 });
 $$('#piscesMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('pisces');
     localStorage.setItem('sign', 'pisces');
 	refreshZodiac();
 });
 $$('#ariesMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('aries');
     localStorage.setItem('sign', 'aries');
 	refreshZodiac();
 });
 $$('#taurusMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('taurus');
     localStorage.setItem('sign', 'taurus');
 	refreshZodiac();
 });
 $$('#geminiMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('gemini');
     localStorage.setItem('sign', 'gemini');
 	refreshZodiac();	
 });
 $$('#cancerMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('cancer');
     localStorage.setItem('sign', 'cancer');
 	refreshZodiac();
 });
 $$('#leoMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('leo');
     localStorage.setItem('sign', 'leo');
 	refreshZodiac();
 });
 $$('#virgoMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('virgo');
     localStorage.setItem('sign', 'virgo');
 	refreshZodiac();
 });
 $$('#libraMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('libra');
     localStorage.setItem('sign', 'libra');
 	refreshZodiac();
 });
 $$('#scorpioMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('scorpio');
     localStorage.setItem('sign', 'scorpio');
 	refreshZodiac();
 });
 $$('#sagittariusMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('sagittarius');
     localStorage.setItem('sign', 'sagittarius');
 	refreshZodiac();
 });
 $$('#capricornMenuButton').on('click', function () {
+	trackEvent('sign changed');
+	trackEvent('capricorn');
     localStorage.setItem('sign', 'capricorn');
 	refreshZodiac();
 });
 
+$$('#readMoreFABButton').on('click', function () {
+	switchFABbutton();
+});
 
+function switchFABbutton(){
+	if(localStorage.getItem('fabbuttonpressed') == 'not pressed'){
+		document.getElementById('readMoreFABButtonText').innerHTML = '<div class="material-icons text-size-44">keyboard_arrow_down</div>';
+		localStorage.setItem('fabbuttonpressed', 'pressed');
+	}
+	else {
+		localStorage.setItem('fabbuttonpressed', 'not pressed');
+		updateLanguage();
+	}
+}
 
 $$('#readMorePopupBackButton').on('click', function () {
-    app.popup.close('#readMorePopup', true);
+	deleteBanner();
+	app.popup.close('#readMorePopup', true);
+});
+
+$$('#setupNatalPopupBackButton').on('click', function () {
+	app.popup.close('#setupNatalPopup', true);
+});
+
+$$('#readMoreMoonPopupBackButton').on('click', function () {
+	deleteBanner();
+	app.popup.close('#readMoreMoonPopup', true);
+});
+
+$$('#readMoreNatalPopupBackButton').on('click', function () {
+	deleteBanner();
+	app.popup.close('#readMoreNatalPopup', true);
 });
 
 $$('#settingsPopupBackButton').on('click', function () {
@@ -837,10 +1443,11 @@ function trackEvent (someEvent) {
 }
 
 function prepareAd(){
+	/*
 	AdMob.prepareInterstitial({
 	adId: 'ca-app-pub-5186877757924020/9190888687',
 	autoShow: false,
-//	isTesting: true
+	isTesting: false
 	});
 
 	AdMob.prepareRewardVideoAd({
@@ -848,5 +1455,195 @@ function prepareAd(){
 	autoShow: false,
 	isTesting: false
 	}, function(){console.log("Video is ready")}, function(){console.log("Error during loading video")});
+	*/
 }
 
+function makeInterstitial() {
+		AdMob.prepareInterstitial({
+		adId: 'ca-app-pub-5186877757924020/9190888687',
+		autoShow: true,
+		isTesting: false
+		});
+
+//	    AdMob.showInterstitial();	
+		
+}
+
+function makeBanner() {	
+	/*
+		AdMob.createBanner({
+		adId: 'ca-app-pub-5186877757924020/7732586337',
+		position: AdMob.AD_POSITION.BOTTOM_CENTER,
+		autoShow: true,
+		isTesting: false  
+		});
+	*/
+}
+
+function deleteBanner() {
+	/*
+		AdMob.hideBanner();
+		AdMob.removeBanner();
+	*/	
+}
+
+//normalize values to range 0...1
+  function normalize(v) {
+    v = v - Math.floor(v);
+    if (v < 0) {
+      v = v + 1;
+    }
+    return v;
+  }
+
+
+
+
+// https://github.com/giboow/mooncalc/blob/master/mooncalc.js
+
+function getMoonInformations(date) {
+    var age, // Moon's age
+      distance, // Moon's distance in earth radii
+      latitude, // Moon's ecliptic latitude
+      longitude, // Moon's ecliptic longitude
+      phase, // Moon's phase
+      trajectory, // Moon's trajectory
+      zodiac; // Moon's zodiac sign 
+
+    var yy, mm, k1, k2, k3, jd;
+    var ip, dp, np, rp;
+
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+
+
+    yy = year - Math.floor((12 - month) / 10);
+    mm = month + 9;
+    if (mm >= 12) {
+      mm = mm - 12;
+    }
+
+    k1 = Math.floor(365.25 * (yy + 4712));
+    k2 = Math.floor(30.6 * mm + 0.5);
+    k3 = Math.floor(Math.floor((yy / 100) + 49) * 0.75) - 38;
+
+    jd = k1 + k2 + day + 59;  // for dates in Julian calendar
+    if (jd > 2299160) {
+      jd = jd - k3;      // for Gregorian calendar
+    }
+
+    //calculate moon's age in days
+    ip = normalize((jd - 2451550.1) / 29.530588853);
+    age = ip * 29.53;
+
+    if (age <  1.84566) {
+      phase = 'NEW';
+      trajectory = 'ascendent';
+    } else if (age <  5.53699) {
+      phase = 'Waxing crescent';
+      trajectory = 'ascendent';
+    } else if (age <  9.22831) {
+      phase = 'First quarter';
+      trajectory = 'ascendent';
+    } else if (age < 12.91963) {
+      phase = 'Waxing gibbous';
+      trajectory = 'ascendent';
+    } else if (age < 16.61096) {
+      phase = 'FULL';
+      trajectory = 'descendent';
+    } else if (age < 20.30228) {
+      phase = 'Waning gibbous';
+      trajectory = 'descendent';
+    } else if (age < 23.99361) {
+      phase = 'Last quarter';
+      trajectory = 'descendent';
+    } else if (age < 27.68493) {
+      phase = 'Waning crescent';
+      trajectory = 'descendent';
+    } else {
+      phase = 'NEW';
+      trajectory = 'ascendent';
+    }
+
+    ip = ip * 2 * Math.PI;  //Convert phase to radians
+
+    // Calculate moon's distance
+    dp = 2 * Math.PI * normalize((jd - 2451562.2) / 27.55454988);
+    distance = 60.4 - 3.3 * Math.cos(dp) - 0.6 * Math.cos(2 * ip - dp) - 0.5 * Math.cos(2 * ip);
+
+    // Calculate moon's ecliptic latitude
+    np = 2 * Math.PI * normalize((jd - 2451565.2) / 27.212220817);
+    latitude = 5.1 * Math.sin(np);
+
+    // Calculate moon's ecliptic longitude
+    rp = normalize((jd - 2451555.8) / 27.321582241);
+    longitude = 360 * rp + 6.3 * Math.sin(dp) + 1.3 * Math.sin(2 * ip - dp) + 0.7 * Math.sin(2 * ip);
+
+    if (longitude <  33.18) {
+      zodiac = textPisces;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">l</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.pisces);
+    } else if (longitude <  51.16) {
+      zodiac = textAries;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">a</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.aries);
+    } else if (longitude <  93.44) {
+      zodiac = textTaurus;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">b</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.taurus);
+    } else if (longitude < 119.48) {
+      zodiac = textGemini;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">c</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.gemini);
+    } else if (longitude < 135.30) {
+      zodiac = textCancer;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">d</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.cancer);
+    } else if (longitude < 173.34) {
+      zodiac = textLeo;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">e</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.leo);
+    } else if (longitude < 224.17) {
+      zodiac = textVirgo;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">f</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.virgo);
+    } else if (longitude < 242.57) {
+      zodiac = textLibra;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">g</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.libra);
+    } else if (longitude < 271.26) {
+      zodiac = textScorpio;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">h</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.scorpio);
+    } else if (longitude < 302.49) {
+      zodiac = textSagittarius;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">i</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.sagittarius);
+    } else if (longitude < 311.72) {
+      zodiac = textCapricorn;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">j</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.capricorn);
+    } else if (longitude < 348.58) {
+      zodiac = textAquarius;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">k</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.aquarius);
+    } else {
+      zodiac = textPisces;
+	  document.getElementById('moonSign').innerHTML = '<div class="zodiac-font center">l</div>';
+	  $$('#textPopoverMoonSignAbout').text(MoonSignInfo.pisces);
+    }
+
+    return {
+      'date' : { 'year' : year, 'month' : month , 'day' : day},
+      'age' : age,
+      'distance' : distance * 6371,
+      'ecliptic' : {
+        'latitude' : latitude,
+        'longitude' : longitude
+      },
+      'phase' : phase,
+      'trajectory' : trajectory,
+      'constellation' : zodiac,
+    };
+  }

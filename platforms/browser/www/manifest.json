@@ -4,8 +4,8 @@
   "name": "AstroPro",
   "short_name": "AstroPro",
   "version": "com.astropro.horo",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "author": "Apache Cordova Team",
+  "description": "Astrology app with everyday forecast based on zodiac signs",
+  "author": "Dzmitry Kudrytski",
   "icons": [
     {
       "src": "icon.png",

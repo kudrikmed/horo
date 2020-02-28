@@ -47,6 +47,10 @@
             {
               "xml": "<feature name=\"LocalNotification\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.localnotification.LocalNotification\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"PDFService\"><param name=\"android-package\" value=\"com.pdf.generator.PDFGenerator\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -174,6 +178,9 @@
       "PACKAGE_NAME": "com.astropro.horo"
     },
     "cordova-plugin-appversion": {
+      "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-pdf-generator": {
       "PACKAGE_NAME": "com.astropro.horo"
     }
   },
@@ -322,6 +329,16 @@
       "clobbers": [
         "AppVersion"
       ]
+    },
+    {
+      "id": "cordova-pdf-generator.pdf",
+      "file": "plugins/cordova-pdf-generator/www/pdf.js",
+      "pluginId": "cordova-pdf-generator",
+      "clobbers": [
+        "cordova.plugins.pdf",
+        "pugin.pdf",
+        "pdf"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -339,6 +356,7 @@
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
-    "cordova-plugin-appversion": "1.0.0"
+    "cordova-plugin-appversion": "1.0.0",
+    "cordova-pdf-generator": "2.0.8"
   }
 }

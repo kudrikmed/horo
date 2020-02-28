@@ -69,9 +69,9 @@
   "cordova-plugin-dialogs": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-dialogs"
+      "id": "cordova-plugin-dialogs@^2.0.2"
     },
-    "is_top_level": false,
+    "is_top_level": true,
     "variables": {}
   },
   "cordova-plugin-nativestorage": {
@@ -118,6 +118,14 @@
     "source": {
       "type": "registry",
       "id": "cordova-plugin-appversion"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-pdf-generator": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-pdf-generator"
     },
     "is_top_level": true,
     "variables": {}

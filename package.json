@@ -15,6 +15,7 @@
   "dependencies": {
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
+    "cordova-pdf-generator": "^2.0.8",
     "cordova-plugin-admobpro": "^2.49.0",
     "cordova-plugin-apprate": "^1.5.0",
     "cordova-plugin-appversion": "^1.0.0",
@@ -45,7 +46,9 @@
       "cordova-plugin-apprate": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-appversion": {}
+      "cordova-plugin-appversion": {},
+      "cordova-pdf-generator": {},
+      "cordova-plugin-dialogs": {}
     },
     "platforms": [
       "browser",

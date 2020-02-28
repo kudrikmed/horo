@@ -117,7 +117,12 @@
 .text-size-14 {
     font-size: 14px;
 }
-
+.fab-button-size {
+	--f7-fab-button-size: 100px;
+}
+:root {
+  --f7-fab-size: 100px;
+}
 .with-background {
 	/* background-color: #cfdaec; */
 	background-image: url(../images/skygiftransparent.gif);
