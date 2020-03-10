@@ -153,6 +153,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
         "pugin.pdf",
         "pdf"
       ]
+    },
+    {
+      "id": "onesignal-cordova-plugin.OneSignal",
+      "file": "plugins/onesignal-cordova-plugin/www/OneSignal.js",
+      "pluginId": "onesignal-cordova-plugin",
+      "clobbers": [
+        "OneSignal"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -171,6 +179,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-appversion": "1.0.0",
-    "cordova-pdf-generator": "2.0.8"
+    "cordova-pdf-generator": "2.0.8",
+    "onesignal-cordova-plugin": "2.8.4"
   };
 });

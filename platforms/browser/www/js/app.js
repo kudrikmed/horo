@@ -33,6 +33,7 @@ share https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
 rate https://github.com/pushandplay/cordova-plugin-apprate
 notifications https://github.com/katzer/cordova-plugin-local-notifications
 version https://www.npmjs.com/package/cordova-plugin-appversion
+pdf https://www.npmjs.com/package/cordova-pdf-generator
 */
 
 /*
@@ -85,8 +86,13 @@ var smartSelect;
 
 var Horo, TomorrowHoro, planetArray;
 
-var ZodiacSigns = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+var	geoLocation = {
+	longitude: 45,
+	latitude: 45
+	};
 
+var ZodiacSigns = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+var HouseNames = ['l', 'll', 'lll', 'lV', 'V', 'Vl', 'Vll', 'Vlll', 'lX', 'X', 'Xl', 'Xll'];
 var Moon = {
   phase: function (year, month, day) {
     var c = e = jd = b = 0;
@@ -679,17 +685,28 @@ $$('#fabnatal').on('click', function () {
 	app.popup.open('#setupNatalPopup', true);
 });
 
-$$('#goToNatalChartFABButton').on('click', function () {
+    var placeAutocompleteResults = document.querySelector('.placeAutocompleteResult');
+    var appendToResult = placeAutocompleteResults.insertAdjacentHTML.bind(placeAutocompleteResults, 'afterend');
+    var myTeleportAutocomplete = new TeleportAutocomplete({ el: '.natalPlacePicker', maxItems: 5, geoLocate: false});
+	myTeleportAutocomplete.on('change', function(value) {	   
+		geoLocation = {
+		longitude: value.longitude,
+		latitude: value.latitude
+	   };
+	   console.log(geoLocation);
+      });
 	
+$$('#goToNatalChartFABButton').on('click', function () {
+	if (document.getElementById("natalDatePicker").value && document.getElementById("idOfNatalPlacePicker").value){
 	app.popup.close('#setupNatalPopup', true);
 	trackEvent('GOTO natal chart pressed');	
-  //var myDate = new Date();
 	var myDate = new Date(document.getElementById("natalDatePicker").value);
-    myDate.setDate(myDate.getDate()); //  myDate.setDate(myDate.getDate() + 24); 24 поправка на дни - пока не разобрался, почему
   
 	app.request.post(textServerNatal, {
        // date: '16 November 1989 22:32:00',
-	      date: formatDateForNatalChart(myDate)
+	      date: formatDateForNatalChart(myDate),
+		  longitude: geoLocation.longitude,
+		  latitude: geoLocation.latitude
     }, function (data) {
         if (data) {
 			// document.getElementById('rawDataNatalChart').innerHTML = data;
@@ -856,7 +873,7 @@ $$('#goToNatalChartFABButton').on('click', function () {
 			console.log(physicalScreenWidth);
 			*/
 			document.getElementById('pictureNatalChart').innerHTML = '';
-			var chart = new astrology.Chart( 'pictureNatalChart', 800, 800);
+			var chart = new astrology.Chart( 'pictureNatalChart', 300, 300);
 			
 			var radix = chart.radix(
 			{
@@ -866,6 +883,14 @@ $$('#goToNatalChartFABButton').on('click', function () {
 			
 			radix.addPointsOfInterest( {"As":[planetsArray.Ascendant.degree],"Ic":[360 - planetsArray.MC.degree],"Ds":[360 - planetsArray.Ascendant.degree],"Mc":[planetsArray.MC.degree]});
 			radix.aspects();
+			
+			console.log("Градус Асценданта " + planetsArray.Ascendant.degree);
+			console.log("Солнце в доме " + calculateHouseByDegree(planetsArray.Sun.degree, planetsArray.Ascendant.degree) + ", Градус Солнца " + planetsArray.Sun.degree);
+			console.log("Луна в доме " + calculateHouseByDegree(planetsArray.Moon.degree, planetsArray.Ascendant.degree) + ", Градус Луны " + planetsArray.Moon.degree);
+			console.log("Венера в доме " + calculateHouseByDegree(planetsArray.Venus.degree, planetsArray.Ascendant.degree) + ", Градус Венеры " + planetsArray.Venus.degree);
+			console.log("Марс в доме " + calculateHouseByDegree(planetsArray.Mars.degree, planetsArray.Ascendant.degree) + ", Градус Марса " + planetsArray.Mars.degree);
+			console.log("Узел Луны в доме " + calculateHouseByDegree(planetsArray.meanNode.degree, planetsArray.Ascendant.degree) + ", Градус Узла " + planetsArray.meanNode.degree);
+			console.log("Лилит в доме " + calculateHouseByDegree(planetsArray.meanApogee.degree, planetsArray.Ascendant.degree) + ", Градус Лилит " + planetsArray.meanApogee.degree);
 			
 			$$('#textSunNatalInSign').text(Planets[0] + createCardNameInNatalChart(planetsArray.Sun.sign));
 			$$('#sunNatalContent').text(SunInZodiacNatal[planetsArray.Sun.signNumber]);
@@ -909,6 +934,7 @@ $$('#goToNatalChartFABButton').on('click', function () {
 			$$('#textNodeNatalInSign').text(Planets[13] + createCardNameInNatalChart(planetsArray.trueNode.sign));
 			$$('#nodeNatalContent').text(NorthNodeInZodiacNatal[planetsArray.trueNode.signNumber]);			
 			
+			
 			};
 			
     }, function () { console.log('Error during loading natal chart') });
@@ -918,6 +944,21 @@ $$('#goToNatalChartFABButton').on('click', function () {
 			
 	
 	app.popup.open('#readMoreNatalPopup', true);
+	}
+	else {
+		navigator.notification.alert(textPleaseFillData, function(){console.log('Fields format error')}, textAlert, textContinue);
+	}
+});
+
+$$('#saveNatalCardAsPDF').on('click', function () {
+		
+		pdf.fromData( document.getElementById('readMoreNatalPopup').innerHTML,       
+			// options
+			{
+                documentSize: 'A4',
+                type: 'share',
+                fileName: 'myFile.pdf'
+              })
 });
 
 $$('#fabzodiac').on('click', function () {
@@ -1217,6 +1258,134 @@ function calculateSignNumberByDegree (degree)
 	else if (degree >330)
 	{
 		return 1;
+	}
+};
+
+function calculateHouseByDegree (degree, ascendantDegree)
+{
+	var planetDegree = degree;
+	var ascendantDegree = ascendantDegree;
+	
+	var realPlanetDegree = planetDegree - ascendantDegree;
+	if (realPlanetDegree < 0){
+		realPlanetDegree = realPlanetDegree + 360;
+	}
+
+	if (realPlanetDegree > 0 && realPlanetDegree <= 30)
+	{
+		return HouseNames[0];
+	}
+	else if (realPlanetDegree > 30 && realPlanetDegree <= 60)
+	{
+		return HouseNames[1];
+	}
+	else if (realPlanetDegree > 60 && realPlanetDegree <= 90)
+	{
+		return HouseNames[2];
+	}
+	else if (realPlanetDegree > 90 && realPlanetDegree <= 120)
+	{
+		return HouseNames[3];
+	}
+	else if (realPlanetDegree > 120 && realPlanetDegree <= 150)
+	{
+		return HouseNames[4];
+	}
+	else if (realPlanetDegree > 150 && realPlanetDegree <= 180)
+	{
+		return HouseNames[5];
+	}
+	else if (realPlanetDegree > 180 && realPlanetDegree <= 210)
+	{
+		return HouseNames[6];
+	}
+	else if (realPlanetDegree > 210 && realPlanetDegree <= 240)
+	{
+		return HouseNames[7];
+	}
+	else if (realPlanetDegree > 240 && realPlanetDegree <= 270)
+	{
+		return HouseNames[8];
+	}
+	else if (realPlanetDegree > 270 && realPlanetDegree <= 300)
+	{
+		return HouseNames[9];
+	}
+	else if (realPlanetDegree > 300 && realPlanetDegree <= 330)
+	{
+		return HouseNames[10];
+	}
+	else if (realPlanetDegree > 330 && realPlanetDegree <= 360)
+	{
+		return HouseNames[11];
+	}
+	else 
+	{
+		return "House defining error";
+	}
+};
+
+function calculateHouseNumberByDegree (degree, ascendantDegree)
+{
+	var planetDegree = degree;
+	var ascendantDegree = ascendantDegree;
+	
+	var realPlanetDegree = planetDegree - ascendantDegree;
+	if (realPlanetDegree < 0){
+		realPlanetDegree = realPlanetDegree + 360;
+	}
+
+	if (realPlanetDegree > 0 && realPlanetDegree <= 30)
+	{
+		return 0;
+	}
+	else if (realPlanetDegree > 30 && realPlanetDegree <= 60)
+	{
+		return 1;
+	}
+	else if (realPlanetDegree > 60 && realPlanetDegree <= 90)
+	{
+		return 2;
+	}
+	else if (realPlanetDegree > 90 && realPlanetDegree <= 120)
+	{
+		return 3;
+	}
+	else if (realPlanetDegree > 120 && realPlanetDegree <= 150)
+	{
+		return 4;
+	}
+	else if (realPlanetDegree > 150 && realPlanetDegree <= 180)
+	{
+		return 5;
+	}
+	else if (realPlanetDegree > 180 && realPlanetDegree <= 210)
+	{
+		return 6;
+	}
+	else if (realPlanetDegree > 210 && realPlanetDegree <= 240)
+	{
+		return 7;
+	}
+	else if (realPlanetDegree > 240 && realPlanetDegree <= 270)
+	{
+		return 8;
+	}
+	else if (realPlanetDegree > 270 && realPlanetDegree <= 300)
+	{
+		return 9;
+	}
+	else if (realPlanetDegree > 300 && realPlanetDegree <= 330)
+	{
+		return 10;
+	}
+	else if (realPlanetDegree > 330 && realPlanetDegree <= 360)
+	{
+		return 11;
+	}
+	else 
+	{
+		return "House defining error";
 	}
 };
 

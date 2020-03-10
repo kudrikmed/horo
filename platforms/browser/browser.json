@@ -75,6 +75,9 @@
     },
     "cordova-pdf-generator": {
       "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "onesignal-cordova-plugin": {
+      "PACKAGE_NAME": "com.astropro.horo"
     }
   },
   "dependent_plugins": {},
@@ -258,6 +261,14 @@
         "pugin.pdf",
         "pdf"
       ]
+    },
+    {
+      "file": "plugins/onesignal-cordova-plugin/www/OneSignal.js",
+      "id": "onesignal-cordova-plugin.OneSignal",
+      "pluginId": "onesignal-cordova-plugin",
+      "clobbers": [
+        "OneSignal"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -276,6 +287,7 @@
     "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-appversion": "1.0.0",
-    "cordova-pdf-generator": "2.0.8"
+    "cordova-pdf-generator": "2.0.8",
+    "onesignal-cordova-plugin": "2.8.4"
   }
 }

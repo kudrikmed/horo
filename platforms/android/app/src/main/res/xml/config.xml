@@ -35,6 +35,9 @@
     <feature name="PDFService">
         <param name="android-package" value="com.pdf.generator.PDFGenerator" />
     </feature>
+    <feature name="OneSignalPush">
+        <param name="android-package" value="com.plugin.gcm.OneSignalPush" />
+    </feature>
     <feature name="Badge">
         <param name="android-package" value="de.appplant.cordova.plugin.badge.Badge" />
     </feature>

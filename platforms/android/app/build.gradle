@@ -102,6 +102,7 @@ apply from: "../cordova-plugin-flurryanalytics/horo-plugin.gradle"
 apply from: "../cordova-plugin-extension/horo-rjfun-libs.gradle"
 apply from: "../cordova-plugin-badge/horo-badge.gradle"
 apply from: "../cordova-plugin-local-notification/horo-localnotification.gradle"
+apply from: "../onesignal-cordova-plugin/horo-build-extras-onesignal.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -301,6 +302,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:16.0.0"
     implementation "com.android.support:support-v4:24.1.1+"
     implementation "com.android.support:support-v4:26.+"
+    implementation "com.onesignal:OneSignal:3.12.7"
     // SUB-PROJECT DEPENDENCIES END
 }
 

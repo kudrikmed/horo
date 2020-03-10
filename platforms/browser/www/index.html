@@ -10,6 +10,7 @@
   <title>Framework7</title>
   <link rel="stylesheet" href="css/framework7.bundle.min.css">
   <link rel="stylesheet" href="css/framework7-icons.css">
+  <link rel="stylesheet" href="css/teleport-autocomplete.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="apple-touch-icon" href="img/f7-icon-square.png">
   <link rel="icon" href="img/f7-icon.png">
@@ -481,7 +482,8 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 											<div class="item-inner">
 											<div class="item-title item-label" id="textPlace">Place</div>
 												<div class="item-input-wrap">
-													<input type="text" id="natalPlacePicker"/>
+													<input type="text" class="natalPlacePicker" id="idOfNatalPlacePicker"/>
+													<div class="placeAutocompleteResult"></div>
 												</div>
 											</div>
 										</div>
@@ -509,6 +511,11 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 								<i class="icon icon-back"></i>
 							</div>
 							<div class="title" id="readMoreNatalPopupTitle">Natal chart</div>
+							<div class="right">
+								<a href="#" class="link" id="saveNatalCardAsPDF">
+									<i class="icon material-icons text-size-44" style="margin: 5px">picture_as_pdf</i>
+								</a>
+							</div>
 						</div>
 					</div>
 					<div class="page-content">
@@ -845,6 +852,7 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 
    </div>
   <script src="cordova.js"></script>
+  <script src="js/teleport-autocomplete.js"></script>
   <script src="js/framework7.bundle.min.js"></script>
   <script src="js/routes.js"></script>
   <script src="js/refreshSign.js"></script>

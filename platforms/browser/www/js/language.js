@@ -6,6 +6,7 @@ var textNewMoon, textWaxingCrescentMoon, textQuarterMoon, textWaxingGibbousMoon,
 var textFamily, textLove, textHealth;
 var Signs;
 var textAppName;
+var textPleaseFillData, textAlert, textContinue;
 var MoonPhases, MoonDays, MoonStars, MoonConflictsTexts, MoonLoveTexts, MoonFriendshipTexts, MoonMoneyTexts, MoonEmotionsTexts, MoonHairTexts, MoonCoceptionTexts, textMoonInSign, MoonSignInfo, PlanetsInSigns, Planets, SignsInEnglish, SunInZodiacNatal, AscendantInZodiacNatal, MoonInZodiacNatal, MercuryInZodiacNatal, VenusInZodiacNatal, MarsInZodiacNatal, JupiterInZodiacNatal, SaturnInZodiacNatal, UranusInZodiacNatal, NeptuneInZodiacNatal, PlutoInZodiacNatal, ChironInZodiacNatal, LilithInZodiacNatal, NorthNodeInZodiacNatal;
 var textHoroForToday, textHoroForTomorrow = '';
 var textNotificationTitle;
@@ -551,6 +552,9 @@ function updateLanguage() {
 			$$('#setupNatalPopupTitle').text('Натальная карта');
 			$$('#textDateAndTime').text('Дата и время');
 			$$('#textPlace').text('Место');
+			textPleaseFillData = 'Пожалуйста, введите дату, время и место рождения';
+			textAlert = 'Внимание';
+			textContinue = 'Далее';
 			
 			
 		};
@@ -1085,6 +1089,9 @@ function updateLanguage() {
 			$$('#setupNatalPopupTitle').text('Natal chart');
 			$$('#textDateAndTime').text('Date and Time');
 			$$('#textPlace').text('Place');
+			textPleaseFillData = 'Please, enter date, time and place of birth';
+			textAlert = 'Attention';
+			textContinue = 'Continue';
 		};
 		refreshZodiac();
 		refreshSign();

@@ -552,10 +552,15 @@ function updateLanguage() {
 			$$('#setupNatalPopupTitle').text('Натальная карта');
 			$$('#textDateAndTime').text('Дата и время');
 			$$('#textPlace').text('Место');
-			textPleaseFillData = 'Пожалуйста, введите дату, время и место рождения';
+			$$('#textName').text('Имя');
+			$$('#textHeaderSetName').text('Введите Ваше имя');
+			$$('#textEmail').text('Адрес электронной почты');
+			$$('#textHeaderSetEmail').text('Введите Ваш адрес электронной почты');
+			textPleaseFillData = 'Пожалуйста, введите имя, адрес электронной почты, дату, время и место рождения';
 			textAlert = 'Внимание';
 			textContinue = 'Далее';
-			
+			$$('#preNatalPopupTitle').text('Натальная карта');
+			$$('#preNatalChartFABButtonText').text('Добавить');
 			
 		};
 		if (currentLanguage.indexOf("en") > -1) {
@@ -1089,9 +1094,15 @@ function updateLanguage() {
 			$$('#setupNatalPopupTitle').text('Natal chart');
 			$$('#textDateAndTime').text('Date and Time');
 			$$('#textPlace').text('Place');
-			textPleaseFillData = 'Please, enter date, time and place of birth';
+			$$('#textName').text('Name');
+			$$('#textHeaderSetName').text('Enter Your name');
+			$$('#textEmail').text('Email');
+			$$('#textHeaderSetEmail').text('Enter Your Email');
+			textPleaseFillData = 'Please, enter name, email, date, time and place of birth';
 			textAlert = 'Attention';
 			textContinue = 'Continue';
+			$$('#preNatalPopupTitle').text('Natal chart');
+			$$('#preNatalChartFABButtonText').text('Add');
 		};
 		refreshZodiac();
 		refreshSign();
