@@ -26,6 +26,7 @@
     "cordova-plugin-extension": "^1.5.4",
     "cordova-plugin-flurryanalytics": "^1.4.6",
     "cordova-plugin-inappbrowser": "^3.1.0",
+    "cordova-plugin-inapppurchase": "^1.2.0",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-x-socialsharing": "^5.6.3",
@@ -50,7 +51,8 @@
       "cordova-plugin-appversion": {},
       "cordova-pdf-generator": {},
       "cordova-plugin-dialogs": {},
-      "onesignal-cordova-plugin": {}
+      "onesignal-cordova-plugin": {},
+      "cordova-plugin-inapppurchase": {}
     },
     "platforms": [
       "browser",

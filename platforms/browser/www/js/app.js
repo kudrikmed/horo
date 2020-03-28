@@ -218,6 +218,19 @@ else
 
 //setNotifications();
 
+// onesignal
+  var notificationOpenedCallback = function(jsonData) {
+    console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+  };
+
+  window.plugins.OneSignal
+    .startInit("7b0e972c-65ec-495b-a319-df9f6f6a431a")
+    .handleNotificationOpened(notificationOpenedCallback)
+    .endInit();
+  
+  // Call syncHashedEmail anywhere in your app if you have the user's email.
+  // This improves the effectiveness of OneSignal's "best-time" notification scheduling feature.
+  // window.plugins.OneSignal.syncHashedEmail(userEmail);
 
 AppRate.preferences = {
   displayAppName: textAppName,
@@ -270,6 +283,11 @@ document.addEventListener("backbutton", function (e) {
 	else if ($$('#readMoreNatalPopup').hasClass('modal-in'))
 {
 	app.popup.close('#readMoreNatalPopup', true);
+	app.popup.close('#preNatalPopup', true);
+}
+	else if ($$('#preNatalPopup').hasClass('modal-in'))
+{
+	app.popup.close('#preNatalPopup', true);
 }
 	else if ($$('.panel-right').hasClass('panel-active'))
 {
@@ -678,7 +696,120 @@ $$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).conste
 
 $$('#fabnatal').on('click', function () {
 	switchFABbutton();
-	trackEvent('FAB natal pressed');	
+	trackEvent('FAB natal pressed');
+		
+	var NatalChartsHistory = [];
+	var natalChartListContent = document.getElementById('preNatalChartContent');
+	
+	natalChartListContent.innerHTML = '';
+	
+	
+	var natalChartsCard = document.createElement('div');
+    natalChartsCard.className = "card";
+    natalChartsCard.id = "natalchartcard";
+    natalChartListContent.appendChild(natalChartsCard);	
+	var natalChartsCardContent = document.createElement('div');
+    natalChartsCardContent.className = "card-content card-content-padding";
+    natalChartsCardContent.id = "natalchartcardcontent";
+	natalChartsCardContent.innerHTML = textNatalChartDescription;
+    natalChartsCard.appendChild(natalChartsCardContent);
+	
+				for (var i = 0; i < localStorage.length; i++){				
+				if (localStorage.key(i).substring(0, 10) == 'natalChart') {
+					natalChartListContent.innerHTML = '';
+				//	console.log(localStorage.getItem(localStorage.key(i)))
+					NatalChartsHistory.push({
+						title: JSON.parse(localStorage.getItem(localStorage.key(i))).name,
+						id: localStorage.key(i),
+						subtitle: JSON.parse(localStorage.getItem(localStorage.key(i))).birthday,
+						after: textOpen,
+						class: 'item-link item-content popup-open history-item'
+					});
+				}
+			}
+	
+	if(NatalChartsHistory){
+	
+	var natalChartsList = document.createElement('div');
+    natalChartsList.className = "list virtual-list media-list";
+    natalChartsList.id = "natalchartsvirtuallist";
+    natalChartListContent.appendChild(natalChartsList);
+
+    var natatChartVirtualList = app.virtualList.create({
+        el: '#natalchartsvirtuallist',
+        items: NatalChartsHistory,
+        height: 72,
+        itemTemplate:
+        '<li>' +
+        '<a href="#" id="{{id}}" data-popup="#readMoreNatalPopup" class="{{class}}">' +
+        '<div class="item-inner">' +
+        '<div class="item-title-row">' +
+        '<div class="item-title">{{title}}</div>' +
+		'<div class="item-after">{{after}}</div>' +
+        '</div>' +
+        '<div class="item-subtitle">{{subtitle}}</div>' +
+        '</div>' +
+        '</a>' +
+        '</li>'
+    });
+	}
+	
+	app.popup.open('#preNatalPopup', true);
+});
+
+$$(document).on('click', '.history-item', function(e){
+	var currentChartId = this.id;
+	var currentChart = JSON.parse(localStorage.getItem(currentChartId));
+
+	document.getElementById('pictureNatalChart').innerHTML = currentChart.natalChart;
+	
+	$$('#textSunNatalInSign').text(currentChart.sunNatalSign);
+	$$('#sunNatalContent').text(currentChart.sunNatalContent);
+
+	$$('#textAscendantNatalInSign').text(currentChart.ascendantNatalSign);
+	$$('#ascendantNatalContent').text(currentChart.ascendantNatalContent);
+			
+	$$('#textMoonNatalInSign').text(currentChart.moonNatalSign);
+	$$('#moonNatalContent').text(currentChart.moonNatalContent);
+					
+	$$('#textMercuryNatalInSign').text(currentChart.mrecuryNatalSign);
+	$$('#mercuryNatalContent').text(currentChart.mrecuryNatalContent);
+			
+	$$('#textVenusNatalInSign').text(currentChart.venusNatalSign);
+	$$('#venusNatalContent').text(currentChart.venusNatalContent);
+			
+	$$('#textMarsNatalInSign').text(currentChart.marsNatalSign);
+	$$('#marsNatalContent').text(currentChart.marsNatalContent);
+			
+	$$('#textJupiterNatalInSign').text(currentChart.jupiterNatalSign);
+	$$('#jupiterNatalContent').text(currentChart.jupiterNatalContent);
+			
+	$$('#textSaturnNatalInSign').text(currentChart.saturnNatalSign);
+	$$('#saturnNatalContent').text(currentChart.saturnNatalContent);
+
+	$$('#textUranusNatalInSign').text(currentChart.uranusNatalSign);
+	$$('#uranusNatalContent').text(currentChart.uranusNatalContent);
+
+	$$('#textNeptuneNatalInSign').text(currentChart.neptuneNatalSign);
+	$$('#neptuneNatalContent').text(currentChart.neptuneNatalContent);	
+
+	$$('#textPlutoNatalInSign').text(currentChart.plutoNatalSign);
+	$$('#plutoNatalContent').text(currentChart.plutoNatalContent);
+			
+	$$('#textChironNatalInSign').text(currentChart.chironNatalSign);
+	$$('#chironNatalContent').text(currentChart.chironNatalContent);			
+
+	$$('#textLilithNatalInSign').text(currentChart.lilithNatalSign);
+	$$('#lilithNatalContent').text(currentChart.lilithNatalContent);
+			
+	$$('#textNodeNatalInSign').text(currentChart.nodeNatalSign);
+	$$('#nodeNatalContent').text(currentChart.nodeNatalContent);	
+
+});
+
+$$('#preNatalChartFABButton').on('click', function () {
+
+	trackEvent('FAB natal continue pressed');	
 	
 //	document.getElementById("natalDatePicker").valueAsDate = new Date();
 
@@ -693,14 +824,27 @@ $$('#fabnatal').on('click', function () {
 		longitude: value.longitude,
 		latitude: value.latitude
 	   };
-	   console.log(geoLocation);
       });
 	
 $$('#goToNatalChartFABButton').on('click', function () {
-	if (document.getElementById("natalDatePicker").value && document.getElementById("idOfNatalPlacePicker").value){
+	if (document.getElementById("natalDatePicker").value && document.getElementById("idOfNatalPlacePicker").value && document.getElementById("natalName").value && document.getElementById("natalEmail").value){
 	app.popup.close('#setupNatalPopup', true);
 	trackEvent('GOTO natal chart pressed');	
 	var myDate = new Date(document.getElementById("natalDatePicker").value);
+	
+		app.request.post(textServerSaveUser, {
+	      name: document.getElementById("natalName").value,
+		  userID: localStorage.getItem('userID'),
+		  birthday: document.getElementById("natalDatePicker").value,
+		  birthplace: document.getElementById("idOfNatalPlacePicker").value,
+		  email: document.getElementById("natalEmail").value,
+		  language: localStorage.getItem('language')
+    }, function (data) {
+		if(data == 'success')
+		{console.log('Data saved')}
+	}, function (data) {
+		console.log(data);
+	});
   
 	app.request.post(textServerNatal, {
        // date: '16 November 1989 22:32:00',
@@ -867,13 +1011,13 @@ $$('#goToNatalChartFABButton').on('click', function () {
 				signNumber: calculateSignNumberByDegree(parseFloat(degreeArray[29]))
 			}
 		}		
-			console.log(planetsArray);
+
 			/*
 			var physicalScreenWidth = window.screen.width * window.devicePixelRatio;
 			console.log(physicalScreenWidth);
 			*/
 			document.getElementById('pictureNatalChart').innerHTML = '';
-			var chart = new astrology.Chart( 'pictureNatalChart', 300, 300);
+			var chart = new astrology.Chart( 'pictureNatalChart', 800, 800);
 			
 			var radix = chart.radix(
 			{
@@ -883,15 +1027,7 @@ $$('#goToNatalChartFABButton').on('click', function () {
 			
 			radix.addPointsOfInterest( {"As":[planetsArray.Ascendant.degree],"Ic":[360 - planetsArray.MC.degree],"Ds":[360 - planetsArray.Ascendant.degree],"Mc":[planetsArray.MC.degree]});
 			radix.aspects();
-			
-			console.log("Градус Асценданта " + planetsArray.Ascendant.degree);
-			console.log("Солнце в доме " + calculateHouseByDegree(planetsArray.Sun.degree, planetsArray.Ascendant.degree) + ", Градус Солнца " + planetsArray.Sun.degree);
-			console.log("Луна в доме " + calculateHouseByDegree(planetsArray.Moon.degree, planetsArray.Ascendant.degree) + ", Градус Луны " + planetsArray.Moon.degree);
-			console.log("Венера в доме " + calculateHouseByDegree(planetsArray.Venus.degree, planetsArray.Ascendant.degree) + ", Градус Венеры " + planetsArray.Venus.degree);
-			console.log("Марс в доме " + calculateHouseByDegree(planetsArray.Mars.degree, planetsArray.Ascendant.degree) + ", Градус Марса " + planetsArray.Mars.degree);
-			console.log("Узел Луны в доме " + calculateHouseByDegree(planetsArray.meanNode.degree, planetsArray.Ascendant.degree) + ", Градус Узла " + planetsArray.meanNode.degree);
-			console.log("Лилит в доме " + calculateHouseByDegree(planetsArray.meanApogee.degree, planetsArray.Ascendant.degree) + ", Градус Лилит " + planetsArray.meanApogee.degree);
-			
+						
 			$$('#textSunNatalInSign').text(Planets[0] + createCardNameInNatalChart(planetsArray.Sun.sign));
 			$$('#sunNatalContent').text(SunInZodiacNatal[planetsArray.Sun.signNumber]);
 			
@@ -934,15 +1070,54 @@ $$('#goToNatalChartFABButton').on('click', function () {
 			$$('#textNodeNatalInSign').text(Planets[13] + createCardNameInNatalChart(planetsArray.trueNode.sign));
 			$$('#nodeNatalContent').text(NorthNodeInZodiacNatal[planetsArray.trueNode.signNumber]);			
 			
+
+			var saveNatalChart = {
+				name: document.getElementById("natalName").value,
+				email: document.getElementById("natalEmail").value,
+				birthday: document.getElementById("natalDatePicker").value,
+				birthplace: document.getElementById("idOfNatalPlacePicker").value,
+			    natalChart: document.getElementById("pictureNatalChart").innerHTML,
+				sunNatalSign: $$('#textSunNatalInSign').text(),
+				sunNatalContent: $$('#sunNatalContent').text(),
+				ascendantNatalSign: $$('#textAscendantNatalInSign').text(),
+				ascendantNatalContent: $$('#ascendantNatalContent').text(),
+				moonNatalSign: $$('#textMoonNatalInSign').text(),
+				moonNatalContent: $$('#moonNatalContent').text(),
+				mercuryNatalSign: $$('#textMercuryNatalInSign').text(),
+				mercuryNatalContent: $$('#mercuryNatalContent').text(),
+				venusNatalSign: $$('#textVenusNatalInSign').text(),
+				venusNatalContent: $$('#venusNatalContent').text(),
+				marsNatalSign: $$('#textMarsNatalInSign').text(),
+				marsNatalContent: $$('#marsNatalContent').text(),
+				jupiterNatalSign: $$('#textJupiterNatalInSign').text(),
+				jupiterNatalContent: $$('#jupiterNatalContent').text(),
+				saturnNatalSign: $$('#textSaturnNatalInSign').text(),
+				saturnNatalContent: $$('#saturnNatalContent').text(),
+				uranusNatalSign: $$('#textUranusNatalInSign').text(),
+				uranusNatalContent: $$('#uranusNatalContent').text(),
+				neptuneNatalSign: $$('#textNeptuneNatalInSign').text(),
+				neptuneNatalContent: $$('#neptuneNatalContent').text(),
+				plutoNatalSign: $$('#textPlutoNatalInSign').text(),
+				plutoNatalContent: $$('#plutoNatalContent').text(),
+				chironNatalSign: $$('#textChironNatalInSign').text(),
+				chironNatalContent: $$('#chironNatalContent').text(),
+				lilithNatalSign: $$('#textLilithNatalInSign').text(),
+				lilithNatalContent: $$('#lilithNatalContent').text(),
+				nodeNatalSign: $$('#textNodeNatalInSign').text(),
+				nodeNatalContent: $$('#nodeNatalContent').text()
+			}
 			
+			var currentDate = new Date();
+			localStorage.setItem("natalChart " + currentDate, JSON.stringify(saveNatalChart))
+
+		
 			};
+			
 			
     }, function () { console.log('Error during loading natal chart') });
 	
 
-		
-			
-	
+
 	app.popup.open('#readMoreNatalPopup', true);
 	}
 	else {
@@ -1542,6 +1717,10 @@ $$('#setupNatalPopupBackButton').on('click', function () {
 	app.popup.close('#setupNatalPopup', true);
 });
 
+$$('#preNatalPopupBackButton').on('click', function () {
+	app.popup.close('#preNatalPopup', true);
+});
+
 $$('#readMoreMoonPopupBackButton').on('click', function () {
 	deleteBanner();
 	app.popup.close('#readMoreMoonPopup', true);
@@ -1550,10 +1729,22 @@ $$('#readMoreMoonPopupBackButton').on('click', function () {
 $$('#readMoreNatalPopupBackButton').on('click', function () {
 	deleteBanner();
 	app.popup.close('#readMoreNatalPopup', true);
+	app.popup.close('#preNatalPopup', true);
 });
 
 $$('#settingsPopupBackButton').on('click', function () {
     app.popup.close('#settingsPopup', true);
+});
+
+$$('#clearNatalChartsMenuButton').on('click', function () {
+
+				for (var i = 0; i < localStorage.length; i++){				
+				if (localStorage.key(i).substring(0, 10) == 'natalChart') {
+					localStorage.removeItem(localStorage.key(i));
+				}
+			}
+
+
 });
 
 var settingsPopupView = app.views.create('#settingsPopupView', {url: '/'});

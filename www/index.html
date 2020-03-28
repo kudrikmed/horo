@@ -86,10 +86,11 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
               <li>
                 <a href="#" class="panel-close" id="ratingMenuButton">Rate app</a>
               </li>
+			  <!--
               <li>
                 <a href="#" class="panel-close" id="clearNatalChartsMenuButton">Clear natal charts</a>
               </li>
-              
+              -->
             </ul>
           </div>
         </div>
@@ -455,7 +456,7 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 						</div>
 					</div>
 					<div class="page-content">
-						<div  id="preNatalChartContent">Natal chart description</div>
+						<div  id="preNatalChartContent"></div>
 
 
 						<div class="fab fab-center-bottom" id="preNatalChartFABButton">
@@ -569,7 +570,36 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 				</div>
 			</div>
 	</div>
-		
+	<div class="popup" id="purchaseNatalPopup">
+			<div class="view">
+				<div class="page with-background">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="left"id="purchaseNatalPopupBackButton">
+								<i class="icon icon-back"></i>
+							</div>
+							<div class="title" id="purchaseNatalPopupTitle">Natal chart</div>
+						</div>
+					</div>
+					<div class="page-content">
+						<div  id="purchaseNatalChartContent"></div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderBuy"><span id="textHeaderBuyNatalChart">Buy natal chart</span></div>
+							<div class="card-content card-content-padding" id="buyNatalChartProductDescription">
+							
+							</div>	
+							<div class="card-footer" id="cardFooterBuy">Footer</div>
+						</div>
+
+						<div class="fab fab-center-bottom" id="purchaseNatalChartFABButton">
+							<a href="#">
+								<div class="fab-text" id="purchaseNatalChartFABButtonText">Purchase</div>
+							</a>						
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>		
 	<div class="popup" id="readMoreNatalPopup">
 			<div class="view">
 				<div class="page with-background">
@@ -602,6 +632,12 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderSunNatalHouse"><span id="textSunNatalInHouse">Sun</span></div>
+							<div class="card-content card-content-padding" id="sunNatalHouseContent">
+								Sun in III house
+							</div>	
+						</div>
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderAscendantNatal"><span id="textAscendantNatalInSign">Ascendant</span></div>
 							<div class="card-content card-content-padding" id="ascendantNatalContent">
 								Ascendant in this zodiac sign
@@ -614,9 +650,21 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderMoonNatalHouse"><span id="textMoonNatalInHouse">Moon</span></div>
+							<div class="card-content card-content-padding" id="moonNatalHouseContent">
+								Moon in III house
+							</div>	
+						</div>
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderMercuryNatal"><span id="textMercuryNatalInSign">Mercury</span></div>
 							<div class="card-content card-content-padding" id="mercuryNatalContent">
 								Mercury in this zodiac sign
+							</div>	
+						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderMercuryNatalHouse"><span id="textMercuryNatalInHouse">Mercury</span></div>
+							<div class="card-content card-content-padding" id="mercuryNatalHouseContent">
+								Mercury in III house
 							</div>	
 						</div>
 						<div class="card">
@@ -626,11 +674,23 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderVenusNatalHouse"><span id="textVenusNatalInHouse">Venus</span></div>
+							<div class="card-content card-content-padding" id="venusNatalHouseContent">
+								Venus in III house
+							</div>	
+						</div>	
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderMarsNatal"><span id="textMarsNatalInSign">Mars</span></div>
 							<div class="card-content card-content-padding" id="marsNatalContent">
 								Mars in this zodiac sign
 							</div>	
 						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderMarsNatalHouse"><span id="textMarsNatalInHouse">Mars</span></div>
+							<div class="card-content card-content-padding" id="marsNatalHouseContent">
+								Mars in III house
+							</div>	
+						</div>	
 						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderJupiterNatal"><span id="textJupiterNatalInSign">Jupiter</span></div>
 							<div class="card-content card-content-padding" id="jupiterNatalContent">
@@ -638,11 +698,23 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderJupiterNatalHouse"><span id="textJupiterNatalInHouse">Jupiter</span></div>
+							<div class="card-content card-content-padding" id="jupiterNatalHouseContent">
+								Jupiter in III house
+							</div>	
+						</div>	
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderSaturnNatal"><span id="textSaturnNatalInSign">Saturn</span></div>
 							<div class="card-content card-content-padding" id="saturnNatalContent">
 								Saturn in this zodiac sign
 							</div>	
 						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderSaturnNatalHouse"><span id="textSaturnNatalInHouse">Saturn</span></div>
+							<div class="card-content card-content-padding" id="saturnNatalHouseContent">
+								Saturn in III house
+							</div>	
+						</div>	
 						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderUranusNatal"><span id="textUranusNatalInSign">Uranus</span></div>
 							<div class="card-content card-content-padding" id="uranusNatalContent">
@@ -650,11 +722,23 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderUranusNatalHouse"><span id="textUranusNatalInHouse">Uranus</span></div>
+							<div class="card-content card-content-padding" id="uranusNatalHouseContent">
+								Uranus in III house
+							</div>	
+						</div>	
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderNeptuneNatal"><span id="textNeptuneNatalInSign">Neptune</span></div>
 							<div class="card-content card-content-padding" id="neptuneNatalContent">
 								Neptune in this zodiac sign
 							</div>	
 						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderNeptuneNatalHouse"><span id="textNeptuneNatalInHouse">Neptune</span></div>
+							<div class="card-content card-content-padding" id="neptuneNatalHouseContent">
+								Neptune in III house
+							</div>	
+						</div>	
 						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderPlutoNatal"><span id="textPlutoNatalInSign">Pluto</span></div>
 							<div class="card-content card-content-padding" id="plutoNatalContent">
@@ -662,11 +746,23 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderPlutoNatalHouse"><span id="textPlutoNatalInHouse">Pluto</span></div>
+							<div class="card-content card-content-padding" id="plutoNatalHouseContent">
+								Pluto in III house
+							</div>	
+						</div>	
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderChironNatal"><span id="textChironNatalInSign">Chiron</span></div>
 							<div class="card-content card-content-padding" id="chironNatalContent">
 								Chiron in this zodiac sign
 							</div>	
 						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderChironNatalHouse"><span id="textChironNatalInHouse">Chiron</span></div>
+							<div class="card-content card-content-padding" id="chironNatalHouseContent">
+								Chiron in III house
+							</div>	
+						</div>	
 						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderLilithNatal"><span id="textLilithNatalInSign">Lilith</span></div>
 							<div class="card-content card-content-padding" id="lilithNatalContent">
@@ -674,11 +770,23 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 							</div>	
 						</div>
 						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderLilithNatalHouse"><span id="textLilithNatalInHouse">Lilith</span></div>
+							<div class="card-content card-content-padding" id="lilithNatalHouseContent">
+								Lilith in III house
+							</div>	
+						</div>	
+						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderNodeNatal"><span id="textNodeNatalInSign">Node</span></div>
 							<div class="card-content card-content-padding" id="nodeNatalContent">
 								Node in this zodiac sign
 							</div>	
 						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderNodeNatalHouse"><span id="textNodeNatalInHouse">Node</span></div>
+							<div class="card-content card-content-padding" id="nodeNatalHouseContent">
+								Node in III house
+							</div>	
+						</div>	
 					</div>					
 				</div>
 			</div>
@@ -777,7 +885,36 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 			</div>
 		</div>
 	</div>
+		<div class="popup" id="purchaseZodiacSubscriptionPopup">
+			<div class="view">
+				<div class="page with-background">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="left"id="purchaseZodiacSubscriptionPopupBackButton">
+								<i class="icon icon-back"></i>
+							</div>
+							<div class="title" id="purchaseZodiacSubscriptionPopupTitle">Purchase subscription</div>
+						</div>
+					</div>
+					<div class="page-content">
+						<div  id="purchaseZodiacSubscriptionContent"></div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderSubscribe"><span id="textHeaderSubscribeZodiac">Subscribe daily zodiac</span></div>
+							<div class="card-content card-content-padding" id="subscribeZodiacProductDescription">
+							
+							</div>	
+							<div class="card-footer" id="cardFooterSubscribe">Footer</div>
+						</div>
 
+						<div class="fab fab-center-bottom" id="subscribeZodiacFABButton">
+							<a href="#">
+								<div class="fab-text" id="subscribeZodiacFABButtonText">Subscribe</div>
+							</a>						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
 	
 		<div class="popover popover-about" id="popoverMoonPhase">
 			<div class="popover-inner">

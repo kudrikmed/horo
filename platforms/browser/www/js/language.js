@@ -1,5 +1,5 @@
 var currentLanguage = localStorage.getItem('language');
-var textServer = '', textServerNatal;
+var textServer = '', textServerNatal, textServerSaveUser;
 var textAquarius, textPisces, textAries, textTaurus, textGemini, textCancer, textLeo, textVirgo, textLibra, textScorpio, textSagittarius, textCapricorn = '';
 var textTodayIs, textMoonDay = '';
 var textNewMoon, textWaxingCrescentMoon, textQuarterMoon, textWaxingGibbousMoon, textFullMoon, textWaningGibbousMoon, textLastQuarterMoon, textWaningCrescentMoon = '';
@@ -10,6 +10,7 @@ var textPleaseFillData, textAlert, textContinue;
 var MoonPhases, MoonDays, MoonStars, MoonConflictsTexts, MoonLoveTexts, MoonFriendshipTexts, MoonMoneyTexts, MoonEmotionsTexts, MoonHairTexts, MoonCoceptionTexts, textMoonInSign, MoonSignInfo, PlanetsInSigns, Planets, SignsInEnglish, SunInZodiacNatal, AscendantInZodiacNatal, MoonInZodiacNatal, MercuryInZodiacNatal, VenusInZodiacNatal, MarsInZodiacNatal, JupiterInZodiacNatal, SaturnInZodiacNatal, UranusInZodiacNatal, NeptuneInZodiacNatal, PlutoInZodiacNatal, ChironInZodiacNatal, LilithInZodiacNatal, NorthNodeInZodiacNatal;
 var textHoroForToday, textHoroForTomorrow = '';
 var textNotificationTitle;
+var textOpen, textNatalChartDescription;
 
 function updateLanguage() {
 	
@@ -23,6 +24,7 @@ function updateLanguage() {
 			// server
 			textServer = 'https://astrohoro.site/service/getRus.php';
 			textServerNatal = 'https://astrohoro.site/service/natal/natal.php';
+			textServerSaveUser = 'https://astrohoro.site/service/saveUser.php';
 			// arrays
 			Signs = ['Водолей', 'Рыбы', 'Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог'];
 			SignsInEnglish = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
@@ -552,10 +554,17 @@ function updateLanguage() {
 			$$('#setupNatalPopupTitle').text('Натальная карта');
 			$$('#textDateAndTime').text('Дата и время');
 			$$('#textPlace').text('Место');
-			textPleaseFillData = 'Пожалуйста, введите дату, время и место рождения';
+			$$('#textName').text('Имя');
+			$$('#textHeaderSetName').text('Введите Ваше имя');
+			$$('#textEmail').text('Адрес электронной почты');
+			$$('#textHeaderSetEmail').text('Введите Ваш адрес электронной почты');
+			textPleaseFillData = 'Пожалуйста, введите имя, адрес электронной почты, дату, время и место рождения';
 			textAlert = 'Внимание';
 			textContinue = 'Далее';
-			
+			$$('#preNatalPopupTitle').text('Натальная карта');
+			$$('#preNatalChartFABButtonText').text('Добавить');
+			textOpen = 'открыть';
+			textNatalChartDescription = 'Натальная карта - это персональный гороскоп рождения человека. Строится на момент рождения человека и места рождения. Этот гороскоп характеризует судьбу человека: заложенные в нём возможности, склонности и обстоятельства жизни. С помощью карты рождения определяется положение планет в знакаках зодиака относительно Земли, а также относительно друг друга. Согласно этим данным данным составляется описание человека.<br>Получите персональную натальную карту с расшифровкой прямо сейчас.';
 			
 		};
 		if (currentLanguage.indexOf("en") > -1) {
@@ -566,6 +575,7 @@ function updateLanguage() {
 			// server
 			textServer = 'https://astrohoro.site/service/getEng.php';
 			textServerNatal = 'https://astrohoro.site/service/natal/natal.php';
+			textServerSaveUser = 'https://astrohoro.site/service/saveUser.php';
 			// arrays
 			Signs = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 			SignsInEnglish = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
@@ -1089,9 +1099,17 @@ function updateLanguage() {
 			$$('#setupNatalPopupTitle').text('Natal chart');
 			$$('#textDateAndTime').text('Date and Time');
 			$$('#textPlace').text('Place');
-			textPleaseFillData = 'Please, enter date, time and place of birth';
+			$$('#textName').text('Name');
+			$$('#textHeaderSetName').text('Enter Your name');
+			$$('#textEmail').text('Email');
+			$$('#textHeaderSetEmail').text('Enter Your Email');
+			textPleaseFillData = 'Please, enter name, email, date, time and place of birth';
 			textAlert = 'Attention';
 			textContinue = 'Continue';
+			$$('#preNatalPopupTitle').text('Natal chart');
+			$$('#preNatalChartFABButtonText').text('Add');
+			textOpen = 'open';
+			textNatalChartDescription = '';
 		};
 		refreshZodiac();
 		refreshSign();

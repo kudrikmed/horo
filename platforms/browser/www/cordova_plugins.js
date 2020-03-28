@@ -208,7 +208,8 @@ module.exports.metadata =
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-appversion": "1.0.0",
     "cordova-pdf-generator": "2.0.8",
-    "onesignal-cordova-plugin": "2.8.4"
+    "onesignal-cordova-plugin": "2.8.4",
+    "cordova-plugin-inapppurchase": "1.1.0"
 }
 // BOTTOM OF METADATA
 });

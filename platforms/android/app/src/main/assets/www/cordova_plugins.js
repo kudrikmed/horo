@@ -161,6 +161,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "OneSignal"
       ]
+    },
+    {
+      "id": "cordova-plugin-inapppurchase.InAppBillingV3",
+      "file": "plugins/cordova-plugin-inapppurchase/www/index-android.js",
+      "pluginId": "cordova-plugin-inapppurchase",
+      "merges": [
+        "inAppPurchase"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -180,6 +188,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-appversion": "1.0.0",
     "cordova-pdf-generator": "2.0.8",
-    "onesignal-cordova-plugin": "2.8.4"
+    "onesignal-cordova-plugin": "2.8.4",
+    "cordova-plugin-inapppurchase": "1.1.0"
   };
 });

@@ -86,6 +86,9 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
               <li>
                 <a href="#" class="panel-close" id="ratingMenuButton">Rate app</a>
               </li>
+              <li>
+                <a href="#" class="panel-close" id="clearNatalChartsMenuButton">Clear natal charts</a>
+              </li>
               
             </ul>
           </div>
@@ -439,6 +442,31 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 				</div>
 			</div>
 		</div>
+
+	<div class="popup" id="preNatalPopup">
+			<div class="view">
+				<div class="page with-background">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="left"id="preNatalPopupBackButton">
+								<i class="icon icon-back"></i>
+							</div>
+							<div class="title" id="preNatalPopupTitle">Natal chart</div>
+						</div>
+					</div>
+					<div class="page-content">
+						<div  id="preNatalChartContent"></div>
+
+
+						<div class="fab fab-center-bottom" id="preNatalChartFABButton">
+							<a href="#">
+								<div class="fab-text" id="preNatalChartFABButtonText">Go...</div>
+							</a>						
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
 		
 	<div class="popup" id="setupNatalPopup">
 			<div class="view">
@@ -452,6 +480,46 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 						</div>
 					</div>
 					<div class="page-content">
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderSetName"><span id="textHeaderSetName">Enter your name</span></div>
+							<div class="card-content card-content-padding" id="setNameNatalCardContent">
+							
+							<div class="list no-hairlines-md">
+								<ul>
+									<li id="natalNameElement">
+										<div class="item-content item-input">
+											<div class="item-inner">
+											<div class="item-title item-label" id="textName">Name</div>
+												<div class="item-input-wrap">
+													<input type="text" value="" id="natalName"/>
+												</div>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>	
+							</div>	
+						</div>
+						<div class="card">
+							<div class="card-header deep-blue" id="cardHeaderSetName"><span id="textHeaderSetEmail">Enter your email</span></div>
+							<div class="card-content card-content-padding" id="setEmailNatalCardContent">
+							
+							<div class="list no-hairlines-md">
+								<ul>
+									<li id="natalEmailElement">
+										<div class="item-content item-input">
+											<div class="item-inner">
+											<div class="item-title item-label" id="textEmail">Email</div>
+												<div class="item-input-wrap">
+													<input type="email" value="" id="natalEmail" required/>
+												</div>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>	
+							</div>	
+						</div>
 						<div class="card">
 							<div class="card-header deep-blue" id="cardHeaderSetBirthdayDate"><span id="textHeaderSetBirthdayDate">Select birthday date</span></div>
 							<div class="card-content card-content-padding" id="setBirthdayDateNatalCardContent">
@@ -519,7 +587,7 @@ mixpanel.init("87b6962d2f6fd16b6a5d216d296271db");</script><!-- end Mixpanel -->
 						</div>
 					</div>
 					<div class="page-content">
-						<div class="card">
+						<div class="card" style="width: fit-content">
 							<div class="card-header deep-blue" id="cardHeaderNatalCard"><span id="textHeaderNatalCard">Natal chart</span></div>
 							<div class="card-content card-content-padding" id="natalCardContent">
 								<div id="pictureNatalChart">

@@ -41,6 +41,9 @@
     },
     "onesignal-cordova-plugin": {
       "PACKAGE_NAME": "com.astropro.horo"
+    },
+    "cordova-plugin-inapppurchase": {
+      "PACKAGE_NAME": "com.astropro.horo"
     }
   },
   "dependent_plugins": {
