@@ -585,6 +585,9 @@ function updateLanguage() {
 			textIn = 'в';
 			textInHouse = 'доме';
 			textNatalChart = 'Натальная карта';
+			// subscription
+			$$('#subscribeZodiacFABButtonText').text('Подписка');
+			$$('#purchaseZodiacSubscriptionPopupTitle').text('Подписка');
 		};
 		if (currentLanguage.indexOf("en") > -1) {
 			// selector
@@ -1148,6 +1151,10 @@ function updateLanguage() {
 			textIn = 'in';
 			textInHouse = 'house';
 			textNatalChart = 'Natal chart';
+			// subscription
+			$$('#subscribeZodiacFABButtonText').text('Subscribe');
+			$$('#purchaseZodiacSubscriptionPopupTitle').text('Purchase subscription');
+			
 		};
 		refreshZodiac();
 		refreshSign();

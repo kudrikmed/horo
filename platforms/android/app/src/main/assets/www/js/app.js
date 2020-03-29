@@ -92,6 +92,8 @@ var	geoLocation = {
 	latitude: 45
 	};
 
+var subscriptionControl;
+
 var ZodiacSigns = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 var HouseNames = ['l', 'll', 'lll', 'lV', 'V', 'Vl', 'Vll', 'Vlll', 'lX', 'X', 'Xl', 'Xll'];
 var Moon = {
@@ -158,6 +160,7 @@ function onDeviceReady() {
 console.log(checkNetwork());
 localStorage.setItem('fabbuttonpressed', 'not pressed');
 
+
 if (localStorage.getItem('firstStart') != 'no') {
 	
 	localStorage.setItem('language', navigator.language);
@@ -199,6 +202,10 @@ else
 	updateLanguage();
 	refreshZodiac();
 	refreshSign();
+	if(!localStorage.getItem('firstStartDateTime'))
+	{
+	localStorage.setItem('firstStartDateTime', new Date());
+	}
 	flurryAnalytics = new FlurryAnalytics({
     // requried
     appKey: 'JF2QQM7WYSD2SXSJFT6G',
@@ -282,6 +289,7 @@ document.addEventListener("backbutton", function (e) {
 {
 	deleteBanner();
 	app.popup.close('#readMorePopup', true);
+	app.popup.close('#purchaseZodiacSubscriptionPopup', true);
 }
 	else if ($$('#readMoreMoonPopup').hasClass('modal-in'))
 {
@@ -291,6 +299,10 @@ document.addEventListener("backbutton", function (e) {
 	else if ($$('#setupNatalPopup').hasClass('modal-in'))
 {
 	app.popup.close('#setupNatalPopup', true);
+}
+	else if ($$('#purchaseZodiacSubscriptionPopup').hasClass('modal-in'))
+{
+	app.popup.close('#purchaseZodiacSubscriptionPopup', true);
 }
 	else if ($$('#readMoreNatalPopup').hasClass('modal-in'))
 {
@@ -369,7 +381,8 @@ else{
 // ajax
 if(checkNetwork)
 	{
-refreshZodiac();
+	getSubscriptionProducts();
+	refreshZodiac();
 	}
 };
 
@@ -1012,7 +1025,67 @@ function createCardForPDF (cardTitle, cardContent){
 
 $$('#fabzodiac').on('click', function () {
 
+	if(checkSubscription()){
+		console.log("Subscription is ok");
+		runZodiac();
+	}
+	else {
+		console.log("Need subscription");
+		app.popup.open('#purchaseZodiacSubscriptionPopup', true);	
+	}
+});
 
+$$('#purchaseZodiacSubscriptionPopup').on('popup:open', function () {
+
+});
+
+function getSubscriptionProducts () {
+	inAppPurchase
+  .getProducts(['astropro.subscription.zodiac'])
+  .then(function (products) {
+    console.log(products);
+	myProducts = products;
+var productsData = products;
+$$('#textHeaderSubscribeZodiac').text(productsData[0]['title'].split(" (", 1));
+
+$$('#subscribeZodiacProductDescription').text(productsData[0]['description']);
+
+$$('#cardFooterSubscribe').text(productsData[0]['price']);
+
+subscriptionControl = checkSubscription();
+    
+    //   [{ productId: 'com.yourapp.prod1', 'title': '...', description: '...', currency: '...', price: '...', priceAsDecimal: '...' }, ...]
+    
+  })
+  .catch(function (err) {
+    console.log(err);
+  });	
+}
+
+$$('#subscribeZodiacFABButtonText').on('click', function () {  
+trackEvent('Subscription button pressed');
+	inAppPurchase
+  .subscribe('astropro.subscription.zodiac')
+  .then(function (data) {
+    console.log(data);
+	runZodiac();
+	trackEvent('Subscribed successful');
+    /*
+      {
+        transactionId: ...
+        receipt: ...
+        signature: ...
+      }
+    */
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
+  
+  
+});
+
+function runZodiac() {
 		makeInterstitial();	
 		makeBanner();
 		
@@ -1109,7 +1182,8 @@ document.getElementById('moreMoonConception').innerHTML = putStars(MoonStars[cur
 $$('#moreMoonSign').text(textMoonInSign + getMoonInformations(new Date()).constellation);
 
     app.popup.open('#readMorePopup', true);
-});
+}
+
 
 // get moon date
 function moonDate (day, month, year){
@@ -1586,11 +1660,16 @@ function switchFABbutton(){
 
 $$('#readMorePopupBackButton').on('click', function () {
 	deleteBanner();
+	app.popup.close('#purchaseZodiacSubscriptionPopup', true);
 	app.popup.close('#readMorePopup', true);
 });
 
 $$('#setupNatalPopupBackButton').on('click', function () {
 	app.popup.close('#setupNatalPopup', true);
+});
+
+$$('#purchaseZodiacSubscriptionPopupBackButton').on('click', function () {
+	app.popup.close('#purchaseZodiacSubscriptionPopup', true);
 });
 
 $$('#preNatalPopupBackButton').on('click', function () {
@@ -1684,7 +1763,49 @@ function trackEvent (someEvent) {
 		 localStorage.setItem('numberOfEvents', '1');
 	 }
 }
+	var answerOfFunction;
+function checkSubscription()
+{
+	// проверка подписки
+	var subscription;  // валидация подписки
+	var daysOfUse = getDaysOfUse();
 
+	if (daysOfUse < 1)
+	{
+		console.log('test period');
+		answerOfFunction = true;
+	}
+	else {
+		   inAppPurchase
+			.restorePurchases()
+			.then(function (data) {
+				console.log(data);
+	if(data[0])
+	{
+		console.log(data[0]['productId']);
+		subscription = data[0]['productId'];
+	
+	if (subscription == "astropro.subscription.zodiac")
+  {
+	console.log(subscription);
+	console.log('subscription received');
+	answerOfFunction = true;
+  }
+	else
+  {
+	console.log('Long use and bad subscription');
+	answerOfFunction = false;
+  }
+	}
+  })
+  .catch(function (err) {
+    console.log(err);
+	answerOfFunction = true;
+  });
+	}  
+	console.log('answer of function ' + answerOfFunction);
+	return answerOfFunction;
+}; 
 
 function prepareAd(){
 	/*
@@ -1920,8 +2041,11 @@ function getMoonInformations(date) {
   }
   
   function getDaysOfUse() {
-	  
-	var date1 = new Date(localStorage.getItem('firstStartDateTime')); 
+	
+	if(!localStorage.getItem('firstStartDateTime')){
+	localStorage.setItem('firstStartDateTime', new Date());
+	}
+	var date1 = new Date(localStorage.getItem('firstStartDateTime'));
 	var date2 = new Date();
 	// To calculate the time difference of two dates 
 	var difference_In_Time = date2.getTime() - date1.getTime();   
